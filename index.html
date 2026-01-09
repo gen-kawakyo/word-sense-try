@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Dictionary Pro V20</title>
+    <title>Smart Dictionary Pro V21</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -83,6 +83,7 @@
             ring-color: #93c5fd;
         }
     </style>
+<link rel="stylesheet" href="/index.css">
 </head>
 <body class="text-slate-800">
 
@@ -92,7 +93,7 @@
             <div class="flex items-center gap-4">
                 <h1 class="text-xl font-black text-slate-900 flex items-center gap-2">
                     <i data-lucide="database" class="text-blue-600"></i>
-                    <span>Sense <span class="text-blue-600">Pro V20</span></span>
+                    <span>Sense <span class="text-blue-600">Pro V21</span></span>
                 </h1>
                 
                 <div class="flex bg-slate-100 p-1 rounded-xl border border-slate-200 ml-4">
@@ -200,8 +201,8 @@
                     <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm border border-slate-100">
                         <i data-lucide="book-open" class="w-8 h-8 text-slate-300"></i>
                     </div>
-                    <h3 class="font-bold text-slate-600">Smart Dictionary Pro V20</h3>
-                    <p class="text-xs mt-2 text-slate-400 text-center">各セクションのカラーを統一し、フィルタ状況を可視化しました。<br>辞書としての完成度をさらに高めています。</p>
+                    <h3 class="font-bold text-slate-600">Smart Dictionary Pro V21</h3>
+                    <p class="text-xs mt-2 text-slate-400 text-center">自動読み込み機能を搭載しました。<br>各セクションのカラーを統一し、フィルタ状況を可視化しています。</p>
                 </div>
 
                 <div id="editorForm" class="hidden p-8 max-w-4xl mx-auto w-full space-y-8 pb-64">
@@ -303,6 +304,13 @@
         let editingIndex = -1;
         let activeSearchTargets = new Set();
 
+        // ★自動読み込みするファイルリスト (wordlistフォルダを作ってその中に入れてください)
+        const defaultDataFiles = [
+            'wordlist/Gr25_sp.json',
+            'wordlist/Gr25_t1-1200.json',
+            'wordlist/Hwg_A-Z.json'
+        ];
+
         const els = {
             fileInput: document.getElementById('fileInput'),
             resultsList: document.getElementById('resultsList'),
@@ -369,15 +377,12 @@
         function init() {
             lucide.createIcons();
             loadSettings();
-            els.fileInput.addEventListener('change', handleFileUpload);
             
+            // イベントリスナー設定
+            els.fileInput.addEventListener('change', handleFileUpload);
             [els.searchHeadword, els.searchMeaning, els.searchKeyword, els.filterPos, els.filterGrade, els.filterTags, els.filterSource, els.sortOrder].forEach(el => {
-                el.addEventListener('input', () => {
-                    updateFilterHighlighting();
-                    renderList();
-                });
+                el.addEventListener('input', () => { updateFilterHighlighting(); renderList(); });
             });
-
             els.searchTypeBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     const type = btn.dataset.type;
@@ -387,7 +392,6 @@
                     renderList();
                 });
             });
-
             els.viewModeBtn.addEventListener('click', () => setMode('view'));
             els.editModeBtn.addEventListener('click', () => setMode('edit'));
             els.exportBtn.addEventListener('click', exportJson);
@@ -399,10 +403,8 @@
             els.closeSourceModalBtn.addEventListener('click', () => els.sourceModal.classList.add('hidden'));
             els.openSettingsBtn.addEventListener('click', () => els.settingsModal.classList.remove('hidden'));
             els.closeSettingsBtn.addEventListener('click', () => els.settingsModal.classList.add('hidden'));
-            
             [els.rangeBaseFont, els.rangeWordFont, els.rangeContentFont, els.rangeRelWordFont, els.rangeTypeFont, els.rangeExEnFont, els.rangeExJaFont].forEach(el => el.addEventListener('input', applySettings));
             els.resetSettingsBtn.addEventListener('click', resetSettings);
-
             [els.editWord, els.editPron].forEach(input => {
                 input.addEventListener('input', () => {
                     if (editingIndex === -1 || currentMode === 'view') return;
@@ -411,6 +413,57 @@
                     renderList();
                 });
             });
+
+            // ★初期データの読み込みを開始
+            loadInitialData();
+        }
+
+        // ★自動読み込み用の関数
+        async function loadInitialData() {
+            let loadedCount = 0;
+            for (const filePath of defaultDataFiles) {
+                try {
+                    const response = await fetch(filePath);
+                    if (!response.ok) {
+                        console.warn(`File not found or failed to load: ${filePath}`);
+                        continue; 
+                    }
+                    const data = await response.json();
+                    if (Array.isArray(data)) {
+                        // ファイル名からSourceを推測 (パスを除去してファイル名だけに)
+                        const fileName = filePath.split('/').pop();
+                        const inferredSource = fileName.split('_')[0].split('-')[0].replace('.json', '');
+                        
+                        const normalizedData = data.map(item => {
+                            // 既存の正規化ロジックを再利用
+                            const title = item.word || item.phrase || "UNTITLED";
+                            const subID = item.subID || item.id || "";
+                            let senses = item.senses;
+                            if (!senses && (item.definitions || item.notes)) {
+                                senses = [{ pos: "句", definitions: item.definitions || [], notes: item.notes || [], phrases: [], usage: [], related_words: [] }];
+                            }
+                            return {
+                                ...item, word: title, pronunciation: item.pronunciation || "",
+                                dataSource: item.dataSource || inferredSource || "Unknown",
+                                subID: subID.toString(), senses: senses || [], examples: item.examples || [],
+                                tags: item.tags || [], classification: item.classification || null
+                            };
+                        });
+                        dictionaryData = dictionaryData.concat(normalizedData);
+                        loadedCount++;
+                    }
+                } catch (err) {
+                    console.warn(`Error loading ${filePath}:`, err);
+                }
+            }
+
+            if (dictionaryData.length > 0) {
+                updateDropdowns();
+                renderList();
+                els.fileInfoDisplay.classList.remove('hidden');
+                els.activeWordCount.innerText = dictionaryData.length;
+                console.log(`Loaded ${loadedCount} default files. Total items: ${dictionaryData.length}`);
+            }
         }
 
         function updateFilterHighlighting() {
@@ -438,7 +491,7 @@
         }
 
         function loadSettings() {
-            const s = JSON.parse(localStorage.getItem('sensepro_v20_settings') || '{"base":14,"word":1.8,"content":0.9,"relW":0.9,"type":0.7,"exEn":0.9,"exJa":0.8}');
+            const s = JSON.parse(localStorage.getItem('sensepro_v21_settings') || '{"base":14,"word":1.8,"content":0.9,"relW":0.9,"type":0.7,"exEn":0.9,"exJa":0.8}');
             els.rangeBaseFont.value = s.base; els.rangeWordFont.value = s.word; els.rangeContentFont.value = s.content;
             els.rangeRelWordFont.value = s.relW; els.rangeTypeFont.value = s.type; els.rangeExEnFont.value = s.exEn; els.rangeExJaFont.value = s.exJa;
             applySettings();
@@ -460,7 +513,7 @@
             els.valBaseFont.innerText = b + 'px'; els.valWordFont.innerText = w + 'rem'; els.valContentFont.innerText = c + 'rem';
             els.valRelWordFont.innerText = rw + 'rem'; els.valTypeFont.innerText = t + 'rem'; els.valExEnFont.innerText = ee + 'rem'; els.valExJaFont.innerText = ej + 'rem';
             
-            localStorage.setItem('sensepro_v20_settings', JSON.stringify({ base:b, word:w, content:c, relW:rw, type:t, exEn:ee, exJa:ej }));
+            localStorage.setItem('sensepro_v21_settings', JSON.stringify({ base:b, word:w, content:c, relW:rw, type:t, exEn:ee, exJa:ej }));
         }
 
         function resetSettings() {
@@ -797,5 +850,6 @@
 
         init();
     </script>
+<script type="module" src="/index.tsx"></script>
 </body>
 </html>
