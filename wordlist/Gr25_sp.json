@@ -1,0 +1,963 @@
+[
+  { "id": "S1-1-1", "word": "Sunday", "senses": [{ "pos": "名", "definitions": [{ "meaning": "日曜日", "grade": 1 }], "usage": [{ "type": "略語", "content": "Sun." }] }], "tags": ["曜日", "時"], "classification": { "category": "特集", "subcategory": "曜日" } },
+  { "id": "S1-1-2", "word": "Monday", "senses": [{ "pos": "名", "definitions": [{ "meaning": "月曜日", "grade": 1 }], "usage": [{ "type": "略語", "content": "Mon." }] }], "tags": ["曜日", "時"], "classification": { "category": "特集", "subcategory": "曜日" } },
+  { "id": "S1-1-3", "word": "Tuesday", "senses": [{ "pos": "名", "definitions": [{ "meaning": "火曜日", "grade": 1 }], "usage": [{ "type": "略語", "content": "Tue." }] }], "tags": ["曜日", "時"], "classification": { "category": "特集", "subcategory": "曜日" } },
+  { "id": "S1-1-4", "word": "Wednesday", "senses": [{ "pos": "名", "definitions": [{ "meaning": "水曜日", "grade": 1 }], "usage": [{ "type": "略語", "content": "Wed." }] }], "tags": ["曜日", "時"], "classification": { "category": "特集", "subcategory": "曜日" } },
+  { "id": "S1-1-5", "word": "Thursday", "senses": [{ "pos": "名", "definitions": [{ "meaning": "木曜日", "grade": 1 }], "usage": [{ "type": "略語", "content": "Thu." }] }], "tags": ["曜日", "時"], "classification": { "category": "特集", "subcategory": "曜日" } },
+  { "id": "S1-1-6", "word": "Friday", "senses": [{ "pos": "名", "definitions": [{ "meaning": "金曜日", "grade": 1 }], "usage": [{ "type": "略語", "content": "Fri." }] }], "tags": ["曜日", "時"], "classification": { "category": "特集", "subcategory": "曜日" } },
+  { "id": "S1-1-7", "word": "Saturday", "senses": [{ "pos": "名", "definitions": [{ "meaning": "土曜日", "grade": 1 }], "usage": [{ "type": "略語", "content": "Sat." }] }], "tags": ["曜日", "時"], "classification": { "category": "特集", "subcategory": "曜日" } },
+
+  { "id": "S1-2-1", "word": "January", "senses": [{ "pos": "名", "definitions": [{ "meaning": "1月", "grade": 1 }], "usage": [{ "type": "略語", "content": "Jan." }] }], "tags": ["月", "時"], "classification": { "category": "特集", "subcategory": "月" } },
+  { "id": "S1-2-2", "word": "February", "senses": [{ "pos": "名", "definitions": [{ "meaning": "2月", "grade": 1 }], "usage": [{ "type": "略語", "content": "Feb." }] }], "tags": ["月", "時"], "classification": { "category": "特集", "subcategory": "月" } },
+  { "id": "S1-2-3", "word": "March", "senses": [{ "pos": "名", "definitions": [{ "meaning": "3月", "grade": 1 }], "usage": [{ "type": "略語", "content": "Mar." }] }], "tags": ["月", "時"], "classification": { "category": "特集", "subcategory": "月" } },
+  { "id": "S1-2-4", "word": "April", "senses": [{ "pos": "名", "definitions": [{ "meaning": "4月", "grade": 1 }], "usage": [{ "type": "略語", "content": "Apr." }] }], "tags": ["月", "時"], "classification": { "category": "特集", "subcategory": "月" } },
+  { "id": "S1-2-5", "word": "May", "senses": [{ "pos": "名", "definitions": [{ "meaning": "5月", "grade": 1 }] }], "tags": ["月", "時"], "classification": { "category": "特集", "subcategory": "月" } },
+  { "id": "S1-2-6", "word": "June", "senses": [{ "pos": "名", "definitions": [{ "meaning": "6月", "grade": 1 }], "usage": [{ "type": "略語", "content": "Jun." }] }], "tags": ["月", "時"], "classification": { "category": "特集", "subcategory": "月" } },
+  { "id": "S1-2-7", "word": "July", "senses": [{ "pos": "名", "definitions": [{ "meaning": "7月", "grade": 1 }], "usage": [{ "type": "略語", "content": "Jul." }] }], "tags": ["月", "時"], "classification": { "category": "特集", "subcategory": "月" } },
+  { "id": "S1-2-8", "word": "August", "senses": [{ "pos": "名", "definitions": [{ "meaning": "8月", "grade": 1 }], "usage": [{ "type": "略語", "content": "Aug." }] }], "tags": ["月", "時"], "classification": { "category": "特集", "subcategory": "月" } },
+  { "id": "S1-2-9", "word": "September", "senses": [{ "pos": "名", "definitions": [{ "meaning": "9月", "grade": 1 }], "usage": [{ "type": "略語", "content": "Sep." }] }], "tags": ["月", "時"], "classification": { "category": "特集", "subcategory": "月" } },
+  { "id": "S1-2-10", "word": "October", "senses": [{ "pos": "名", "definitions": [{ "meaning": "10月", "grade": 1 }], "usage": [{ "type": "略語", "content": "Oct." }] }], "tags": ["月", "時"], "classification": { "category": "特集", "subcategory": "月" } },
+  { "id": "S1-2-11", "word": "November", "senses": [{ "pos": "名", "definitions": [{ "meaning": "11月", "grade": 1 }], "usage": [{ "type": "略語", "content": "Nov." }] }], "tags": ["月", "時"], "classification": { "category": "特集", "subcategory": "月" } },
+  { "id": "S1-2-12", "word": "December", "senses": [{ "pos": "名", "definitions": [{ "meaning": "12月", "grade": 1 }], "usage": [{ "type": "略語", "content": "Dec." }] }], "tags": ["月", "時"], "classification": { "category": "特集", "subcategory": "月" } },
+
+  { "id": "S1-3-1", "word": "spring", "senses": [{ "pos": "名", "definitions": [{ "meaning": "春", "grade": 1 }] }], "tags": ["季節"], "classification": { "category": "特集", "subcategory": "季節" } },
+  { "id": "S1-3-2", "word": "summer", "senses": [{ "pos": "名", "definitions": [{ "meaning": "夏", "grade": 1 }] }], "tags": ["季節"], "classification": { "category": "特集", "subcategory": "季節" } },
+  { "id": "S1-3-3", "word": "fall", "senses": [{ "pos": "名", "definitions": [{ "meaning": "秋", "grade": 1 }], "related_words": [{ "word": "autumn", "type": "同意語" }] }], "tags": ["季節"], "classification": { "category": "特集", "subcategory": "季節" } },
+  { "id": "S1-3-4", "word": "winter", "senses": [{ "pos": "名", "definitions": [{ "meaning": "冬", "grade": 1 }] }], "tags": ["季節"], "classification": { "category": "特集", "subcategory": "季節" } },
+
+  { "id": "S1-4-1", "word": "east", "senses": [{ "pos": "名", "definitions": [{ "meaning": "東", "grade": 1 }] }], "tags": ["方角"], "classification": { "category": "特集", "subcategory": "方角" } },
+  { "id": "S1-4-2", "word": "west", "senses": [{ "pos": "名", "definitions": [{ "meaning": "西", "grade": 1 }] }], "tags": ["方角"], "classification": { "category": "特集", "subcategory": "方角" } },
+  { "id": "S1-4-3", "word": "south", "senses": [{ "pos": "名", "definitions": [{ "meaning": "南", "grade": 1 }] }], "tags": ["方角"], "classification": { "category": "特集", "subcategory": "方角" } },
+  { "id": "S1-4-4", "word": "north", "senses": [{ "pos": "名", "definitions": [{ "meaning": "北", "grade": 1 }] }], "tags": ["方角"], "classification": { "category": "特集", "subcategory": "方角" } },
+  { "id": "S1-4-5", "word": "southeast", "senses": [{ "pos": "名", "definitions": [{ "meaning": "南東", "grade": 1 }] }], "tags": ["方角"], "classification": { "category": "特集", "subcategory": "方角" } },
+  { "id": "S1-4-6", "word": "southwest", "senses": [{ "pos": "名", "definitions": [{ "meaning": "南西", "grade": 1 }] }], "tags": ["方角"], "classification": { "category": "特集", "subcategory": "方角" } },
+  { "id": "S1-4-7", "word": "northeast", "senses": [{ "pos": "名", "definitions": [{ "meaning": "北東", "grade": 1 }] }], "tags": ["方角"], "classification": { "category": "特集", "subcategory": "方角" } },
+  { "id": "S1-4-8", "word": "northwest", "senses": [{ "pos": "名", "definitions": [{ "meaning": "北西", "grade": 1 }] }], "tags": ["方角"], "classification": { "category": "特集", "subcategory": "方角" } },
+
+  { "id": "S2-1-1", "word": "English", "senses": [{ "pos": "名", "definitions": [{ "meaning": "英語", "grade": 1 }] }], "tags": ["教科"], "classification": { "category": "特集", "subcategory": "教科" } },
+  { "id": "S2-1-2", "word": "math", "senses": [{ "pos": "名", "definitions": [{ "meaning": "数学", "grade": 1 }] }], "tags": ["教科"], "classification": { "category": "特集", "subcategory": "教科" } },
+  { "id": "S2-1-3", "word": "Japanese", "senses": [{ "pos": "名", "definitions": [{ "meaning": "国語", "grade": 1 }] }], "tags": ["教科"], "classification": { "category": "特集", "subcategory": "教科" } },
+  { "id": "S2-1-4", "word": "science", "senses": [{ "pos": "名", "definitions": [{ "meaning": "理科", "grade": 1 }] }], "tags": ["教科"], "classification": { "category": "特集", "subcategory": "教科" } },
+  { "id": "S2-1-5", "word": "social studies", "senses": [{ "pos": "名", "definitions": [{ "meaning": "社会", "grade": 1 }], "related_words": [{ "word": "history", "meaning": "歴史" }, { "word": "geography", "meaning": "地理" }, { "word": "civics", "meaning": "公民" }] }], "tags": ["教科"], "classification": { "category": "特集", "subcategory": "教科" } },
+  { "id": "S2-1-6", "word": "art", "senses": [{ "pos": "名", "definitions": [{ "meaning": "美術", "grade": 1 }] }], "tags": ["教科"], "classification": { "category": "特集", "subcategory": "教科" } },
+  { "id": "S2-1-7", "word": "music", "senses": [{ "pos": "名", "definitions": [{ "meaning": "音楽", "grade": 1 }] }], "tags": ["教科"], "classification": { "category": "特集", "subcategory": "教科" } },
+  { "id": "S2-1-8", "word": "P.E.", "senses": [{ "pos": "名", "definitions": [{ "meaning": "体育", "grade": 1 }], "notes": [{ "semantic": { "type": "参考", "content": "physical education の略" } }] }], "tags": ["教科"], "classification": { "category": "特集", "subcategory": "教科" } },
+  { "id": "S2-1-9", "word": "technology and home economics", "senses": [{ "pos": "名", "definitions": [{ "meaning": "技術家庭", "grade": 1 }] }], "tags": ["教科"], "classification": { "category": "特集", "subcategory": "教科" } },
+  { "id": "S2-1-10", "word": "calligraphy", "senses": [{ "pos": "名", "definitions": [{ "meaning": "書写", "grade": 1 }] }], "tags": ["教科"], "classification": { "category": "特集", "subcategory": "教科" } },
+  { "id": "S2-1-11", "word": "moral education", "senses": [{ "pos": "名", "definitions": [{ "meaning": "道徳", "grade": 1 }] }], "tags": ["教科"], "classification": { "category": "特集", "subcategory": "教科" } },
+
+  { "id": "S2-2-1", "word": "baseball", "senses": [{ "pos": "名", "definitions": [{ "meaning": "野球", "grade": 1 }] }], "tags": ["スポーツ"], "classification": { "category": "特集", "subcategory": "スポーツ" } },
+  { "id": "S2-2-2", "word": "basketball", "senses": [{ "pos": "名", "definitions": [{ "meaning": "バスケットボール", "grade": 1 }] }], "tags": ["スポーツ"], "classification": { "category": "特集", "subcategory": "スポーツ" } },
+  { "id": "S2-2-3", "word": "soccer", "senses": [{ "pos": "名", "definitions": [{ "meaning": "サッカー", "grade": 1 }] }], "tags": ["スポーツ"], "classification": { "category": "特集", "subcategory": "スポーツ" } },
+  { "id": "S2-2-4", "word": "table tennis", "senses": [{ "pos": "名", "definitions": [{ "meaning": "卓球", "grade": 1 }] }], "tags": ["スポーツ"], "classification": { "category": "特集", "subcategory": "スポーツ" } },
+  { "id": "S2-2-5", "word": "tennis", "senses": [{ "pos": "名", "definitions": [{ "meaning": "テニス", "grade": 1 }] }], "tags": ["スポーツ"], "classification": { "category": "特集", "subcategory": "スポーツ" } },
+  { "id": "S2-2-6", "word": "volleyball", "senses": [{ "pos": "名", "definitions": [{ "meaning": "バレーボール", "grade": 1 }] }], "tags": ["スポーツ"], "classification": { "category": "特集", "subcategory": "スポーツ" } },
+  { "id": "S2-2-7", "word": "softball", "senses": [{ "pos": "名", "definitions": [{ "meaning": "ソフトボール", "grade": 1 }] }], "tags": ["スポーツ"], "classification": { "category": "特集", "subcategory": "スポーツ" } },
+  { "id": "S2-2-8", "word": "handball", "senses": [{ "pos": "名", "definitions": [{ "meaning": "ハンドボール", "grade": 1 }] }], "tags": ["スポーツ"], "classification": { "category": "特集", "subcategory": "スポーツ" } },
+  { "id": "S2-2-9", "word": "track and field", "senses": [{ "pos": "名", "definitions": [{ "meaning": "陸上競技", "grade": 1 }] }], "tags": ["スポーツ"], "classification": { "category": "特集", "subcategory": "スポーツ" } },
+  { "id": "S2-2-10", "word": "badminton", "senses": [{ "pos": "名", "definitions": [{ "meaning": "バドミントン", "grade": 1 }] }], "tags": ["スポーツ"], "classification": { "category": "特集", "subcategory": "スポーツ" } },
+  { "id": "S2-2-11", "word": "rugby", "senses": [{ "pos": "名", "definitions": [{ "meaning": "ラグビー", "grade": 1 }] }], "tags": ["スポーツ"], "classification": { "category": "特集", "subcategory": "スポーツ" } },
+  { "id": "S2-2-12", "word": "swimming", "senses": [{ "pos": "名", "definitions": [{ "meaning": "水泳", "grade": 1 }] }], "tags": ["スポーツ"], "classification": { "category": "特集", "subcategory": "スポーツ" } },
+  { "id": "S2-2-13", "word": "gymnastics", "senses": [{ "pos": "名", "definitions": [{ "meaning": "体操", "grade": 1 }] }], "tags": ["スポーツ"], "classification": { "category": "特集", "subcategory": "スポーツ" } },
+
+  { "id": "S3-1-1", "word": "grandfather", "senses": [{ "pos": "名", "definitions": [{ "meaning": "祖父", "grade": 1 }] }], "tags": ["家族"], "classification": { "category": "特集", "subcategory": "家族" } },
+  { "id": "S3-1-2", "word": "grandmother", "senses": [{ "pos": "名", "definitions": [{ "meaning": "祖母", "grade": 1 }] }], "tags": ["家族"], "classification": { "category": "特集", "subcategory": "家族" } },
+  { "id": "S3-1-3", "word": "father", "senses": [{ "pos": "名", "definitions": [{ "meaning": "父", "grade": 1 }] }], "tags": ["家族"], "classification": { "category": "特集", "subcategory": "家族" } },
+  { "id": "S3-1-4", "word": "mother", "senses": [{ "pos": "名", "definitions": [{ "meaning": "母", "grade": 1 }] }], "tags": ["家族"], "classification": { "category": "特集", "subcategory": "家族" } },
+  { "id": "S3-1-5", "word": "uncle", "senses": [{ "pos": "名", "definitions": [{ "meaning": "おじ", "grade": 1 }] }], "tags": ["家族"], "classification": { "category": "特集", "subcategory": "家族" } },
+  { "id": "S3-1-6", "word": "aunt", "senses": [{ "pos": "名", "definitions": [{ "meaning": "おば", "grade": 1 }] }], "tags": ["家族"], "classification": { "category": "特集", "subcategory": "家族" } },
+  { "id": "S3-1-7", "word": "brother", "senses": [{ "pos": "名", "definitions": [{ "meaning": "兄、弟", "grade": 1 }] }], "tags": ["家族"], "classification": { "category": "特集", "subcategory": "家族" } },
+  { "id": "S3-1-8", "word": "sister", "senses": [{ "pos": "名", "definitions": [{ "meaning": "姉、妹", "grade": 1 }] }], "tags": ["家族"], "classification": { "category": "特集", "subcategory": "家族" } },
+  { "id": "S3-1-9", "word": "me", "senses": [{ "pos": "代", "definitions": [{ "meaning": "私(を・に)", "grade": 1 }] }], "tags": ["家族"], "classification": { "category": "特集", "subcategory": "家族" } },
+  { "id": "S3-1-10", "word": "cousin", "senses": [{ "pos": "名", "definitions": [{ "meaning": "いとこ", "grade": 1 }] }], "tags": ["家族"], "classification": { "category": "特集", "subcategory": "家族" } },
+  { "id": "S3-1-11", "word": "nephew", "senses": [{ "pos": "名", "definitions": [{ "meaning": "おい", "grade": 1 }] }], "tags": ["家族"], "classification": { "category": "特集", "subcategory": "家族" } },
+  { "id": "S3-1-12", "word": "niece", "senses": [{ "pos": "名", "definitions": [{ "meaning": "めい", "grade": 1 }] }], "tags": ["家族"], "classification": { "category": "特集", "subcategory": "家族" } },
+  { "id": "S3-1-13", "word": "husband", "senses": [{ "pos": "名", "definitions": [{ "meaning": "夫", "grade": 1 }] }], "tags": ["家族"], "classification": { "category": "特集", "subcategory": "家族" } },
+  { "id": "S3-1-14", "word": "wife", "senses": [{ "pos": "名", "definitions": [{ "meaning": "妻", "grade": 1 }] }], "tags": ["家族"], "classification": { "category": "特集", "subcategory": "家族" } },
+  { "id": "S3-1-15", "word": "son", "senses": [{ "pos": "名", "definitions": [{ "meaning": "息子", "grade": 1 }] }], "tags": ["家族"], "classification": { "category": "特集", "subcategory": "家族" } },
+  { "id": "S3-1-16", "word": "daughter", "senses": [{ "pos": "名", "definitions": [{ "meaning": "娘", "grade": 1 }] }], "tags": ["家族"], "classification": { "category": "特集", "subcategory": "家族" } },
+
+  { "id": "S3-2-1", "word": "face", "senses": [{ "pos": "名", "definitions": [{ "meaning": "顔", "grade": 1 }] }], "tags": ["体"], "classification": { "category": "特集", "subcategory": "体の部分" } },
+  { "id": "S3-2-2", "word": "eye", "senses": [{ "pos": "名", "definitions": [{ "meaning": "目", "grade": 1 }] }], "tags": ["体"], "classification": { "category": "特集", "subcategory": "体の部分" } },
+  { "id": "S3-2-3", "word": "ear", "senses": [{ "pos": "名", "definitions": [{ "meaning": "耳", "grade": 1 }] }], "tags": ["体"], "classification": { "category": "特集", "subcategory": "体の部分" } },
+  { "id": "S3-2-4", "word": "nose", "senses": [{ "pos": "名", "definitions": [{ "meaning": "鼻", "grade": 1 }] }], "tags": ["体"], "classification": { "category": "特集", "subcategory": "体の部分" } },
+  { "id": "S3-2-5", "word": "tongue", "senses": [{ "pos": "名", "definitions": [{ "meaning": "舌", "grade": 1 }] }], "tags": ["体"], "classification": { "category": "特集", "subcategory": "体の部分" } },
+  { "id": "S3-2-6", "word": "mouth", "senses": [{ "pos": "名", "definitions": [{ "meaning": "口", "grade": 1 }] }], "tags": ["体"], "classification": { "category": "特集", "subcategory": "体の部分" } },
+  { "id": "S3-2-7", "word": "tooth", "senses": [{ "pos": "名", "definitions": [{ "meaning": "歯", "grade": 1 }] }], "tags": ["体"], "classification": { "category": "特集", "subcategory": "体の部分" } },
+  { "id": "S3-2-8", "word": "head", "senses": [{ "pos": "名", "definitions": [{ "meaning": "頭", "grade": 1 }] }], "tags": ["体"], "classification": { "category": "特集", "subcategory": "体の部分" } },
+  { "id": "S3-2-9", "word": "shoulder", "senses": [{ "pos": "名", "definitions": [{ "meaning": "肩", "grade": 1 }] }], "tags": ["体"], "classification": { "category": "特集", "subcategory": "体の部分" } },
+  { "id": "S3-2-10", "word": "arm", "senses": [{ "pos": "名", "definitions": [{ "meaning": "腕", "grade": 1 }] }], "tags": ["体"], "classification": { "category": "特集", "subcategory": "体の部分" } },
+  { "id": "S3-2-11", "word": "hand", "senses": [{ "pos": "名", "definitions": [{ "meaning": "手", "grade": 1 }] }], "tags": ["体"], "classification": { "category": "特集", "subcategory": "体の部分" } },
+  { "id": "S3-2-12", "word": "finger", "senses": [{ "pos": "名", "definitions": [{ "meaning": "（手の）指", "grade": 1 }] }], "tags": ["体"], "classification": { "category": "特集", "subcategory": "体の部分" } },
+  { "id": "S3-2-13", "word": "nail", "senses": [{ "pos": "名", "definitions": [{ "meaning": "つめ", "grade": 1 }] }], "tags": ["体"], "classification": { "category": "特集", "subcategory": "体の部分" } },
+  { "id": "S3-2-14", "word": "neck", "senses": [{ "pos": "名", "definitions": [{ "meaning": "首", "grade": 1 }] }], "tags": ["体"], "classification": { "category": "特集", "subcategory": "体の部分" } },
+  { "id": "S3-2-15", "word": "stomach", "senses": [{ "pos": "名", "definitions": [{ "meaning": "腹、腹部", "grade": 1 }] }], "tags": ["体"], "classification": { "category": "特集", "subcategory": "体の部分" } },
+  { "id": "S3-2-16", "word": "leg", "senses": [{ "pos": "名", "definitions": [{ "meaning": "脚", "grade": 1 }] }], "tags": ["体"], "classification": { "category": "特集", "subcategory": "体の部分" } },
+  { "id": "S3-2-17", "word": "knee", "senses": [{ "pos": "名", "definitions": [{ "meaning": "ひざ", "grade": 1 }] }], "tags": ["体"], "classification": { "category": "特集", "subcategory": "体の部分" } },
+  { "id": "S3-2-18", "word": "foot", "senses": [{ "pos": "名", "definitions": [{ "meaning": "足", "grade": 1 }] }], "tags": ["体"], "classification": { "category": "特集", "subcategory": "体の部分" } },
+  { "id": "S3-2-19", "word": "toe", "senses": [{ "pos": "名", "definitions": [{ "meaning": "（足の）指", "grade": 1 }] }], "tags": ["体"], "classification": { "category": "特集", "subcategory": "体の部分" } },
+
+  { "id": "S4-1-1", "word": "white", "senses": [{ "pos": "名", "definitions": [{ "meaning": "白(い)", "grade": 1 }] }], "tags": ["色"], "classification": { "category": "特集", "subcategory": "色" } },
+  { "id": "S4-1-2", "word": "black", "senses": [{ "pos": "名", "definitions": [{ "meaning": "黒(い)", "grade": 1 }] }], "tags": ["色"], "classification": { "category": "特集", "subcategory": "色" } },
+  { "id": "S4-1-3", "word": "blue", "senses": [{ "pos": "名", "definitions": [{ "meaning": "青(い)", "grade": 1 }] }], "tags": ["色"], "classification": { "category": "特集", "subcategory": "色" } },
+  { "id": "S4-1-4", "word": "red", "senses": [{ "pos": "名", "definitions": [{ "meaning": "赤(い)", "grade": 1 }] }], "tags": ["色"], "classification": { "category": "特集", "subcategory": "色" } },
+  { "id": "S4-1-5", "word": "green", "senses": [{ "pos": "名", "definitions": [{ "meaning": "緑(の)", "grade": 1 }] }], "tags": ["色"], "classification": { "category": "特集", "subcategory": "色" } },
+  { "id": "S4-1-6", "word": "yellow", "senses": [{ "pos": "名", "definitions": [{ "meaning": "黄色(の)", "grade": 1 }] }], "tags": ["色"], "classification": { "category": "特集", "subcategory": "色" } },
+  { "id": "S4-1-7", "word": "orange", "senses": [{ "pos": "名", "definitions": [{ "meaning": "オレンジ(の)", "grade": 1 }] }], "tags": ["色"], "classification": { "category": "特集", "subcategory": "色" } },
+  { "id": "S4-1-8", "word": "brown", "senses": [{ "pos": "名", "definitions": [{ "meaning": "茶色(い)", "grade": 1 }] }], "tags": ["色"], "classification": { "category": "特集", "subcategory": "色" } },
+  { "id": "S4-1-9", "word": "purple", "senses": [{ "pos": "名", "definitions": [{ "meaning": "紫(の)", "grade": 1 }] }], "tags": ["色"], "classification": { "category": "特集", "subcategory": "色" } },
+  { "id": "S4-1-10", "word": "gold", "senses": [{ "pos": "名", "definitions": [{ "meaning": "金色(の)", "grade": 1 }] }], "tags": ["色"], "classification": { "category": "特集", "subcategory": "色" } },
+  { "id": "S4-1-11", "word": "silver", "senses": [{ "pos": "名", "definitions": [{ "meaning": "銀色(の)", "grade": 1 }] }], "tags": ["色"], "classification": { "category": "特集", "subcategory": "色" } },
+  { "id": "S4-1-12", "word": "gray", "senses": [{ "pos": "名", "definitions": [{ "meaning": "灰色(の)", "grade": 1 }] }], "tags": ["色"], "classification": { "category": "特集", "subcategory": "色" } },
+  { "id": "S4-1-13", "word": "violet", "senses": [{ "pos": "名", "definitions": [{ "meaning": "スミレ色(の)", "grade": 1 }] }], "tags": ["色"], "classification": { "category": "特集", "subcategory": "色" } },
+
+  { "id": "S4-2-1", "word": "circle", "senses": [{ "pos": "名", "definitions": [{ "meaning": "円", "grade": 1 }] }], "tags": ["形"], "classification": { "category": "特集", "subcategory": "形" } },
+  { "id": "S4-2-2", "word": "triangle", "senses": [{ "pos": "名", "definitions": [{ "meaning": "三角形", "grade": 1 }] }], "tags": ["形"], "classification": { "category": "特集", "subcategory": "形" } },
+  { "id": "S4-2-3", "word": "square", "senses": [{ "pos": "名", "definitions": [{ "meaning": "正方形", "grade": 1 }] }], "tags": ["形"], "classification": { "category": "特集", "subcategory": "形" } },
+  { "id": "S4-2-4", "word": "rectangle", "senses": [{ "pos": "名", "definitions": [{ "meaning": "長方形", "grade": 1 }] }], "tags": ["形"], "classification": { "category": "特集", "subcategory": "形" } },
+  { "id": "S4-2-5", "word": "diamond", "senses": [{ "pos": "名", "definitions": [{ "meaning": "ひし形", "grade": 1 }] }], "tags": ["形"], "classification": { "category": "特集", "subcategory": "形" } },
+  { "id": "S4-2-6", "word": "oval", "senses": [{ "pos": "名", "definitions": [{ "meaning": "だ円", "grade": 1 }] }], "tags": ["形"], "classification": { "category": "特集", "subcategory": "形" } },
+
+  { "id": "S4-3-1", "word": "bread", "senses": [{ "pos": "名", "definitions": [{ "meaning": "パン", "grade": 1 }], "related_words": [{ "word": "rice", "meaning": "ご飯、ライス" }] }], "tags": ["食べ物"], "classification": { "category": "特集", "subcategory": "食べ物・飲み物" } },
+  { "id": "S4-3-2", "word": "sandwich", "senses": [{ "pos": "名", "definitions": [{ "meaning": "サンドイッチ", "grade": 1 }] }], "tags": ["食べ物"], "classification": { "category": "特集", "subcategory": "食べ物・飲み物" } },
+  { "id": "S4-3-3", "word": "hamburger", "senses": [{ "pos": "名", "definitions": [{ "meaning": "ハンバーガー", "grade": 1 }] }], "tags": ["食べ物"], "classification": { "category": "特集", "subcategory": "食べ物・飲み物" } },
+  { "id": "S4-3-4", "word": "hot dog", "senses": [{ "pos": "名", "definitions": [{ "meaning": "ホットドッグ", "grade": 1 }] }], "tags": ["食べ物"], "classification": { "category": "特集", "subcategory": "食べ物・飲み物" } },
+  { "id": "S4-3-5", "word": "pizza", "senses": [{ "pos": "名", "definitions": [{ "meaning": "ピザ", "grade": 1 }] }], "tags": ["食べ物"], "classification": { "category": "特集", "subcategory": "食べ物・飲み物" } },
+  { "id": "S4-3-6", "word": "spaghetti", "senses": [{ "pos": "名", "definitions": [{ "meaning": "スパゲッティ", "grade": 1 }] }], "tags": ["食べ物"], "classification": { "category": "特集", "subcategory": "食べ物・飲み物" } },
+  { "id": "S4-3-7", "word": "curry and rice", "senses": [{ "pos": "名", "definitions": [{ "meaning": "カレーライス", "grade": 1 }] }], "tags": ["食べ物"], "classification": { "category": "特集", "subcategory": "食べ物・飲み物" } },
+  { "id": "S4-3-8", "word": "soup", "senses": [{ "pos": "名", "definitions": [{ "meaning": "スープ", "grade": 1 }] }], "tags": ["食べ物"], "classification": { "category": "特集", "subcategory": "食べ物・飲み物" } },
+  { "id": "S4-3-9", "word": "salad", "senses": [{ "pos": "名", "definitions": [{ "meaning": "サラダ", "grade": 1 }] }], "tags": ["食べ物"], "classification": { "category": "特集", "subcategory": "食べ物・飲み物" } },
+  { "id": "S4-3-10", "word": "cake", "senses": [{ "pos": "名", "definitions": [{ "meaning": "ケーキ", "grade": 1 }] }], "tags": ["食べ物"], "classification": { "category": "特集", "subcategory": "食べ物・飲み物" } },
+  { "id": "S4-3-11", "word": "ice cream", "senses": [{ "pos": "名", "definitions": [{ "meaning": "アイスクリーム", "grade": 1 }] }], "tags": ["食べ物"], "classification": { "category": "特集", "subcategory": "食べ物・飲み物" } },
+  { "id": "S4-3-12", "word": "coffee", "senses": [{ "pos": "名", "definitions": [{ "meaning": "コーヒー", "grade": 1 }], "related_words": [{ "word": "iced coffee", "meaning": "アイスコーヒー" }] }], "tags": ["飲み物"], "classification": { "category": "特集", "subcategory": "食べ物・飲み物" } },
+  { "id": "S4-3-13", "word": "tea", "senses": [{ "pos": "名", "definitions": [{ "meaning": "茶、紅茶", "grade": 1 }], "related_words": [{ "word": "green tea", "meaning": "緑茶" }, { "word": "iced tea", "meaning": "アイスティー" }] }], "tags": ["飲み物"], "classification": { "category": "特集", "subcategory": "食べ物・飲み物" } },
+  { "id": "S4-3-14", "word": "juice", "senses": [{ "pos": "名", "definitions": [{ "meaning": "ジュース", "grade": 1 }], "related_words": [{ "word": "orange juice", "meaning": "オレンジジュース" }] }], "tags": ["飲み物"], "classification": { "category": "特集", "subcategory": "食べ物・飲み物" } },
+
+  { "id": "S5-1-1", "word": "I", "senses": [{ "pos": "代", "definitions": [{ "meaning": "私は（主格）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-2", "word": "my", "senses": [{ "pos": "代", "definitions": [{ "meaning": "私の（所有格）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-3", "word": "me", "senses": [{ "pos": "代", "definitions": [{ "meaning": "私を・に（目的格）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-4", "word": "mine", "senses": [{ "pos": "代", "definitions": [{ "meaning": "私のもの（所有代名詞）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-5", "word": "you", "senses": [{ "pos": "代", "definitions": [{ "meaning": "あなたは（主格）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-6", "word": "your", "senses": [{ "pos": "代", "definitions": [{ "meaning": "あなたの（所有格）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-7", "word": "you", "senses": [{ "pos": "代", "definitions": [{ "meaning": "あなたを・に（目的格）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-8", "word": "yours", "senses": [{ "pos": "代", "definitions": [{ "meaning": "あなたのもの（所有代名詞）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-9", "word": "he", "senses": [{ "pos": "代", "definitions": [{ "meaning": "彼は（主格）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-10", "word": "his", "senses": [{ "pos": "代", "definitions": [{ "meaning": "彼の（所有格）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-11", "word": "him", "senses": [{ "pos": "代", "definitions": [{ "meaning": "彼を・に（目的格）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-12", "word": "his", "senses": [{ "pos": "代", "definitions": [{ "meaning": "彼のもの（所有代名詞）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-13", "word": "she", "senses": [{ "pos": "代", "definitions": [{ "meaning": "彼女は（主格）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-14", "word": "her", "senses": [{ "pos": "代", "definitions": [{ "meaning": "彼女の（所有格）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-15", "word": "her", "senses": [{ "pos": "代", "definitions": [{ "meaning": "彼女を・に（目的格）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-16", "word": "hers", "senses": [{ "pos": "代", "definitions": [{ "meaning": "彼女のもの（所有代名詞）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-17", "word": "it", "senses": [{ "pos": "代", "definitions": [{ "meaning": "それは（主格）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-18", "word": "its", "senses": [{ "pos": "代", "definitions": [{ "meaning": "その（所有格）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-19", "word": "it", "senses": [{ "pos": "代", "definitions": [{ "meaning": "それを・に（目的格）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-20", "word": "we", "senses": [{ "pos": "代", "definitions": [{ "meaning": "私たちは（主格）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-21", "word": "our", "senses": [{ "pos": "代", "definitions": [{ "meaning": "私たちの（所有格）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-22", "word": "us", "senses": [{ "pos": "代", "definitions": [{ "meaning": "私たちを・に（目的格）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-23", "word": "ours", "senses": [{ "pos": "代", "definitions": [{ "meaning": "私たちのもの（所有代名詞）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-24", "word": "they", "senses": [{ "pos": "代", "definitions": [{ "meaning": "彼らは（主格）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-25", "word": "their", "senses": [{ "pos": "代", "definitions": [{ "meaning": "彼らの（所有格）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-26", "word": "them", "senses": [{ "pos": "代", "definitions": [{ "meaning": "彼らを・に（目的格）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+  { "id": "S5-1-27", "word": "theirs", "senses": [{ "pos": "代", "definitions": [{ "meaning": "彼らのもの（所有代名詞）", "grade": 1 }] }], "tags": ["代名詞"], "classification": { "category": "特集", "subcategory": "代名詞" } },
+
+  { "id": "S5-2-1", "word": "I'm", "senses": [{ "definitions": [{ "meaning": "I am", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-2", "word": "I'll", "senses": [{ "definitions": [{ "meaning": "I will", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-3", "word": "I'd", "senses": [{ "definitions": [{ "meaning": "I would", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-4", "word": "you're", "senses": [{ "definitions": [{ "meaning": "you are", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-5", "word": "you'll", "senses": [{ "definitions": [{ "meaning": "you will", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-6", "word": "he's", "senses": [{ "definitions": [{ "meaning": "he is [he has]", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-7", "word": "he'll", "senses": [{ "definitions": [{ "meaning": "he will", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-8", "word": "she's", "senses": [{ "definitions": [{ "meaning": "she is [she has]", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-9", "word": "she'll", "senses": [{ "definitions": [{ "meaning": "she will", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-10", "word": "it's", "senses": [{ "definitions": [{ "meaning": "it is [it has]", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-11", "word": "it'll", "senses": [{ "definitions": [{ "meaning": "it will", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-12", "word": "we're", "senses": [{ "definitions": [{ "meaning": "we are", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-13", "word": "we'll", "senses": [{ "definitions": [{ "meaning": "we will", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-14", "word": "they're", "senses": [{ "definitions": [{ "meaning": "they are", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-15", "word": "they'll", "senses": [{ "definitions": [{ "meaning": "they will", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-16", "word": "isn't", "senses": [{ "definitions": [{ "meaning": "is not", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-17", "word": "aren't", "senses": [{ "definitions": [{ "meaning": "are not", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-18", "word": "wasn't", "senses": [{ "definitions": [{ "meaning": "was not", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-19", "word": "weren't", "senses": [{ "definitions": [{ "meaning": "were not", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-20", "word": "don't", "senses": [{ "definitions": [{ "meaning": "do not", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-21", "word": "doesn't", "senses": [{ "definitions": [{ "meaning": "does not", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-22", "word": "didn't", "senses": [{ "definitions": [{ "meaning": "did not", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-23", "word": "won't", "senses": [{ "definitions": [{ "meaning": "will not", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-24", "word": "wouldn't", "senses": [{ "definitions": [{ "meaning": "would not", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-25", "word": "can't", "senses": [{ "definitions": [{ "meaning": "cannot", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-26", "word": "couldn't", "senses": [{ "definitions": [{ "meaning": "could not", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-27", "word": "mustn't", "senses": [{ "definitions": [{ "meaning": "must not", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-28", "word": "haven't", "senses": [{ "definitions": [{ "meaning": "have not", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+  { "id": "S5-2-29", "word": "hasn't", "senses": [{ "definitions": [{ "meaning": "has not", "grade": 1 }] }], "tags": ["短縮形"], "classification": { "category": "特集", "subcategory": "短縮形" } },
+
+  { "id": "S5-3-1", "word": "one", "senses": [{ "definitions": [{ "meaning": "1", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-2", "word": "two", "senses": [{ "definitions": [{ "meaning": "2", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-3", "word": "three", "senses": [{ "definitions": [{ "meaning": "3", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-4", "word": "four", "senses": [{ "definitions": [{ "meaning": "4", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-5", "word": "five", "senses": [{ "definitions": [{ "meaning": "5", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-6", "word": "six", "senses": [{ "definitions": [{ "meaning": "6", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-7", "word": "seven", "senses": [{ "definitions": [{ "meaning": "7", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-8", "word": "eight", "senses": [{ "definitions": [{ "meaning": "8", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-9", "word": "nine", "senses": [{ "definitions": [{ "meaning": "9", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-10", "word": "ten", "senses": [{ "definitions": [{ "meaning": "10", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-11", "word": "eleven", "senses": [{ "definitions": [{ "meaning": "11", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-12", "word": "twelve", "senses": [{ "definitions": [{ "meaning": "12", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-13", "word": "thirteen", "senses": [{ "definitions": [{ "meaning": "13", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-14", "word": "fourteen", "senses": [{ "definitions": [{ "meaning": "14", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-15", "word": "fifteen", "senses": [{ "definitions": [{ "meaning": "15", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-16", "word": "sixteen", "senses": [{ "definitions": [{ "meaning": "16", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-17", "word": "seventeen", "senses": [{ "definitions": [{ "meaning": "17", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-18", "word": "eighteen", "senses": [{ "definitions": [{ "meaning": "18", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-19", "word": "nineteen", "senses": [{ "definitions": [{ "meaning": "19", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-20", "word": "twenty", "senses": [{ "definitions": [{ "meaning": "20", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-30", "word": "thirty", "senses": [{ "definitions": [{ "meaning": "30", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-40", "word": "forty", "senses": [{ "definitions": [{ "meaning": "40", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-50", "word": "fifty", "senses": [{ "definitions": [{ "meaning": "50", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-60", "word": "sixty", "senses": [{ "definitions": [{ "meaning": "60", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-70", "word": "seventy", "senses": [{ "definitions": [{ "meaning": "70", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-80", "word": "eighty", "senses": [{ "definitions": [{ "meaning": "80", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+  { "id": "S5-3-90", "word": "ninety", "senses": [{ "definitions": [{ "meaning": "90", "grade": 1 }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "基数詞" } },
+
+  { "id": "S5-4-1", "word": "first", "senses": [{ "definitions": [{ "meaning": "第1の", "grade": 1 }], "usage": [{ "type": "表記", "content": "1st" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-2", "word": "second", "senses": [{ "definitions": [{ "meaning": "第2の", "grade": 1 }], "usage": [{ "type": "表記", "content": "2nd" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-3", "word": "third", "senses": [{ "definitions": [{ "meaning": "第3の", "grade": 1 }], "usage": [{ "type": "表記", "content": "3rd" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-4", "word": "fourth", "senses": [{ "definitions": [{ "meaning": "第4の", "grade": 1 }], "usage": [{ "type": "表記", "content": "4th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-5", "word": "fifth", "senses": [{ "definitions": [{ "meaning": "第5の", "grade": 1 }], "usage": [{ "type": "表記", "content": "5th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-6", "word": "sixth", "senses": [{ "definitions": [{ "meaning": "第6の", "grade": 1 }], "usage": [{ "type": "表記", "content": "6th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-7", "word": "seventh", "senses": [{ "definitions": [{ "meaning": "第7の", "grade": 1 }], "usage": [{ "type": "表記", "content": "7th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-8", "word": "eighth", "senses": [{ "definitions": [{ "meaning": "第8の", "grade": 1 }], "usage": [{ "type": "表記", "content": "8th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-9", "word": "ninth", "senses": [{ "definitions": [{ "meaning": "第9の", "grade": 1 }], "usage": [{ "type": "表記", "content": "9th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-10", "word": "tenth", "senses": [{ "definitions": [{ "meaning": "第10の", "grade": 1 }], "usage": [{ "type": "表記", "content": "10th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-11", "word": "eleventh", "senses": [{ "definitions": [{ "meaning": "第11の", "grade": 1 }], "usage": [{ "type": "表記", "content": "11th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-12", "word": "twelfth", "senses": [{ "definitions": [{ "meaning": "第12の", "grade": 1 }], "usage": [{ "type": "表記", "content": "12th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-13", "word": "thirteenth", "senses": [{ "definitions": [{ "meaning": "第13の", "grade": 1 }], "usage": [{ "type": "表記", "content": "13th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-14", "word": "fourteenth", "senses": [{ "definitions": [{ "meaning": "第14の", "grade": 1 }], "usage": [{ "type": "表記", "content": "14th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-15", "word": "fifteenth", "senses": [{ "definitions": [{ "meaning": "第15の", "grade": 1 }], "usage": [{ "type": "表記", "content": "15th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-16", "word": "sixteenth", "senses": [{ "definitions": [{ "meaning": "第16の", "grade": 1 }], "usage": [{ "type": "表記", "content": "16th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-17", "word": "seventeenth", "senses": [{ "definitions": [{ "meaning": "第17の", "grade": 1 }], "usage": [{ "type": "表記", "content": "17th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-18", "word": "eighteenth", "senses": [{ "definitions": [{ "meaning": "第18の", "grade": 1 }], "usage": [{ "type": "表記", "content": "18th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-19", "word": "nineteenth", "senses": [{ "definitions": [{ "meaning": "第19の", "grade": 1 }], "usage": [{ "type": "表記", "content": "19th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-20", "word": "twentieth", "senses": [{ "definitions": [{ "meaning": "第20の", "grade": 1 }], "usage": [{ "type": "表記", "content": "20th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-21", "word": "twenty-first", "senses": [{ "definitions": [{ "meaning": "第21の", "grade": 1 }], "usage": [{ "type": "表記", "content": "21st" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-22", "word": "twenty-second", "senses": [{ "definitions": [{ "meaning": "第22の", "grade": 1 }], "usage": [{ "type": "表記", "content": "22nd" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-23", "word": "twenty-third", "senses": [{ "definitions": [{ "meaning": "第23の", "grade": 1 }], "usage": [{ "type": "表記", "content": "23rd" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-24", "word": "twenty-fourth", "senses": [{ "definitions": [{ "meaning": "第24の", "grade": 1 }], "usage": [{ "type": "表記", "content": "24th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-30", "word": "thirtieth", "senses": [{ "definitions": [{ "meaning": "第30の", "grade": 1 }], "usage": [{ "type": "表記", "content": "30th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-40", "word": "fortieth", "senses": [{ "definitions": [{ "meaning": "第40の", "grade": 1 }], "usage": [{ "type": "表記", "content": "40th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-50", "word": "fiftieth", "senses": [{ "definitions": [{ "meaning": "第50の", "grade": 1 }], "usage": [{ "type": "表記", "content": "50th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-60", "word": "sixtieth", "senses": [{ "definitions": [{ "meaning": "第60の", "grade": 1 }], "usage": [{ "type": "表記", "content": "60th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-70", "word": "seventieth", "senses": [{ "definitions": [{ "meaning": "第70の", "grade": 1 }], "usage": [{ "type": "表記", "content": "70th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-80", "word": "eightieth", "senses": [{ "definitions": [{ "meaning": "第80の", "grade": 1 }], "usage": [{ "type": "表記", "content": "80th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } },
+  { "id": "S5-4-90", "word": "ninetieth", "senses": [{ "definitions": [{ "meaning": "第90の", "grade": 1 }], "usage": [{ "type": "表記", "content": "90th" }] }], "tags": ["数詞"], "classification": { "category": "特集", "subcategory": "序数詞" } }
+,
+{
+    "id": "S6-1-1",
+    "word": "at",
+    "senses": [{
+      "pos": "前",
+      "definitions": [{ "meaning": "～で、～に", "grade": 4 }],
+      "notes": [{ "semantic": { "type": "用法", "content": "《点》「～で、～に」。地図上の一点のような比較的狭い地点を指す。" } }]
+    }],
+    "examples": [{ "en": "Who is that boy standing at the gate?", "ja": "門のところに立っているあの男の子はだれですか。" }],
+    "tags": ["前置詞", "場所"],
+    "classification": { "category": "特集", "subcategory": "場所を表す前置詞" }
+  },
+  {
+    "id": "S6-1-2",
+    "word": "in",
+    "senses": [{
+      "pos": "前",
+      "definitions": [{ "meaning": "～の中に、～で", "grade": 4 }],
+      "notes": [{ "semantic": { "type": "用法", "content": "《包囲された空間》「～の中に、～で」。比較的広い場所や建物の中などを指す。" } }]
+    }],
+    "examples": [{ "en": "My teacher told me to stay in the classroom.", "ja": "先生は私に教室にいるように言いました。" }],
+    "tags": ["前置詞", "場所"],
+    "classification": { "category": "特集", "subcategory": "場所を表す前置詞" }
+  },
+  {
+    "id": "S6-1-3",
+    "word": "on",
+    "senses": [{
+      "pos": "前",
+      "definitions": [{ "meaning": "～の上に、～に接して", "grade": 4 }],
+      "notes": [{ "semantic": { "type": "用法", "content": "「～の上に、～に接して」。壁や天井など、垂直面や下面に接している場合も含む。" } }]
+    }],
+    "examples": [
+      { "en": "Look at the map on the wall.", "ja": "壁にかかっている地図を見なさい。" },
+      { "en": "There is a fly on the ceiling.", "ja": "天井にハエが1匹います。" }
+    ],
+    "tags": ["前置詞", "場所"],
+    "classification": { "category": "特集", "subcategory": "場所を表す前置詞" }
+  },
+  {
+    "id": "S6-2-1",
+    "word": "above",
+    "senses": [{ "pos": "前", "definitions": [{ "meaning": "～の上のほうに", "grade": 4 }] }],
+    "tags": ["前置詞", "場所"],
+    "classification": { "category": "特集", "subcategory": "場所を表す前置詞" }
+  },
+  {
+    "id": "S6-2-2",
+    "word": "over",
+    "senses": [{
+      "pos": "前",
+      "definitions": [{ "meaning": "～の(真)上に、～をおおって", "grade": 4 }],
+      "notes": [{ "semantic": { "type": "用法", "content": "対象物の真上を覆うようなイメージ。" } }]
+    }],
+    "tags": ["前置詞", "場所"],
+    "classification": { "category": "特集", "subcategory": "場所を表す前置詞" }
+  },
+  {
+    "id": "S6-2-3",
+    "word": "under",
+    "senses": [{
+      "pos": "前",
+      "definitions": [{ "meaning": "～の(真)下に、～におおわれて", "grade": 4 }],
+      "notes": [{ "semantic": { "type": "用法", "content": "対象物の真下にあるイメージ。" } }]
+    }],
+    "tags": ["前置詞", "場所"],
+    "classification": { "category": "特集", "subcategory": "場所を表す前置詞" }
+  },
+  {
+    "id": "S6-2-4",
+    "word": "below",
+    "senses": [{ "pos": "前", "definitions": [{ "meaning": "～の下のほうに", "grade": 4 }] }],
+    "tags": ["前置詞", "場所"],
+    "classification": { "category": "特集", "subcategory": "場所を表す前置詞" }
+  },
+  {
+    "id": "S6-3-1",
+    "word": "by",
+    "senses": [{ "pos": "前", "definitions": [{ "meaning": "～のそばに", "grade": 4 }] }],
+    "examples": [{ "en": "Ken lives by the hospital.", "ja": "健は病院のそばに住んでいます。" }],
+    "tags": ["前置詞", "場所"],
+    "classification": { "category": "特集", "subcategory": "場所を表す前置詞" }
+  },
+  {
+    "id": "S6-3-2",
+    "word": "near",
+    "senses": [{ "pos": "前", "definitions": [{ "meaning": "～の近くに", "grade": 4 }] }],
+    "examples": [{ "en": "The post office is near the hospital.", "ja": "郵便局は病院の近くにあります。" }],
+    "tags": ["前置詞", "場所"],
+    "classification": { "category": "特集", "subcategory": "場所を表す前置詞" }
+  },
+  {
+    "id": "S6-3-3",
+    "word": "in front of",
+    "senses": [{ "pos": "前", "definitions": [{ "meaning": "～の前に", "grade": 4 }] }],
+    "examples": [{ "en": "in front of the house", "ja": "家の前に" }],
+    "tags": ["前置詞", "場所"],
+    "classification": { "category": "特集", "subcategory": "場所を表す前置詞" }
+  },
+  {
+    "id": "S6-3-4",
+    "word": "behind",
+    "senses": [{ "pos": "前", "definitions": [{ "meaning": "～の後ろに", "grade": 4 }] }],
+    "examples": [{ "en": "behind the curtain", "ja": "カーテンの後ろに" }],
+    "tags": ["前置詞", "場所"],
+    "classification": { "category": "特集", "subcategory": "場所を表す前置詞" }
+  },
+  {
+    "id": "S6-4-1",
+    "word": "between",
+    "senses": [{
+      "pos": "前",
+      "definitions": [{ "meaning": "「(2つ[2人])の間に(で)」", "grade": 4 }]
+    }],
+    "examples": [{ "en": "between the two trees", "ja": "2本の木の間に" }],
+    "tags": ["前置詞", "場所"],
+    "classification": { "category": "特集", "subcategory": "場所を表す前置詞" }
+  },
+  {
+    "id": "S6-4-2",
+    "word": "among",
+    "senses": [{
+      "pos": "前",
+      "definitions": [{ "meaning": "「(3つ[3人]以上)の間に(で)、～の中に」", "grade": 4 }]
+    }],
+    "examples": [{ "en": "among the trees", "ja": "木々の間に" }],
+    "tags": ["前置詞", "場所"],
+    "classification": { "category": "特集", "subcategory": "場所を表す前置詞" }
+  },
+
+  {
+    "id": "S7-1-1",
+    "word": "at",
+    "senses": [{
+      "pos": "前",
+      "definitions": [{ "meaning": "～に", "grade": 4 }],
+      "notes": [{ "semantic": { "type": "用法", "content": "《時刻、時の1点》を表す。" } }]
+    }],
+    "examples": [{ "en": "at 7:30", "ja": "7時30分に" }],
+    "tags": ["前置詞", "時"],
+    "classification": { "category": "特集", "subcategory": "時を表す前置詞" }
+  },
+  {
+    "id": "S7-1-2",
+    "word": "on",
+    "senses": [{
+      "pos": "前",
+      "definitions": [{ "meaning": "～に", "grade": 4 }],
+      "notes": [{ "semantic": { "type": "用法", "content": "《曜日、特定の日》を表す。" } }]
+    }],
+    "examples": [
+      { "en": "on Wednesday", "ja": "水曜日に" },
+      { "en": "on Christmas Eve", "ja": "クリスマス・イブに" }
+    ],
+    "tags": ["前置詞", "時"],
+    "classification": { "category": "特集", "subcategory": "時を表す前置詞" }
+  },
+  {
+    "id": "S7-1-3",
+    "word": "in",
+    "senses": [{
+      "pos": "前",
+      "definitions": [{ "meaning": "～に", "grade": 4 }],
+      "notes": [{ "semantic": { "type": "用法", "content": "《月、年、季節など》比較的長い期間を表す。" } }]
+    }],
+    "examples": [
+      { "en": "in August", "ja": "8月に" },
+      { "en": "in 2019", "ja": "2019年に" },
+      { "en": "in autumn", "ja": "秋に" }
+    ],
+    "tags": ["前置詞", "時"],
+    "classification": { "category": "特集", "subcategory": "時を表す前置詞" }
+  },
+  {
+    "id": "S7-1-SUMMARY",
+    "word": "at, on, in のまとめ",
+    "notes": [{ "semantic": { "type": "解説", "content": "in: 午前・午後、月、年、季節、世紀 / on: 日付、曜日、特定の日 / at: 時刻" } }],
+    "tags": ["前置詞", "時", "要点"],
+    "classification": { "category": "特集", "subcategory": "時を表す前置詞" }
+  },
+  {
+    "id": "S7-2-1",
+    "word": "before",
+    "senses": [{
+      "pos": "前",
+      "definitions": [{ "meaning": "「～の前に」", "grade": 4 }],
+      "notes": [{ "semantic": { "type": "文法", "content": "before や after は接続詞として「～する前に」「～したあとで」の意味も表す。" } }]
+    }],
+    "examples": [{ "en": "before lunch", "ja": "昼食前に" }],
+    "tags": ["前置詞", "時"],
+    "classification": { "category": "特集", "subcategory": "時を表す前置詞" }
+  },
+  {
+    "id": "S7-2-2",
+    "word": "after",
+    "senses": [{ "pos": "前", "definitions": [{ "meaning": "「～のあとに」", "grade": 4 }] }],
+    "examples": [{ "en": "after lunch", "ja": "昼食後に" }],
+    "tags": ["前置詞", "時"],
+    "classification": { "category": "特集", "subcategory": "時を表す前置詞" }
+  },
+  {
+    "id": "S7-3-1",
+    "word": "by",
+    "senses": [{
+      "pos": "前",
+      "definitions": [{ "meaning": "「～までに」", "grade": 4 }],
+      "notes": [{ "semantic": { "type": "用法", "content": "《期限》期限内のどの時点でもよいことを表す。" } }]
+    }],
+    "examples": [{ "en": "Come back home by 5:00 p.m.", "ja": "午後5時までには帰ってきなさい。" }],
+    "tags": ["前置詞", "時"],
+    "classification": { "category": "特集", "subcategory": "時を表す前置詞" }
+  },
+  {
+    "id": "S7-3-2",
+    "word": "until [till]",
+    "senses": [{
+      "pos": "前",
+      "definitions": [{ "meaning": "「～まで(ずっと)」", "grade": 4 }],
+      "notes": [{ "semantic": { "type": "用法", "content": "《継続》ある時点まで動作がずっと続いていることを表す。" } }]
+    }],
+    "examples": [{ "en": "Stay home until 5:00 p.m.", "ja": "午後5時までずっと家にいなさい。" }],
+    "tags": ["前置詞", "時"],
+    "classification": { "category": "特集", "subcategory": "時を表す前置詞" }
+  },
+  {
+    "id": "S7-4-1",
+    "word": "for",
+    "senses": [{
+      "pos": "前",
+      "definitions": [{ "meaning": "「～の間」", "grade": 4 }],
+      "notes": [{ "semantic": { "type": "用法", "content": "《期間》数などで表される具体的な期間。" } }]
+    }],
+    "examples": [{ "en": "They stayed in Japan for two weeks.", "ja": "彼らは日本に2週間滞在しました。" }],
+    "tags": ["前置詞", "時"],
+    "classification": { "category": "特集", "subcategory": "時を表す前置詞" }
+  },
+  {
+    "id": "S7-4-2",
+    "word": "during",
+    "senses": [{
+      "pos": "前",
+      "definitions": [{ "meaning": "「～の間ずっと、～の間に」", "grade": 4 }],
+      "notes": [{ "semantic": { "type": "用法", "content": "《特定の期間》特定のイベントや休暇の期間。" } }]
+    }],
+    "examples": [
+      { "en": "I studied English every day during the summer vacation.", "ja": "私は夏休みの間毎日英語を勉強しました。" },
+      { "en": "A friend of mine came to see me during my stay in Okayama.", "ja": "私の友人の1人が私の岡山滞在中に私に会いに来ました。" }
+    ],
+    "tags": ["前置詞", "時"],
+    "classification": { "category": "特集", "subcategory": "時を表す前置詞" }
+  },
+  {
+    "id": "S7-5-1",
+    "word": "from",
+    "senses": [{
+      "pos": "前",
+      "definitions": [{ "meaning": "「～から」", "grade": 4 }],
+      "notes": [{ "semantic": { "type": "用法", "content": "《単なる時の起点》" } }]
+    }],
+    "examples": [{ "en": "We work from 9:00 a.m.", "ja": "私たちは午前9時から働きます。" }],
+    "tags": ["前置詞", "時"],
+    "classification": { "category": "特集", "subcategory": "時を表す前置詞" }
+  },
+  {
+    "id": "S7-5-2",
+    "word": "since",
+    "senses": [{
+      "pos": "前",
+      "definitions": [{ "meaning": "「～以来、～から」", "grade": 4 }],
+      "notes": [{ "semantic": { "type": "用法", "content": "《過去のある時点から現在まで》の継続を表す。" } }]
+    }],
+    "examples": [{ "en": "I have known him since last year.", "ja": "私は昨年から彼を知っています。" }],
+    "tags": ["前置詞", "時"],
+    "classification": { "category": "特集", "subcategory": "時を表す前置詞" }
+  },
+
+  {
+    "id": "S8-1-1",
+    "word": "from",
+    "senses": [{ "pos": "前", "definitions": [{ "meaning": "「～から」", "grade": 4 }], "notes": [{ "semantic": { "type": "用法", "content": "《起点、出発点》" } }] }],
+    "tags": ["前置詞", "方向"],
+    "classification": { "category": "特集", "subcategory": "方向などを表す前置詞" }
+  },
+  {
+    "id": "S8-1-2",
+    "word": "to",
+    "senses": [{ "pos": "前", "definitions": [{ "meaning": "「～へ」", "grade": 4 }], "notes": [{ "semantic": { "type": "用法", "content": "《到達点》" } }] }],
+    "examples": [{ "en": "I walked from the station to my house.", "ja": "私は駅から自宅まで歩きました。" }],
+    "tags": ["前置詞", "方向"],
+    "classification": { "category": "特集", "subcategory": "方向などを表す前置詞" }
+  },
+  {
+    "id": "S8-2-1",
+    "word": "into",
+    "senses": [{ "pos": "前", "definitions": [{ "meaning": "「～の中へ」", "grade": 4 }] }],
+    "examples": [{ "en": "come into the room", "ja": "部屋の中へ入ってくる" }],
+    "tags": ["前置詞", "方向"],
+    "classification": { "category": "特集", "subcategory": "方向などを表す前置詞" }
+  },
+  {
+    "id": "S8-2-2",
+    "word": "out of",
+    "senses": [{ "pos": "前", "definitions": [{ "meaning": "「～(の中から)外へ」", "grade": 4 }] }],
+    "examples": [{ "en": "go out of the room", "ja": "部屋の外へ出る" }],
+    "tags": ["前置詞", "方向"],
+    "classification": { "category": "特集", "subcategory": "方向などを表す前置詞" }
+  },
+  {
+    "id": "S8-3-1",
+    "word": "for",
+    "senses": [{ "pos": "前", "definitions": [{ "meaning": "「～へ、～に向かって」", "grade": 4 }], "notes": [{ "semantic": { "type": "用法", "content": "《目標、目的地》" } }] }],
+    "examples": [{ "en": "leave Tokyo for Osaka", "ja": "大阪へ向けて東京を出発する" }],
+    "tags": ["前置詞", "方向"],
+    "classification": { "category": "特集", "subcategory": "方向などを表す前置詞" }
+  },
+  {
+    "id": "S8-3-2",
+    "word": "toward",
+    "senses": [{
+      "pos": "前",
+      "definitions": [{ "meaning": "「～のほうへ、～に向かって」", "grade": 4 }],
+      "notes": [{ "semantic": { "type": "用法", "content": "《方向》その方向へ向かうことだけを示し、目的地に到達する意味は含まない。" } }]
+    }],
+    "examples": [{ "en": "go toward the door", "ja": "ドアのほうへ行く" }],
+    "tags": ["前置詞", "方向"],
+    "classification": { "category": "特集", "subcategory": "方向などを表す前置詞" }
+  },
+  {
+    "id": "S8-4-1",
+    "word": "along",
+    "senses": [{ "pos": "前", "definitions": [{ "meaning": "「～に沿って」", "grade": 4 }] }],
+    "examples": [{ "en": "along the street", "ja": "通りに沿って" }],
+    "tags": ["前置詞", "方向"],
+    "classification": { "category": "特集", "subcategory": "方向などを表す前置詞" }
+  },
+  {
+    "id": "S8-4-2",
+    "word": "across",
+    "senses": [{ "pos": "前", "definitions": [{ "meaning": "「～を横切って」", "grade": 4 }] }],
+    "examples": [{ "en": "across the street", "ja": "通りを横切って" }],
+    "tags": ["前置詞", "方向"],
+    "classification": { "category": "特集", "subcategory": "方向などを表す前置詞" }
+  },
+  {
+    "id": "S8-4-3",
+    "word": "through",
+    "senses": [{ "pos": "前", "definitions": [{ "meaning": "「～を通り抜けて」", "grade": 4 }] }],
+    "examples": [{ "en": "through a tunnel", "ja": "トンネルを通り抜けて" }],
+    "tags": ["前置詞", "方向"],
+    "classification": { "category": "特集", "subcategory": "方向などを表す前置詞" }
+  },
+  {
+    "id": "S8-5-1",
+    "word": "by",
+    "senses": [{ "pos": "前", "definitions": [{ "meaning": "「～で」", "grade": 4 }], "notes": [{ "semantic": { "type": "用法", "content": "《交通手段》" } }] }],
+    "examples": [{ "en": "by train", "ja": "電車で" }],
+    "tags": ["前置詞", "手段"],
+    "classification": { "category": "特集", "subcategory": "方向などを表す前置詞" }
+  },
+  {
+    "id": "S8-5-2",
+    "word": "with",
+    "senses": [{ "pos": "前", "definitions": [{ "meaning": "「～で」", "grade": 4 }], "notes": [{ "semantic": { "type": "用法", "content": "《道具》" } }] }],
+    "examples": [{ "en": "with a pen", "ja": "ペンで" }],
+    "tags": ["前置詞", "道具"],
+    "classification": { "category": "特集", "subcategory": "方向などを表す前置詞" }
+  },
+  {
+    "id": "S8-5-3",
+    "word": "in",
+    "senses": [{ "pos": "前", "definitions": [{ "meaning": "「～で」", "grade": 4 }], "notes": [{ "semantic": { "type": "用法", "content": "《方法、手段》" } }] }],
+    "examples": [{ "en": "in English", "ja": "英語で" }],
+    "tags": ["前置詞", "手段"],
+    "classification": { "category": "特集", "subcategory": "方向などを表す前置詞" }
+  }
+,
+{
+    "id": "S9-1-1",
+    "word": "what",
+    "senses": [{
+      "pos": "疑",
+      "definitions": [{ "meaning": "何(の) 《もの》", "grade": 4 }]
+    }],
+    "examples": [
+      { "en": "What is that? — It's a cap.", "ja": "あれは何ですか。— 帽子です。" },
+      { "en": "What time is it? — It's 4:30.", "ja": "今何時ですか。— 4時30分です。" }
+    ],
+    "tags": ["疑問詞", "もの"],
+    "classification": { "category": "特集", "subcategory": "疑問詞" }
+  },
+  {
+    "id": "S9-1-2",
+    "word": "when",
+    "senses": [{
+      "pos": "疑",
+      "definitions": [{ "meaning": "いつ 《時》", "grade": 4 }]
+    }],
+    "examples": [{ "en": "When do you play soccer? — On Sundays.", "ja": "あなたはいつサッカーをしますか。— 日曜日です。" }],
+    "tags": ["疑問詞", "時"],
+    "classification": { "category": "特集", "subcategory": "疑問詞" }
+  },
+  {
+    "id": "S9-1-3",
+    "word": "where",
+    "senses": [{
+      "pos": "疑",
+      "definitions": [{ "meaning": "どこ 《場所》", "grade": 4 }]
+    }],
+    "examples": [
+      { "en": "Where do you live? — I live in Hokkaido.", "ja": "あなたはどこに住んでいますか。— 北海道です。" },
+      { "en": "Where are you from? — I'm from China.", "ja": "あなたはどこの出身ですか。— 中国です。" }
+    ],
+    "tags": ["疑問詞", "場所"],
+    "classification": { "category": "特集", "subcategory": "疑問詞" }
+  },
+  {
+    "id": "S9-1-4",
+    "word": "which",
+    "senses": [{
+      "pos": "疑",
+      "definitions": [{ "meaning": "どの、どれ、どちら(の)", "grade": 4 }]
+    }],
+    "examples": [{ "en": "Which is your bag? — This one is.", "ja": "どちらがあなたのかばんですか。— こちらです。" }],
+    "tags": ["疑問詞", "選択"],
+    "classification": { "category": "特集", "subcategory": "疑問詞" }
+  },
+  {
+    "id": "S9-1-5",
+    "word": "who",
+    "senses": [{
+      "pos": "疑",
+      "definitions": [{ "meaning": "だれ 《人》", "grade": 4 }]
+    }],
+    "examples": [{ "en": "Who is that boy? — He is Tom.", "ja": "あの男の子はだれですか。— トムです。" }],
+    "tags": ["疑問詞", "人"],
+    "classification": { "category": "特集", "subcategory": "疑問詞" }
+  },
+  {
+    "id": "S9-1-6",
+    "word": "whose",
+    "senses": [{
+      "pos": "疑",
+      "definitions": [{ "meaning": "だれの(もの) 《持ち主》", "grade": 4 }]
+    }],
+    "examples": [{ "en": "Whose bike is this? — It's my brother's.", "ja": "これはだれの自転車ですか。— 私の兄のものです。" }],
+    "tags": ["疑問詞", "所有"],
+    "classification": { "category": "特集", "subcategory": "疑問詞" }
+  },
+  {
+    "id": "S9-1-7",
+    "word": "why",
+    "senses": [{
+      "pos": "疑",
+      "definitions": [{ "meaning": "なぜ 《理由、目的》", "grade": 4 }]
+    }],
+    "examples": [{ "en": "Why did you come to Japan? — To study Japanese.", "ja": "なぜ日本に来たのですか。— 日本語を勉強するためです。" }],
+    "tags": ["疑問詞", "理由"],
+    "classification": { "category": "特集", "subcategory": "疑問詞" }
+  },
+  {
+    "id": "S9-1-8",
+    "word": "how",
+    "senses": [{
+      "pos": "疑",
+      "definitions": [{ "meaning": "どうやって《方法、手段》、どのような具合で《状態》", "grade": 4 }]
+    }],
+    "examples": [
+      { "en": "How do you go to school? — By bus.", "ja": "あなたはどうやって学校へ行きますか。— バスです。" },
+      { "en": "How is the weather in Okinawa?", "ja": "沖縄の天気はどうですか。" }
+    ],
+    "tags": ["疑問詞", "方法", "状態"],
+    "classification": { "category": "特集", "subcategory": "疑問詞" }
+  },
+  {
+    "id": "S9-1-9",
+    "word": "How many ～?",
+    "senses": [{
+      "pos": "疑",
+      "definitions": [{ "meaning": "いくつの～？ 《数》", "grade": 4 }]
+    }],
+    "examples": [{ "en": "How many books do you have? — I have two.", "ja": "あなたは何冊の本を持っていますか。— 2冊です。" }],
+    "tags": ["疑問詞", "数"],
+    "classification": { "category": "特集", "subcategory": "疑問詞" }
+  },
+  {
+    "id": "S9-1-10",
+    "word": "How long ～?",
+    "senses": [{
+      "pos": "疑",
+      "definitions": [{ "meaning": "どのくらいの長さの～？、どのくらいの～？ 《期間》", "grade": 4 }]
+    }],
+    "examples": [{ "en": "How long is this river?", "ja": "この川はどのくらいの長さがありますか。" }],
+    "tags": ["疑問詞", "長さ", "期間"],
+    "classification": { "category": "特集", "subcategory": "疑問詞" }
+  },
+  {
+    "id": "S9-1-11",
+    "word": "How old ～?",
+    "senses": [{
+      "pos": "疑",
+      "definitions": [{ "meaning": "どのくらいの古さの～？、何歳～？ 《年齢》", "grade": 4 }]
+    }],
+    "examples": [{ "en": "How old are you? — I'm thirteen years old.", "ja": "あなたは何歳ですか。— 13歳です。" }],
+    "tags": ["疑問詞", "年齢"],
+    "classification": { "category": "特集", "subcategory": "疑問詞" }
+  },
+  {
+    "id": "S9-1-12",
+    "word": "How often ～?",
+    "senses": [{
+      "pos": "疑",
+      "definitions": [{ "meaning": "どのくらいの頻度で～？", "grade": 4 }]
+    }],
+    "examples": [{ "en": "How often do you go to the movies?", "ja": "あなたはどのくらいの頻度で映画を見に行きますか。" }],
+    "tags": ["疑問詞", "頻度"],
+    "classification": { "category": "特集", "subcategory": "疑問詞" }
+  },
+  {
+    "id": "S9-1-13",
+    "word": "How much ～?",
+    "senses": [{
+      "pos": "疑",
+      "definitions": [{ "meaning": "いくら～？ 《値段》", "grade": 4 }]
+    }],
+    "examples": [{ "en": "How much is this bag? — It's 1,000 yen.", "ja": "このかばんはいくらですか。— 1,000円です。" }],
+    "tags": ["疑問詞", "値段"],
+    "classification": { "category": "特集", "subcategory": "疑問詞" }
+  },
+
+  {
+    "id": "S9-2-1",
+    "word": "and",
+    "senses": [{ "pos": "接", "definitions": [{ "meaning": "～と…、～そして…", "grade": 4 }] }],
+    "examples": [{ "en": "Tom and John are friends.", "ja": "トムとジョンは友達です。" }],
+    "tags": ["接続詞"],
+    "classification": { "category": "特集", "subcategory": "接続詞" }
+  },
+  {
+    "id": "S9-2-2",
+    "word": "but",
+    "senses": [{ "pos": "接", "definitions": [{ "meaning": "～だが…、～しかし…", "grade": 4 }] }],
+    "examples": [{ "en": "This bag is old, but I like it.", "ja": "このかばんは古いですが、私は気に入っています。" }],
+    "tags": ["接続詞"],
+    "classification": { "category": "特集", "subcategory": "接続詞" }
+  },
+  {
+    "id": "S9-2-3",
+    "word": "or",
+    "senses": [{ "pos": "接", "definitions": [{ "meaning": "～か…、～または…、～それとも…", "grade": 4 }] }],
+    "examples": [{ "en": "Do you like dogs or cats? — I like dogs.", "ja": "あなたはイヌが好きですか、それともネコが好きですか。— イヌが好きです。" }],
+    "tags": ["接続詞"],
+    "classification": { "category": "特集", "subcategory": "接続詞" }
+  },
+  {
+    "id": "S9-2-4",
+    "word": "so",
+    "senses": [{ "pos": "接", "definitions": [{ "meaning": "～で…、～だから…", "grade": 4 }] }],
+    "examples": [{ "en": "I'm not busy today, so I can help you.", "ja": "私は今日は忙しくないので、あなたを手伝うことができます。" }],
+    "tags": ["接続詞"],
+    "classification": { "category": "特集", "subcategory": "接続詞" }
+  },
+  {
+    "id": "S9-2-5",
+    "word": "when",
+    "senses": [{ "pos": "接", "definitions": [{ "meaning": "～するときに 《時》", "grade": 4 }] }],
+    "examples": [{ "en": "Ken was watching TV when I visited him.", "ja": "私が訪ねたとき、健はテレビを見ていました。" }],
+    "tags": ["接続詞", "時"],
+    "classification": { "category": "特集", "subcategory": "接続詞" }
+  },
+  {
+    "id": "S9-2-6",
+    "word": "because",
+    "senses": [{
+      "pos": "接",
+      "definitions": [{ "meaning": "なぜなら～だから 《理由》", "grade": 4 }],
+      "references": [{ "type": "書き換え", "content": "since や as にも「～だから」と原因や理由を表す接続詞の用法がある。" }]
+    }],
+    "examples": [{ "en": "He didn't come here because he was busy.", "ja": "忙しかったので、彼はここに来ませんでした。" }],
+    "tags": ["接続詞", "理由"],
+    "classification": { "category": "特集", "subcategory": "接続詞" }
+  },
+  {
+    "id": "S9-2-7",
+    "word": "if",
+    "senses": [{ "pos": "接", "definitions": [{ "meaning": "もし～ならば 《条件》", "grade": 4 }] }],
+    "examples": [{ "en": "If it rains tomorrow, I won't go out.", "ja": "明日雨が降ったら、私は外出しません。" }],
+    "tags": ["接続詞", "条件"],
+    "classification": { "category": "特集", "subcategory": "接続詞" }
+  },
+  {
+    "id": "S9-2-8",
+    "word": "since",
+    "senses": [{ "pos": "接", "definitions": [{ "meaning": "～以来、～から", "grade": 4 }] }],
+    "examples": [{ "en": "I've wanted to be a soccer player since I was a child.", "ja": "私は子どものときから(ずっと)サッカー選手になりたいと思っています。" }],
+    "tags": ["接続詞", "時"],
+    "classification": { "category": "特集", "subcategory": "接続詞" }
+  },
+  {
+    "id": "S9-2-9",
+    "word": "while",
+    "senses": [{ "pos": "接", "definitions": [{ "meaning": "～する間に", "grade": 4 }] }],
+    "examples": [{ "en": "We must be quiet while we are eating.", "ja": "食事をしている間、私たちは静かにしなければなりません。" }],
+    "tags": ["接続詞", "時"],
+    "classification": { "category": "特集", "subcategory": "接続詞" }
+  },
+  {
+    "id": "S9-2-10",
+    "word": "though [although]",
+    "senses": [{ "pos": "接", "definitions": [{ "meaning": "～だけれども", "grade": 4 }] }],
+    "examples": [{ "en": "Though she was hungry, she didn't eat breakfast.", "ja": "彼女はおなかがすいていたけれども、朝食をとりませんでした。" }],
+    "tags": ["接続詞", "逆接"],
+    "classification": { "category": "特集", "subcategory": "接続詞" }
+  },
+  {
+    "id": "S9-2-11",
+    "word": "that",
+    "senses": [{ "pos": "接", "definitions": [{ "meaning": "～ということ", "grade": 4 }] }],
+    "examples": [{ "en": "I think (that) she will come soon.", "ja": "私は彼女はまもなく来ると思います。" }],
+    "tags": ["接続詞"],
+    "classification": { "category": "特集", "subcategory": "接続詞" }
+  },
+
+  { "id": "S10-1-1", "word": "culture", "senses": [{ "pos": "名", "definitions": [{ "meaning": "文化", "grade": 4 }] }], "tags": ["文化"], "classification": { "category": "特集", "subcategory": "トピック別単語:文化" } },
+  { "id": "S10-1-2", "word": "tradition", "senses": [{ "pos": "名", "definitions": [{ "meaning": "伝統", "grade": 4 }] }], "tags": ["文化"], "classification": { "category": "特集", "subcategory": "トピック別単語:文化" } },
+  { "id": "S10-1-3", "word": "custom", "senses": [{ "pos": "名", "definitions": [{ "meaning": "慣習", "grade": 4 }] }], "tags": ["文化"], "classification": { "category": "特集", "subcategory": "トピック別単語:文化" } },
+  { "id": "S10-1-4", "word": "event", "senses": [{ "pos": "名", "definitions": [{ "meaning": "行事", "grade": 4 }] }], "tags": ["文化"], "classification": { "category": "特集", "subcategory": "トピック別単語:文化" } },
+  { "id": "S10-1-5", "word": "festival", "senses": [{ "pos": "名", "definitions": [{ "meaning": "祭り", "grade": 4 }] }], "tags": ["文化"], "classification": { "category": "特集", "subcategory": "トピック別単語:文化" } },
+  { "id": "S10-1-6", "word": "prize", "senses": [{ "pos": "名", "definitions": [{ "meaning": "賞", "grade": 4 }] }], "tags": ["文化"], "classification": { "category": "特集", "subcategory": "トピック別単語:文化" } },
+  { "id": "S10-1-7", "word": "heritage", "senses": [{ "pos": "名", "definitions": [{ "meaning": "遺産", "grade": 4 }] }], "tags": ["文化"], "classification": { "category": "特集", "subcategory": "トピック別単語:文化" } },
+  { "id": "S10-1-8", "word": "ceremony", "senses": [{ "pos": "名", "definitions": [{ "meaning": "儀式", "grade": 4 }] }], "tags": ["文化"], "classification": { "category": "特集", "subcategory": "トピック別単語:文化" } },
+  { "id": "S10-1-9", "word": "modern", "senses": [{ "pos": "形", "definitions": [{ "meaning": "現代的な", "grade": 4 }] }], "tags": ["文化"], "classification": { "category": "特集", "subcategory": "トピック別単語:文化" } },
+  { "id": "S10-1-10", "word": "pop", "senses": [{ "pos": "形", "definitions": [{ "meaning": "大衆向きの", "grade": 4 }] }], "tags": ["文化"], "classification": { "category": "特集", "subcategory": "トピック別単語:文化" } },
+
+  { "id": "S10-2-1", "word": "language", "senses": [{ "pos": "名", "definitions": [{ "meaning": "言語", "grade": 4 }] }], "tags": ["言語"], "classification": { "category": "特集", "subcategory": "トピック別単語:言語" } },
+  { "id": "S10-2-2", "word": "meaning", "senses": [{ "pos": "名", "definitions": [{ "meaning": "意味", "grade": 4 }] }], "tags": ["言語"], "classification": { "category": "特集", "subcategory": "トピック別単語:言語" } },
+  { "id": "S10-2-3", "word": "communication", "senses": [{ "pos": "名", "definitions": [{ "meaning": "コミュニケーション", "grade": 4 }] }], "tags": ["言語"], "classification": { "category": "特集", "subcategory": "トピック別単語:言語" } },
+  { "id": "S10-2-4", "word": "conversation", "senses": [{ "pos": "名", "definitions": [{ "meaning": "会話", "grade": 4 }] }], "tags": ["言語"], "classification": { "category": "特集", "subcategory": "トピック別単語:言語" } },
+  { "id": "S10-2-5", "word": "expression", "senses": [{ "pos": "名", "definitions": [{ "meaning": "表現", "grade": 4 }] }], "tags": ["言語"], "classification": { "category": "特集", "subcategory": "トピック別単語:言語" } },
+  { "id": "S10-2-6", "word": "opinion", "senses": [{ "pos": "名", "definitions": [{ "meaning": "意見", "grade": 4 }] }], "tags": ["言語"], "classification": { "category": "特集", "subcategory": "トピック別単語:言語" } },
+  { "id": "S10-2-7", "word": "misunderstand", "senses": [{ "pos": "動", "definitions": [{ "meaning": "～を誤解する", "grade": 4 }] }], "tags": ["言語"], "classification": { "category": "特集", "subcategory": "トピック別単語:言語" } },
+  { "id": "S10-2-8", "word": "translate", "senses": [{ "pos": "動", "definitions": [{ "meaning": "～を翻訳する", "grade": 4 }] }], "tags": ["言語"], "classification": { "category": "特集", "subcategory": "トピック別単語:言語" } },
+  { "id": "S10-2-9", "word": "explain", "senses": [{ "pos": "動", "definitions": [{ "meaning": "～を説明する", "grade": 4 }] }], "tags": ["言語"], "classification": { "category": "特集", "subcategory": "トピック別単語:言語" } },
+  { "id": "S10-2-10", "word": "native", "senses": [{ "pos": "形", "definitions": [{ "meaning": "母国の、故郷の", "grade": 4 }] }], "tags": ["言語"], "classification": { "category": "特集", "subcategory": "トピック別単語:言語" } },
+
+  { "id": "S10-3-1", "word": "travel", "senses": [{ "pos": "名", "definitions": [{ "meaning": "旅行", "grade": 4 }] }], "tags": ["旅行"], "classification": { "category": "特集", "subcategory": "トピック別単語:旅行" } },
+  { "id": "S10-3-2", "word": "tourist", "senses": [{ "pos": "名", "definitions": [{ "meaning": "観光客", "grade": 4 }] }], "tags": ["旅行"], "classification": { "category": "特集", "subcategory": "トピック別単語:旅行" } },
+  { "id": "S10-3-3", "word": "passenger", "senses": [{ "pos": "名", "definitions": [{ "meaning": "乗客", "grade": 4 }] }], "tags": ["旅行"], "classification": { "category": "特集", "subcategory": "トピック別単語:旅行" } },
+  { "id": "S10-3-4", "word": "guide", "senses": [{ "pos": "名", "definitions": [{ "meaning": "案内人", "grade": 4 }] }], "tags": ["旅行"], "classification": { "category": "特集", "subcategory": "トピック別単語:旅行" } },
+  { "id": "S10-3-5", "word": "attract", "senses": [{ "pos": "動", "definitions": [{ "meaning": "～を引きつける", "grade": 4 }] }], "tags": ["旅行"], "classification": { "category": "特集", "subcategory": "トピック別単語:旅行" } },
+  { "id": "S10-3-6", "word": "abroad", "senses": [{ "pos": "副", "definitions": [{ "meaning": "海外で(に)", "grade": 4 }] }], "tags": ["旅行"], "classification": { "category": "特集", "subcategory": "トピック別単語:旅行" } },
+  { "id": "S10-3-7", "word": "sightseeing", "senses": [{ "pos": "名", "definitions": [{ "meaning": "観光", "grade": 4 }] }], "tags": ["旅行"], "classification": { "category": "特集", "subcategory": "トピック別単語:旅行" } },
+  { "id": "S10-3-8", "word": "view", "senses": [{ "pos": "名", "definitions": [{ "meaning": "眺め", "grade": 4 }] }], "tags": ["旅行"], "classification": { "category": "特集", "subcategory": "トピック別単語:旅行" } },
+  { "id": "S10-3-9", "word": "reservation", "senses": [{ "pos": "名", "definitions": [{ "meaning": "予約", "grade": 4 }] }], "tags": ["旅行"], "classification": { "category": "特集", "subcategory": "トピック別単語:旅行" } },
+  { "id": "S10-3-10", "word": "souvenir", "senses": [{ "pos": "名", "definitions": [{ "meaning": "土産", "grade": 4 }] }], "tags": ["旅行"], "classification": { "category": "特集", "subcategory": "トピック別単語:旅行" } },
+
+  { "id": "S10-4-1", "word": "Internet", "senses": [{ "pos": "名", "definitions": [{ "meaning": "インターネット", "grade": 4 }] }], "tags": ["通信"], "classification": { "category": "特集", "subcategory": "トピック別単語:通信" } },
+  { "id": "S10-4-2", "word": "e-mail", "senses": [{ "pos": "名", "definitions": [{ "meaning": "Eメール", "grade": 4 }] }], "tags": ["通信"], "classification": { "category": "特集", "subcategory": "トピック別単語:通信" } },
+  { "id": "S10-4-3", "word": "website", "senses": [{ "pos": "名", "definitions": [{ "meaning": "ウェブサイト", "grade": 4 }] }], "tags": ["通信"], "classification": { "category": "特集", "subcategory": "トピック別単語:通信" } },
+  { "id": "S10-4-4", "word": "online", "senses": [{ "pos": "形", "definitions": [{ "meaning": "オンラインの(で)", "grade": 4 }] }], "tags": ["通信"], "classification": { "category": "特集", "subcategory": "トピック別単語:通信" } },
+  { "id": "S10-4-5", "word": "data", "senses": [{ "pos": "名", "definitions": [{ "meaning": "データ", "grade": 4 }] }], "tags": ["通信"], "classification": { "category": "特集", "subcategory": "トピック別単語:通信" } },
+  { "id": "S10-4-6", "word": "information", "senses": [{ "pos": "名", "definitions": [{ "meaning": "情報", "grade": 4 }] }], "tags": ["通信"], "classification": { "category": "特集", "subcategory": "トピック別単語:通信" } },
+  { "id": "S10-4-7", "word": "media", "senses": [{ "pos": "名", "definitions": [{ "meaning": "マスメディア", "grade": 4 }] }], "tags": ["通信"], "classification": { "category": "特集", "subcategory": "トピック別単語:通信" } },
+  { "id": "S10-4-8", "word": "reply", "senses": [{ "pos": "動", "definitions": [{ "meaning": "返事をする", "grade": 4 }] }], "tags": ["通信"], "classification": { "category": "特集", "subcategory": "トピック別単語:通信" } },
+  { "id": "S10-4-9", "word": "mobile phone [cellphone]", "senses": [{ "pos": "名", "definitions": [{ "meaning": "携帯電話", "grade": 4 }] }], "tags": ["通信"], "classification": { "category": "特集", "subcategory": "トピック別単語:通信" } },
+  { "id": "S10-4-10", "word": "smartphone", "senses": [{ "pos": "名", "definitions": [{ "meaning": "スマートフォン", "grade": 4 }] }], "tags": ["通信"], "classification": { "category": "特集", "subcategory": "トピック別単語:通信" } },
+
+  { "id": "S10-5-1", "word": "international", "senses": [{ "pos": "形", "definitions": [{ "meaning": "国際的な", "grade": 4 }] }], "tags": ["国際"], "classification": { "category": "特集", "subcategory": "トピック別単語:国際" } },
+  { "id": "S10-5-2", "word": "nation", "senses": [{ "pos": "名", "definitions": [{ "meaning": "国", "grade": 4 }] }], "tags": ["国際"], "classification": { "category": "特集", "subcategory": "トピック別単語:国際" } },
+  { "id": "S10-5-3", "word": "government", "senses": [{ "pos": "名", "definitions": [{ "meaning": "政府", "grade": 4 }] }], "tags": ["国際"], "classification": { "category": "特集", "subcategory": "トピック別単語:国際" } },
+  { "id": "S10-5-4", "word": "population", "senses": [{ "pos": "名", "definitions": [{ "meaning": "人口", "grade": 4 }] }], "tags": ["国際"], "classification": { "category": "特集", "subcategory": "トピック別単語:国際" } },
+  { "id": "S10-5-5", "word": "capital", "senses": [{ "pos": "名", "definitions": [{ "meaning": "首都", "grade": 4 }] }], "tags": ["国際"], "classification": { "category": "特集", "subcategory": "トピック別単語:国際" } },
+  { "id": "S10-5-6", "word": "peace", "senses": [{ "pos": "名", "definitions": [{ "meaning": "平和", "grade": 4 }] }], "tags": ["国際"], "classification": { "category": "特集", "subcategory": "トピック別単語:国際" } },
+  { "id": "S10-5-7", "word": "official", "senses": [{ "pos": "形", "definitions": [{ "meaning": "公式の", "grade": 4 }] }], "tags": ["国際"], "classification": { "category": "特集", "subcategory": "トピック別単語:国際" } },
+  { "id": "S10-5-8", "word": "political", "senses": [{ "pos": "形", "definitions": [{ "meaning": "政治の", "grade": 4 }] }], "tags": ["国際"], "classification": { "category": "特集", "subcategory": "トピック別単語:国際" } },
+  { "id": "S10-5-9", "word": "increase", "senses": [{ "pos": "動", "definitions": [{ "meaning": "増加する", "grade": 4 }] }], "tags": ["国際"], "classification": { "category": "特集", "subcategory": "トピック別単語:国際" } },
+  { "id": "S10-5-10", "word": "develop", "senses": [{ "pos": "動", "definitions": [{ "meaning": "発展する", "grade": 4 }] }], "tags": ["国際"], "classification": { "category": "特集", "subcategory": "トピック別単語:国際" } },
+
+  { "id": "S10-6-1", "word": "society", "senses": [{ "pos": "名", "definitions": [{ "meaning": "社会", "grade": 4 }] }], "tags": ["社会"], "classification": { "category": "特集", "subcategory": "トピック別単語:社会" } },
+  { "id": "S10-6-2", "word": "community", "senses": [{ "pos": "名", "definitions": [{ "meaning": "共同社会", "grade": 4 }] }], "tags": ["社会"], "classification": { "category": "特集", "subcategory": "トピック別単語:社会" } },
+  { "id": "S10-6-3", "word": "industry", "senses": [{ "pos": "名", "definitions": [{ "meaning": "産業", "grade": 4 }] }], "tags": ["社会"], "classification": { "category": "特集", "subcategory": "トピック別単語:社会" } },
+  { "id": "S10-6-4", "word": "citizen", "senses": [{ "pos": "名", "definitions": [{ "meaning": "市民", "grade": 4 }] }], "tags": ["社会"], "classification": { "category": "特集", "subcategory": "トピック別単語:社会" } },
+  { "id": "S10-6-5", "word": "law", "senses": [{ "pos": "名", "definitions": [{ "meaning": "法律", "grade": 4 }] }], "tags": ["社会"], "classification": { "category": "特集", "subcategory": "トピック別単語:社会" } },
+  { "id": "S10-6-6", "word": "tax", "senses": [{ "pos": "名", "definitions": [{ "meaning": "税", "grade": 4 }] }], "tags": ["社会"], "classification": { "category": "特集", "subcategory": "トピック別単語:社会" } },
+  { "id": "S10-6-7", "word": "situation", "senses": [{ "pos": "名", "definitions": [{ "meaning": "状況", "grade": 4 }] }], "tags": ["社会"], "classification": { "category": "特集", "subcategory": "トピック別単語:社会" } },
+  { "id": "S10-6-8", "word": "movement", "senses": [{ "pos": "名", "definitions": [{ "meaning": "運動", "grade": 4 }] }], "tags": ["社会"], "classification": { "category": "特集", "subcategory": "トピック別単語:社会" } },
+  { "id": "S10-6-9", "word": "survey", "senses": [{ "pos": "名", "definitions": [{ "meaning": "調査", "grade": 4 }] }], "tags": ["社会"], "classification": { "category": "特集", "subcategory": "トピック別単語:社会" } },
+  { "id": "S10-6-10", "word": "local", "senses": [{ "pos": "形", "definitions": [{ "meaning": "その土地の", "grade": 4 }] }], "tags": ["社会"], "classification": { "category": "特集", "subcategory": "トピック別単語:社会" } },
+
+  { "id": "S10-7-1", "word": "science", "senses": [{ "pos": "名", "definitions": [{ "meaning": "科学", "grade": 4 }] }], "tags": ["科学"], "classification": { "category": "特集", "subcategory": "トピック別単語:科学" } },
+  { "id": "S10-7-2", "word": "technology", "senses": [{ "pos": "名", "definitions": [{ "meaning": "科学技術", "grade": 4 }] }], "tags": ["科学"], "classification": { "category": "特集", "subcategory": "トピック別単語:科学" } },
+  { "id": "S10-7-3", "word": "robot", "senses": [{ "pos": "名", "definitions": [{ "meaning": "ロボット", "grade": 4 }] }], "tags": ["科学"], "classification": { "category": "特集", "subcategory": "トピック別単語:科学" } },
+  { "id": "S10-7-4", "word": "electricity", "senses": [{ "pos": "名", "definitions": [{ "meaning": "電気", "grade": 4 }] }], "tags": ["科学"], "classification": { "category": "特集", "subcategory": "トピック別単語:科学" } },
+  { "id": "S10-7-5", "word": "invent", "senses": [{ "pos": "動", "definitions": [{ "meaning": "～を発明する", "grade": 4 }] }], "tags": ["科学"], "classification": { "category": "特集", "subcategory": "トピック別単語:科学" } },
+  { "id": "S10-7-6", "word": "discover", "senses": [{ "pos": "動", "definitions": [{ "meaning": "～を発見する", "grade": 4 }] }], "tags": ["科学"], "classification": { "category": "特集", "subcategory": "トピック別単語:科学" } },
+  { "id": "S10-7-7", "word": "progress", "senses": [{ "pos": "名", "definitions": [{ "meaning": "進歩", "grade": 4 }] }], "tags": ["科学"], "classification": { "category": "特集", "subcategory": "トピック別単語:科学" } },
+  { "id": "S10-7-8", "word": "research", "senses": [{ "pos": "名", "definitions": [{ "meaning": "研究", "grade": 4 }] }], "tags": ["科学"], "classification": { "category": "特集", "subcategory": "トピック別単語:科学" } },
+  { "id": "S10-7-9", "word": "experiment", "senses": [{ "pos": "名", "definitions": [{ "meaning": "実験", "grade": 4 }] }], "tags": ["科学"], "classification": { "category": "特集", "subcategory": "トピック別単語:科学" } },
+  { "id": "S10-7-10", "word": "theory", "senses": [{ "pos": "名", "definitions": [{ "meaning": "理論", "grade": 4 }] }], "tags": ["科学"], "classification": { "category": "特集", "subcategory": "トピック別単語:科学" } },
+
+  { "id": "S10-8-1", "word": "environment", "senses": [{ "pos": "名", "definitions": [{ "meaning": "環境", "grade": 4 }] }], "tags": ["環境"], "classification": { "category": "特集", "subcategory": "トピック別単語:環境" } },
+  { "id": "S10-8-2", "word": "nature", "senses": [{ "pos": "名", "definitions": [{ "meaning": "自然", "grade": 4 }] }], "tags": ["環境"], "classification": { "category": "特集", "subcategory": "トピック別単語:環境" } },
+  { "id": "S10-8-3", "word": "waste", "senses": [{ "pos": "名", "definitions": [{ "meaning": "廃棄物", "grade": 4 }] }], "tags": ["環境"], "classification": { "category": "特集", "subcategory": "トピック別単語:環境" } },
+  { "id": "S10-8-4", "word": "recycle", "senses": [{ "pos": "動", "definitions": [{ "meaning": "～を再生利用する", "grade": 4 }] }], "tags": ["環境"], "classification": { "category": "特集", "subcategory": "トピック別単語:環境" } },
+  { "id": "S10-8-5", "word": "protect", "senses": [{ "pos": "動", "definitions": [{ "meaning": "～を保護する", "grade": 4 }] }], "tags": ["環境"], "classification": { "category": "特集", "subcategory": "トピック別単語:環境" } },
+  { "id": "S10-8-6", "word": "influence", "senses": [{ "pos": "名", "definitions": [{ "meaning": "～に影響を与える", "grade": 4 }] }], "tags": ["環境"], "classification": { "category": "特集", "subcategory": "トピック別単語:環境" } },
+  { "id": "S10-8-7", "word": "energy", "senses": [{ "pos": "名", "definitions": [{ "meaning": "エネルギー", "grade": 4 }] }], "tags": ["環境"], "classification": { "category": "特集", "subcategory": "トピック別単語:環境" } },
+  { "id": "S10-8-8", "word": "biology", "senses": [{ "pos": "名", "definitions": [{ "meaning": "生物学", "grade": 4 }] }], "tags": ["環境"], "classification": { "category": "特集", "subcategory": "トピック別単語:環境" } },
+  { "id": "S10-8-9", "word": "climate", "senses": [{ "pos": "名", "definitions": [{ "meaning": "気候", "grade": 4 }] }], "tags": ["環境"], "classification": { "category": "特集", "subcategory": "トピック別単語:環境" } },
+  { "id": "S10-8-10", "word": "temperature", "senses": [{ "pos": "名", "definitions": [{ "meaning": "温度", "grade": 4 }] }], "tags": ["環境"], "classification": { "category": "特集", "subcategory": "トピック別単語:環境" } }
+]
