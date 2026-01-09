@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Dictionary Pro V20</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        
+        :root {
+            --base-font-size: 14px;
+            --word-font-size: 1.875rem;
+            --content-font-size: 0.875rem;
+            --type-font-size: 0.7rem;
+            --rel-word-size: 0.875rem;
+            --ex-en-font-size: 0.875rem;
+            --ex-ja-font-size: 0.75rem;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f8fafc;
+            font-size: var(--base-font-size);
+        }
+        
+        #editWord { font-size: var(--word-font-size); }
+        .meaning-text, .note-text, .usage-text, .phrase-text { font-size: var(--content-font-size); }
+        .type-label-text { font-size: var(--type-font-size); }
+        .rel-word-text { font-size: var(--rel-word-size); }
+        .ex-en-text { font-size: var(--ex-en-font-size); line-height: 1.4; }
+        .ex-ja-text { font-size: var(--ex-ja-font-size); }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        
+        .sense-card { border-left: 4px solid #3b82f6; }
+        .phrase-card { border-left: 3px solid #10b981; }
+        .example-card { border-left: 3px solid #8b5cf6; background-color: #f5f3ff; }
+        
+        .editing-active { border-color: #3b82f6; background-color: #f0f9ff; }
+        .disabled-input { background-color: #f1f5f9 !important; border: 1px solid transparent !important; pointer-events: none; color: #64748b; }
+        
+        .modal-overlay { background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); }
+        .id-badge { font-size: 8px; font-weight: 800; padding: 1px 4px; border-radius: 3px; border: 1px solid #e2e8f0; color: #94a3b8; text-transform: uppercase; }
+        .list-pos-badge { font-size: 8px; font-weight: 700; color: #3b82f6; background-color: #eff6ff; padding: 1px 4px; border-radius: 4px; }
+        .tag-badge { font-size: 9px; font-weight: 700; color: #64748b; background-color: #f1f5f9; padding: 2px 6px; border-radius: 6px; }
+
+        /* Module Buttons Colors */
+        .search-type-btn {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 6px 4px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            color: #94a3b8;
+            transition: all 0.2s;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+        .search-type-btn.active { color: white; border-color: rgba(0,0,0,0.1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .search-type-btn[data-type="related"].active { background: #4f46e5; } /* Indigo */
+        .search-type-btn[data-type="usage"].active { background: #0891b2; }   /* Cyan */
+        .search-type-btn[data-type="notes"].active { background: #d97706; }   /* Amber */
+        .search-type-btn[data-type="phrases"].active { background: #059669; } /* Emerald */
+        .search-type-btn[data-type="examples"].active { background: #9333ea; } /* Purple */
+
+        .search-type-placeholder {
+            border: 1px dashed #f1f5f9;
+            background: transparent;
+            pointer-events: none;
+        }
+
+        /* Highlight selected dropdowns */
+        .filter-select.active-filter {
+            border-color: #93c5fd !important;
+            background-color: #eff6ff;
+            ring: 1px;
+            ring-color: #93c5fd;
+        }
+    </style>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="text-slate-800">
+
+    <div class="h-screen flex flex-col overflow-hidden">
+        <!-- Header -->
+        <header class="bg-white border-b border-slate-200 px-6 py-2 flex items-center justify-between shadow-sm z-50">
+            <div class="flex items-center gap-4">
+                <h1 class="text-xl font-black text-slate-900 flex items-center gap-2">
+                    <i data-lucide="database" class="text-blue-600"></i>
+                    <span>Sense <span class="text-blue-600">Pro V20</span></span>
+                </h1>
+                
+                <div class="flex bg-slate-100 p-1 rounded-xl border border-slate-200 ml-4">
+                    <button id="viewModeBtn" class="px-4 py-1.5 rounded-lg text-sm font-bold bg-white shadow-sm text-blue-600 transition-all">閲覧</button>
+                    <button id="editModeBtn" class="px-4 py-1.5 rounded-lg text-sm font-bold text-slate-500 hover:text-slate-700 transition-all">編集</button>
+                </div>
+
+                <div class="flex items-center gap-2 ml-2">
+                    <button id="openSourceModalBtn" class="p-2 text-slate-500 hover:text-blue-600 transition-colors" title="ソース管理">
+                        <i data-lucide="layers" class="w-5 h-5"></i>
+                    </button>
+                    <button id="openSettingsBtn" class="p-2 text-slate-500 hover:text-blue-600 transition-colors" title="表示設定">
+                        <i data-lucide="settings" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <div id="fileInfoDisplay" class="hidden text-[10px] font-bold text-slate-400 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
+                    <span id="activeWordCount">0</span> ITEMS
+                </div>
+                <button id="exportBtn" class="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold transition-all shadow-md active:scale-95">
+                    <i data-lucide="download" class="w-4 h-4"></i>
+                    <span>JSON保存</span>
+                </button>
+                <label class="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl cursor-pointer text-sm font-bold transition-all shadow-md active:scale-95">
+                    <i data-lucide="file-up" class="w-4 h-4"></i>
+                    <span>読み込み</span>
+                    <input type="file" id="fileInput" class="hidden" accept=".json" multiple>
+                </label>
+            </div>
+        </header>
+
+        <!-- Main -->
+        <main class="flex-1 overflow-hidden flex flex-col md:flex-row">
+            
+            <!-- Sidebar with Advanced Search -->
+            <aside class="w-full md:w-[380px] lg:w-[440px] border-r border-slate-200 bg-white flex flex-col shadow-inner">
+                <div class="p-4 border-b border-slate-100 space-y-3 bg-slate-50/50">
+                    
+                    <!-- Unified Search Fields -->
+                    <div class="grid grid-cols-1 gap-2">
+                        <div class="relative">
+                            <i data-lucide="type" class="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 w-3.5 h-3.5"></i>
+                            <input type="text" id="searchHeadword" placeholder="見出し語 (通常:前方一致, *:含む)..." class="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500/10 font-bold shadow-sm">
+                        </div>
+                        <div class="relative">
+                            <i data-lucide="languages" class="absolute left-3 top-1/2 -translate-y-1/2 text-emerald-500 w-3.5 h-3.5"></i>
+                            <input type="text" id="searchMeaning" placeholder="意味 (日本語)..." class="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-emerald-500/10 font-medium shadow-sm">
+                        </div>
+                        <div class="relative">
+                            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5"></i>
+                            <input type="text" id="searchKeyword" placeholder="キーワード (詳細検索)..." class="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-slate-500/10 font-medium shadow-sm">
+                        </div>
+                    </div>
+
+                    <!-- Filters -->
+                    <div class="grid grid-cols-4 gap-1.5">
+                        <select id="filterPos" class="filter-select pl-1.5 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-[10px] font-bold outline-none shadow-sm"><option value="all">品詞</option></select>
+                        <select id="filterGrade" class="filter-select pl-1.5 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-[10px] font-bold outline-none shadow-sm">
+                            <option value="all">Grade</option>
+                            <option value="1">G1</option><option value="2">G2</option><option value="3">G3</option>
+                            <option value="4">G4</option>
+                        </select>
+                        <select id="filterSource" class="filter-select pl-1.5 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-[10px] font-bold outline-none shadow-sm"><option value="all">Source</option></select>
+                        <select id="filterTags" class="filter-select pl-1.5 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-[10px] font-bold outline-none shadow-sm"><option value="all">Tags</option></select>
+                    </div>
+
+                    <!-- 8-Grid Module Toggles -->
+                    <div class="grid grid-cols-4 gap-1.5 pt-1">
+                        <button class="search-type-btn" data-type="related">関連語</button>
+                        <button class="search-type-btn" data-type="usage">用法</button>
+                        <button class="search-type-btn" data-type="notes">Notes</button>
+                        <button class="search-type-btn" data-type="phrases">語句</button>
+                        <button class="search-type-btn" data-type="examples">例文</button>
+                        <div class="search-type-btn search-type-placeholder"></div>
+                        <div class="search-type-btn search-type-placeholder"></div>
+                        <div class="search-type-btn search-type-placeholder"></div>
+                    </div>
+
+                    <div id="statsBox" class="bg-blue-50/50 rounded-lg p-2.5 border border-blue-100 hidden space-y-1.5">
+                        <div class="flex items-center justify-between text-[10px] font-black text-blue-700 uppercase">
+                            <span id="totalMatchCount">0 ITEMS</span>
+                            <select id="sortOrder" class="filter-select bg-transparent border border-transparent rounded-lg outline-none text-blue-600 cursor-pointer text-xs font-black px-1">
+                                <option value="word_asc">Word A-Z</option>
+                                <option value="word_desc">Word Z-A</option>
+                                <option value="source_asc">Source</option>
+                                <option value="id_asc">ID順</option>
+                            </select>
+                        </div>
+                        <div id="posBreakdown" class="flex flex-wrap gap-1 text-[8px] text-blue-500/80 font-bold overflow-hidden h-3.5"></div>
+                    </div>
+
+                    <button id="addNewBtn" class="hidden w-full py-2 bg-slate-800 text-white rounded-xl text-xs font-bold hover:bg-black transition-all flex items-center justify-center gap-2">
+                        <i data-lucide="plus-circle" class="w-4 h-4"></i>新規追加
+                    </button>
+                </div>
+                
+                <div id="resultsList" class="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-2 bg-slate-50/20"></div>
+            </aside>
+
+            <!-- Content Area -->
+            <section class="flex-1 bg-slate-50 overflow-y-auto custom-scrollbar relative">
+                <div id="editorPlaceholder" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 p-10 bg-slate-50">
+                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm border border-slate-100">
+                        <i data-lucide="book-open" class="w-8 h-8 text-slate-300"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-600">Smart Dictionary Pro V20</h3>
+                    <p class="text-xs mt-2 text-slate-400 text-center">各セクションのカラーを統一し、フィルタ状況を可視化しました。<br>辞書としての完成度をさらに高めています。</p>
+                </div>
+
+                <div id="editorForm" class="hidden p-8 max-w-4xl mx-auto w-full space-y-8 pb-64">
+                    
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 relative">
+                        <div class="flex items-center justify-between">
+                            <div class="flex gap-2">
+                                <span id="displayDataSource" class="id-badge">Source</span>
+                                <span id="displaySubID" class="id-badge">Sub-ID</span>
+                            </div>
+                            <button id="deleteWordBtn" class="hidden text-red-400 hover:text-red-600 text-[10px] font-black uppercase transition-colors">DELETE ENTRY</button>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <input type="text" id="editWord" placeholder="Word / Phrase" class="w-full px-4 py-2 bg-slate-50 border border-transparent rounded-xl font-black outline-none focus:bg-white focus:border-blue-100 transition-all">
+                            <input type="text" id="editPron" placeholder="Pronunciation" class="w-full px-4 py-2 bg-slate-50 border border-transparent rounded-xl font-serif italic text-xl outline-none focus:bg-white focus:border-blue-100 transition-all">
+                        </div>
+                        <div id="metadataDisplay" class="flex flex-wrap gap-2 pt-2 border-t border-slate-50"></div>
+                    </div>
+
+                    <div id="sensesContainer" class="space-y-8"></div>
+                    
+                    <div id="editModeControls" class="hidden">
+                        <button onclick="addSense()" class="w-full py-4 border-2 border-dashed border-slate-300 rounded-2xl text-slate-400 font-bold bg-white/50 hover:bg-white transition-all shadow-sm">
+                            + 新しいセクション (Sense) を追加
+                        </button>
+                    </div>
+
+                    <div id="examplesSection" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-[10px] font-black text-purple-600 uppercase tracking-widest flex items-center gap-1">
+                                <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> SENTENCE
+                            </h3>
+                            <button id="addExampleBtn" class="hidden text-purple-600 text-[10px] font-black">+ ADD EXAMPLE</button>
+                        </div>
+                        <div id="examplesContainer" class="space-y-3"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-6 modal-overlay">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 overflow-hidden transform transition-all">
+            <div class="p-4 bg-slate-900 flex items-center justify-between text-white">
+                <div class="flex items-center gap-2"><i data-lucide="settings" class="w-5 h-5 text-blue-400"></i><h3 class="font-black text-sm uppercase tracking-widest">Display Settings</h3></div>
+                <button id="closeSettingsBtn" class="text-slate-400 hover:text-white transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="p-6 space-y-4 bg-slate-50 custom-scrollbar max-h-[70vh] overflow-y-auto">
+                <div class="space-y-4 border-b pb-4">
+                    <p class="text-[9px] font-black text-slate-400">LAYOUT & MAIN</p>
+                    <div class="space-y-2"><div class="flex justify-between text-[10px] font-bold text-slate-500 uppercase"><span>全体サイズ</span><span id="valBaseFont">14px</span></div>
+                    <input type="range" id="rangeBaseFont" min="12" max="22" step="1" value="14" class="w-full accent-blue-600"></div>
+                    <div class="space-y-2"><div class="flex justify-between text-[10px] font-bold text-slate-500 uppercase"><span>見出し語</span><span id="valWordFont">1.8rem</span></div>
+                    <input type="range" id="rangeWordFont" min="1.0" max="4.5" step="0.1" value="1.8" class="w-full accent-blue-600"></div>
+                </div>
+                <div class="space-y-4 border-b pb-4">
+                    <p class="text-[9px] font-black text-slate-400">CONTENT & RELATED</p>
+                    <div class="space-y-2"><div class="flex justify-between text-[10px] font-bold text-slate-500 uppercase"><span>本文テキスト</span><span id="valContentFont">0.9rem</span></div>
+                    <input type="range" id="rangeContentFont" min="0.5" max="2.0" step="0.05" value="0.9" class="w-full accent-blue-600"></div>
+                    <div class="space-y-2"><div class="flex justify-between text-[10px] font-bold text-slate-500 uppercase"><span>関連語 (単語)</span><span id="valRelWordFont">0.9rem</span></div>
+                    <input type="range" id="rangeRelWordFont" min="0.5" max="2.0" step="0.05" value="0.9" class="w-full accent-blue-600"></div>
+                    <div class="space-y-2"><div class="flex justify-between text-[10px] font-bold text-slate-500 uppercase"><span>ラベル (活用・参考等)</span><span id="valTypeFont">0.7rem</span></div>
+                    <input type="range" id="rangeTypeFont" min="0.5" max="1.5" step="0.05" value="0.7" class="w-full accent-blue-600"></div>
+                </div>
+                <div class="space-y-4">
+                    <p class="text-[9px] font-black text-slate-400">EXAMPLES</p>
+                    <div class="space-y-2"><div class="flex justify-between text-[10px] font-bold text-slate-500 uppercase"><span>例文 (英語)</span><span id="valExEnFont">0.9rem</span></div>
+                    <input type="range" id="rangeExEnFont" min="0.5" max="2.0" step="0.05" value="0.9" class="w-full accent-blue-600"></div>
+                    <div class="space-y-2"><div class="flex justify-between text-[10px] font-bold text-slate-500 uppercase"><span>例文 (和訳)</span><span id="valExJaFont">0.8rem</span></div>
+                    <input type="range" id="rangeExJaFont" min="0.5" max="1.5" step="0.05" value="0.8" class="w-full accent-blue-600"></div>
+                </div>
+                <button id="resetSettingsBtn" class="w-full py-2 bg-white border border-slate-200 text-slate-400 rounded-xl text-[10px] font-black hover:text-slate-600 transition-all">リセット</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Source Modal -->
+    <div id="sourceModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-6 modal-overlay">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
+            <div class="p-5 bg-slate-900 flex items-center justify-between text-white">
+                <div class="flex items-center gap-2"><i data-lucide="layers" class="w-5 h-5 text-blue-400"></i><h3 class="font-black text-sm uppercase tracking-widest">Source Management</h3></div>
+                <button id="closeSourceModalBtn" class="text-slate-400 hover:text-white transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="p-6 space-y-4 bg-slate-50">
+                <p class="text-[10px] font-bold text-slate-400 uppercase">DataSource ID 一括リネーム</p>
+                <div class="space-y-3">
+                    <input type="text" id="bulkOldId" placeholder="元の ID" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-bold outline-none">
+                    <input type="text" id="bulkNewId" placeholder="新しい ID" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-bold outline-none">
+                    <button id="bulkRenameBtn" class="w-full py-2.5 bg-blue-600 text-white rounded-xl text-xs font-black hover:bg-blue-700 transition-all">置換実行</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let dictionaryData = [];
+        let currentMode = 'view';
+        let editingIndex = -1;
+        let activeSearchTargets = new Set();
+
+        const els = {
+            fileInput: document.getElementById('fileInput'),
+            resultsList: document.getElementById('resultsList'),
+            viewModeBtn: document.getElementById('viewModeBtn'),
+            editModeBtn: document.getElementById('editModeBtn'),
+            exportBtn: document.getElementById('exportBtn'),
+            addNewBtn: document.getElementById('addNewBtn'),
+            editorPlaceholder: document.getElementById('editorPlaceholder'),
+            editorForm: document.getElementById('editorForm'),
+            editWord: document.getElementById('editWord'),
+            editPron: document.getElementById('editPron'),
+            displayDataSource: document.getElementById('displayDataSource'),
+            displaySubID: document.getElementById('displaySubID'),
+            metadataDisplay: document.getElementById('metadataDisplay'),
+            sensesContainer: document.getElementById('sensesContainer'),
+            examplesContainer: document.getElementById('examplesContainer'),
+            examplesSection: document.getElementById('examplesSection'),
+            addExampleBtn: document.getElementById('addExampleBtn'),
+            deleteWordBtn: document.getElementById('deleteWordBtn'),
+            editModeControls: document.getElementById('editModeControls'),
+            statsBox: document.getElementById('statsBox'),
+            totalMatchCount: document.getElementById('totalMatchCount'),
+            posBreakdown: document.getElementById('posBreakdown'),
+            activeWordCount: document.getElementById('activeWordCount'),
+            fileInfoDisplay: document.getElementById('fileInfoDisplay'),
+            bulkOldId: document.getElementById('bulkOldId'),
+            bulkNewId: document.getElementById('bulkNewId'),
+            bulkRenameBtn: document.getElementById('bulkRenameBtn'),
+            // Search & Sort
+            searchHeadword: document.getElementById('searchHeadword'),
+            searchMeaning: document.getElementById('searchMeaning'),
+            searchKeyword: document.getElementById('searchKeyword'),
+            filterPos: document.getElementById('filterPos'),
+            filterGrade: document.getElementById('filterGrade'),
+            filterTags: document.getElementById('filterTags'),
+            filterSource: document.getElementById('filterSource'),
+            sortOrder: document.getElementById('sortOrder'),
+            searchTypeBtns: document.querySelectorAll('.search-type-btn'),
+            // Modals
+            openSourceModalBtn: document.getElementById('openSourceModalBtn'),
+            closeSourceModalBtn: document.getElementById('closeSourceModalBtn'),
+            sourceModal: document.getElementById('sourceModal'),
+            openSettingsBtn: document.getElementById('openSettingsBtn'),
+            closeSettingsBtn: document.getElementById('closeSettingsBtn'),
+            settingsModal: document.getElementById('settingsModal'),
+            // Font sliders
+            rangeBaseFont: document.getElementById('rangeBaseFont'),
+            rangeWordFont: document.getElementById('rangeWordFont'),
+            rangeContentFont: document.getElementById('rangeContentFont'),
+            rangeRelWordFont: document.getElementById('rangeRelWordFont'),
+            rangeTypeFont: document.getElementById('rangeTypeFont'),
+            rangeExEnFont: document.getElementById('rangeExEnFont'),
+            rangeExJaFont: document.getElementById('rangeExJaFont'),
+            valBaseFont: document.getElementById('valBaseFont'),
+            valWordFont: document.getElementById('valWordFont'),
+            valContentFont: document.getElementById('valContentFont'),
+            valRelWordFont: document.getElementById('valRelWordFont'),
+            valTypeFont: document.getElementById('valTypeFont'),
+            valExEnFont: document.getElementById('valExEnFont'),
+            valExJaFont: document.getElementById('valExJaFont'),
+            resetSettingsBtn: document.getElementById('resetSettingsBtn'),
+        };
+
+        function init() {
+            lucide.createIcons();
+            loadSettings();
+            els.fileInput.addEventListener('change', handleFileUpload);
+            
+            [els.searchHeadword, els.searchMeaning, els.searchKeyword, els.filterPos, els.filterGrade, els.filterTags, els.filterSource, els.sortOrder].forEach(el => {
+                el.addEventListener('input', () => {
+                    updateFilterHighlighting();
+                    renderList();
+                });
+            });
+
+            els.searchTypeBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const type = btn.dataset.type;
+                    if (!type) return;
+                    if (activeSearchTargets.has(type)) { activeSearchTargets.delete(type); btn.classList.remove('active'); }
+                    else { activeSearchTargets.add(type); btn.classList.add('active'); }
+                    renderList();
+                });
+            });
+
+            els.viewModeBtn.addEventListener('click', () => setMode('view'));
+            els.editModeBtn.addEventListener('click', () => setMode('edit'));
+            els.exportBtn.addEventListener('click', exportJson);
+            els.addNewBtn.addEventListener('click', addNewWord);
+            els.deleteWordBtn.addEventListener('click', deleteCurrentWord);
+            els.bulkRenameBtn.addEventListener('click', bulkRenameDataSource);
+            els.addExampleBtn.addEventListener('click', addExample);
+            els.openSourceModalBtn.addEventListener('click', () => els.sourceModal.classList.remove('hidden'));
+            els.closeSourceModalBtn.addEventListener('click', () => els.sourceModal.classList.add('hidden'));
+            els.openSettingsBtn.addEventListener('click', () => els.settingsModal.classList.remove('hidden'));
+            els.closeSettingsBtn.addEventListener('click', () => els.settingsModal.classList.add('hidden'));
+            
+            [els.rangeBaseFont, els.rangeWordFont, els.rangeContentFont, els.rangeRelWordFont, els.rangeTypeFont, els.rangeExEnFont, els.rangeExJaFont].forEach(el => el.addEventListener('input', applySettings));
+            els.resetSettingsBtn.addEventListener('click', resetSettings);
+
+            [els.editWord, els.editPron].forEach(input => {
+                input.addEventListener('input', () => {
+                    if (editingIndex === -1 || currentMode === 'view') return;
+                    dictionaryData[editingIndex].word = els.editWord.value;
+                    dictionaryData[editingIndex].pronunciation = els.editPron.value;
+                    renderList();
+                });
+            });
+        }
+
+        function updateFilterHighlighting() {
+            const selects = [els.filterPos, els.filterGrade, els.filterSource, els.filterTags];
+            selects.forEach(sel => {
+                if (sel.value !== 'all') sel.classList.add('active-filter');
+                else sel.classList.remove('active-filter');
+            });
+            if (els.sortOrder.value !== 'word_asc') els.sortOrder.classList.add('active-filter');
+            else els.sortOrder.classList.remove('active-filter');
+        }
+
+        function wildcardMatch(target, pattern, isHeadword = false) {
+            if (!target || !pattern) return false;
+            target = target.toString().toLowerCase();
+            pattern = pattern.toString().toLowerCase();
+            if (isHeadword) {
+                if (pattern.startsWith('*')) return target.includes(pattern.substring(1));
+                return target.startsWith(pattern);
+            }
+            if (pattern.startsWith('*') && pattern.endsWith('*')) return target.includes(pattern.slice(1, -1));
+            else if (pattern.startsWith('*')) return target.endsWith(pattern.slice(1));
+            else if (pattern.endsWith('*')) return target.startsWith(pattern.slice(0, -1));
+            return target.includes(pattern);
+        }
+
+        function loadSettings() {
+            const s = JSON.parse(localStorage.getItem('sensepro_v20_settings') || '{"base":14,"word":1.8,"content":0.9,"relW":0.9,"type":0.7,"exEn":0.9,"exJa":0.8}');
+            els.rangeBaseFont.value = s.base; els.rangeWordFont.value = s.word; els.rangeContentFont.value = s.content;
+            els.rangeRelWordFont.value = s.relW; els.rangeTypeFont.value = s.type; els.rangeExEnFont.value = s.exEn; els.rangeExJaFont.value = s.exJa;
+            applySettings();
+        }
+
+        function applySettings() {
+            const b = els.rangeBaseFont.value, w = els.rangeWordFont.value, c = els.rangeContentFont.value, rw = els.rangeRelWordFont.value;
+            const t = els.rangeTypeFont.value, ee = els.rangeExEnFont.value, ej = els.rangeExJaFont.value;
+            
+            const root = document.documentElement;
+            root.style.setProperty('--base-font-size', b + 'px');
+            root.style.setProperty('--word-font-size', w + 'rem');
+            root.style.setProperty('--content-font-size', c + 'rem');
+            root.style.setProperty('--rel-word-size', rw + 'rem');
+            root.style.setProperty('--type-font-size', t + 'rem');
+            root.style.setProperty('--ex-en-font-size', ee + 'rem');
+            root.style.setProperty('--ex-ja-font-size', ej + 'rem');
+
+            els.valBaseFont.innerText = b + 'px'; els.valWordFont.innerText = w + 'rem'; els.valContentFont.innerText = c + 'rem';
+            els.valRelWordFont.innerText = rw + 'rem'; els.valTypeFont.innerText = t + 'rem'; els.valExEnFont.innerText = ee + 'rem'; els.valExJaFont.innerText = ej + 'rem';
+            
+            localStorage.setItem('sensepro_v20_settings', JSON.stringify({ base:b, word:w, content:c, relW:rw, type:t, exEn:ee, exJa:ej }));
+        }
+
+        function resetSettings() {
+            els.rangeBaseFont.value = 14; els.rangeWordFont.value = 1.8; els.rangeContentFont.value = 0.9; els.rangeRelWordFont.value = 0.9;
+            els.rangeTypeFont.value = 0.7; els.rangeExEnFont.value = 0.9; els.rangeExJaFont.value = 0.8;
+            applySettings();
+        }
+
+        async function handleFileUpload(e) {
+            const files = e.target.files;
+            let tempNewData = [];
+            for (const file of files) {
+                try {
+                    const text = await file.text();
+                    const data = JSON.parse(text);
+                    if (Array.isArray(data)) {
+                        const inferredSource = file.name.split('_')[0].split('-')[0];
+                        const normalizedData = data.map(item => {
+                            const title = item.word || item.phrase || "UNTITLED";
+                            const subID = item.subID || item.id || "";
+                            let senses = item.senses;
+                            if (!senses && (item.definitions || item.notes)) {
+                                senses = [{ pos: "句", definitions: item.definitions || [], notes: item.notes || [], phrases: [], usage: [], related_words: [] }];
+                            }
+                            return {
+                                ...item, word: title, pronunciation: item.pronunciation || "",
+                                dataSource: item.dataSource || inferredSource || "Unknown",
+                                subID: subID.toString(), senses: senses || [], examples: item.examples || [],
+                                tags: item.tags || [], classification: item.classification || null
+                            };
+                        });
+                        tempNewData = tempNewData.concat(normalizedData);
+                    }
+                } catch (err) { alert('JSON形式エラー: ' + file.name); }
+            }
+            if(tempNewData.length > 0) {
+                dictionaryData = dictionaryData.concat(tempNewData);
+                updateDropdowns(); renderList();
+                els.fileInfoDisplay.classList.remove('hidden');
+                els.activeWordCount.innerText = dictionaryData.length;
+            }
+            e.target.value = '';
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            const isEdit = mode === 'edit';
+            els.editModeBtn.classList.toggle('bg-white', isEdit);
+            els.viewModeBtn.classList.toggle('bg-white', !isEdit);
+            els.addNewBtn.classList.toggle('hidden', !isEdit);
+            els.deleteWordBtn.classList.toggle('hidden', !isEdit);
+            els.editModeControls.classList.toggle('hidden', !isEdit);
+            els.addExampleBtn.classList.toggle('hidden', !isEdit);
+            if (editingIndex !== -1) openEditor(editingIndex);
+            renderList(); lucide.createIcons();
+        }
+
+        function openEditor(index) {
+            editingIndex = index;
+            const item = dictionaryData[index];
+            els.editorPlaceholder.classList.add('hidden');
+            els.editorForm.classList.remove('hidden');
+            els.editWord.value = item.word || '';
+            els.editPron.value = item.pronunciation || '';
+            els.displayDataSource.innerText = item.dataSource || "Source";
+            els.displaySubID.innerText = item.subID || "---";
+
+            let metaHtml = '';
+            if (item.classification) metaHtml += `<span class="tag-badge bg-blue-50 text-blue-600 border border-blue-100">${item.classification.category}: ${item.classification.subcategory}</span>`;
+            if (item.tags && item.tags.length > 0) metaHtml += item.tags.map(t => `<span class="tag-badge">#${t}</span>`).join('');
+            els.metadataDisplay.innerHTML = metaHtml;
+
+            const isView = currentMode === 'view';
+            [els.editWord, els.editPron].forEach(input => { input.readOnly = isView; input.classList.toggle('disabled-input', isView); });
+            renderSenses(); renderExamples(); renderList(); lucide.createIcons();
+        }
+
+        function renderSenses() {
+            const senses = dictionaryData[editingIndex].senses || [];
+            const isView = currentMode === 'view', disabledAttr = isView ? 'readonly' : '';
+            const inputClass = isView ? 'disabled-input' : 'bg-slate-50 focus:bg-white focus:border-blue-200';
+
+            els.sensesContainer.innerHTML = senses.map((s, si) => {
+                const notes = Array.isArray(s.notes) ? s.notes : (s.notes ? [{ semantic: { type: "備考", content: s.notes } }] : []);
+                const usage = Array.isArray(s.usage) ? s.usage : [], related = Array.isArray(s.related_words) ? s.related_words : [];
+                const defs = s.definitions || [], phrases = s.phrases || [];
+                const hasUsage = usage.some(u => u.content?.trim()), hasNotes = notes.some(n => n.semantic?.content?.trim());
+                const hasRelated = related.some(rw => rw.word?.trim()), hasPhrases = phrases.some(p => p.phrase?.trim());
+
+                return `
+                <div class="sense-card bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-6">
+                    <div class="flex items-center justify-between border-b border-slate-50 pb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="type-label-text font-black text-slate-400 uppercase flex items-center gap-1"><i data-lucide="tag" class="w-3 h-3"></i> POS</span>
+                            <input type="text" value="${s.pos || ''}" oninput="updateSenseProp(${si}, 'pos', this.value)" class="${inputClass} px-3 py-1 rounded-lg text-xs font-bold w-32 outline-none border border-transparent shadow-sm" ${disabledAttr}>
+                        </div>
+                        ${!isView ? `<button onclick="removeSense(${si})" class="text-slate-200 hover:text-red-500 transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <label class="type-label-text font-black text-blue-500 uppercase flex items-center gap-1"><i data-lucide="book" class="w-3 h-3"></i> Meaning</label>
+                            ${!isView ? `<button onclick="addDefinition(${si})" class="text-blue-500 text-[10px] font-black hover:underline">+ ADD MEANING</button>` : ''}
+                        </div>
+                        <div class="space-y-2">
+                            ${defs.map((d, di) => `
+                                <div class="flex gap-2 items-center group">
+                                    <input type="text" value="${d.meaning}" oninput="updateDefinition(${si}, ${di}, 'meaning', this.value)" class="${inputClass} meaning-text flex-1 px-4 py-2 rounded-xl outline-none shadow-sm border border-transparent" ${disabledAttr}>
+                                    <select onchange="updateDefinition(${si}, ${di}, 'grade', this.value)" class="${isView?'pointer-events-none':'bg-white'} border border-slate-200 rounded-xl text-xs font-bold px-2 py-2 outline-none" ${isView?'disabled':''}>
+                                        <option value="1" ${d.grade==1?'selected':''}>G1</option><option value="2" ${d.grade==2?'selected':''}>G2</option><option value="3" ${d.grade==3?'selected':''}>G3</option><option value="4" ${d.grade==4?'selected':''}>G4</option>
+                                    </select>
+                                    ${!isView ? `<button onclick="removeDefinition(${si}, ${di})" class="text-slate-200 hover:text-red-400 opacity-0 group-hover:opacity-100"><i data-lucide="x" class="w-4 h-4"></i></button>` : ''}
+                                </div>`).join('')}
+                        </div>
+                    </div>
+                    ${(!isView || hasUsage) ? `
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between"><label class="type-label-text font-black text-cyan-600 uppercase flex items-center gap-1"><i data-lucide="activity" class="w-3 h-3"></i> Usage</label>
+                            ${!isView ? `<button onclick="addUsage(${si})" class="text-cyan-600 text-[10px] font-black hover:underline">+ ADD USAGE</button>` : ''}
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            ${usage.map((u, ui) => (!isView || u.content?.trim()) ? `
+                                <div class="inline-flex items-center gap-1 bg-cyan-50 px-3 py-1.5 rounded-xl border border-cyan-100 text-[10px] group min-w-[320px] flex-1">
+                                    <input type="text" value="${u.type || ''}" oninput="updateUsage(${si}, ${ui}, 'type', this.value)" placeholder="タイプ" class="bg-white type-label-text border border-cyan-50 px-2 py-1 rounded w-32 outline-none text-cyan-500 font-bold" ${disabledAttr}>
+                                    <input type="text" value="${u.content || ''}" oninput="updateUsage(${si}, ${ui}, 'content', this.value)" placeholder="内容" class="bg-white border border-cyan-50 px-2 py-1 rounded flex-1 outline-none font-black text-cyan-800 usage-text" ${disabledAttr}>
+                                    ${!isView ? `<button onclick="removeUsage(${si}, ${ui})" class="text-cyan-200 hover:text-red-400 ml-1"><i data-lucide="x" class="w-3 h-3"></i></button>` : ''}
+                                </div>` : '').join('')}
+                        </div>
+                    </div>` : ''}
+                    ${(!isView || hasNotes) ? `
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between"><label class="type-label-text font-black text-amber-600 uppercase flex items-center gap-1"><i data-lucide="info" class="w-3 h-3"></i> Notes</label>
+                            ${!isView ? `<button onclick="addNote(${si})" class="text-amber-600 text-[10px] font-black hover:underline">+ ADD NOTE</button>` : ''}
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            ${notes.map((n, ni) => (!isView || n.semantic?.content?.trim()) ? `
+                                <div class="flex items-center gap-1 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-100 text-[10px] group w-full">
+                                    <input type="text" value="${n.semantic?.type || '備考'}" oninput="updateNote(${si}, ${ni}, 'type', this.value)" class="bg-white type-label-text border border-amber-50 px-2 py-1 rounded w-32 outline-none text-amber-600 font-bold" ${disabledAttr}>
+                                    <input type="text" value="${n.semantic?.content || ''}" oninput="updateNote(${si}, ${ni}, 'content', this.value)" placeholder="内容" class="bg-white border border-amber-50 px-2 py-1 rounded flex-1 outline-none text-amber-800 font-medium note-text" ${disabledAttr}>
+                                    ${!isView ? `<button onclick="removeNote(${si}, ${ni})" class="text-amber-200 hover:text-red-400 opacity-0 group-hover:opacity-100 ml-1"><i data-lucide="x" class="w-3.5 h-3.5"></i></button>` : ''}
+                                </div>` : '').join('')}
+                        </div>
+                    </div>` : ''}
+                    ${(!isView || hasRelated) ? `
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between"><label class="type-label-text font-black text-indigo-600 uppercase flex items-center gap-1"><i data-lucide="link" class="w-3 h-3"></i> Related</label>
+                            ${!isView ? `<button onclick="addRelatedWord(${si})" class="text-indigo-600 text-[10px] font-black hover:underline">+ ADD RELATED</button>` : ''}
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            ${related.map((rw, rwi) => (!isView || rw.word?.trim()) ? `
+                                <div class="flex items-center gap-2 bg-indigo-50/30 p-2.5 rounded-xl border border-indigo-100 group">
+                                    <input type="text" value="${rw.type || ''}" oninput="updateRelatedWord(${si}, ${rwi}, 'type', this.value)" placeholder="関連" class="bg-white px-2 py-1 rounded border border-indigo-50 type-label-text w-24 font-bold text-indigo-400 outline-none" ${disabledAttr}>
+                                    <input type="text" value="${rw.word || ''}" oninput="updateRelatedWord(${si}, ${rwi}, 'word', this.value)" placeholder="単語" class="bg-white px-3 py-1.5 rounded border border-indigo-50 flex-1 font-black text-indigo-900 rel-word-text outline-none" ${disabledAttr}>
+                                    <input type="text" value="${rw.meaning || ''}" oninput="updateRelatedWord(${si}, ${rwi}, 'meaning', this.value)" placeholder="意味" class="bg-white px-3 py-1.5 rounded border border-indigo-50 flex-1 text-indigo-600 meaning-text outline-none" ${disabledAttr}>
+                                    ${!isView ? `<button onclick="removeRelatedWord(${si}, ${rwi})" class="text-indigo-200 hover:text-red-400 opacity-0 group-hover:opacity-100 px-1 transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
+                                </div>` : '').join('')}
+                        </div>
+                    </div>` : ''}
+                    ${(!isView || hasPhrases) ? `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between"><label class="type-label-text font-black text-emerald-600 uppercase flex items-center gap-1"><i data-lucide="git-branch" class="w-3.5 h-3.5"></i> Phrases</label>
+                            ${!isView ? `<button onclick="addPhrase(${si})" class="text-emerald-600 text-[10px] font-black hover:underline">+ ADD PHRASE</button>` : ''}
+                        </div>
+                        <div class="grid grid-cols-1 gap-3">
+                            ${phrases.map((p, pi) => (!isView || p.phrase?.trim()) ? `
+                                <div class="phrase-card bg-emerald-50/10 p-4 rounded-2xl border border-emerald-50 space-y-3 relative group">
+                                    <input type="text" value="${p.phrase}" oninput="updatePhraseProp(${si}, ${pi}, 'phrase', this.value)" class="${isView?'disabled-input':'bg-white shadow-sm border-emerald-50'} w-full px-3 py-2 rounded-xl font-black text-emerald-700 outline-none border phrase-text" ${disabledAttr}>
+                                    <div class="pl-4 border-l-2 border-emerald-100 space-y-2">
+                                        ${(p.definitions || []).map((pd, pdi) => `<input type="text" value="${pd.meaning}" oninput="updatePhraseDef(${si}, ${pi}, ${pdi}, 'meaning', this.value)" class="${isView?'disabled-input':'bg-white'} w-full px-3 py-1.5 rounded-lg text-xs outline-none shadow-sm phrase-text" ${disabledAttr} placeholder="意味">`).join('')}
+                                    </div>
+                                    ${!isView ? `<button onclick="removePhrase(${si}, ${pi})" class="absolute top-2 right-2 text-emerald-200 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
+                                </div>` : '').join('')}
+                        </div>
+                    </div>` : ''}
+                </div>`;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        function renderExamples() {
+            const examples = dictionaryData[editingIndex].examples || [];
+            const isView = currentMode === 'view', hasExamples = examples.some(ex => ex.en?.trim());
+            if (isView && !hasExamples) { els.examplesSection.classList.add('hidden'); return; }
+            els.examplesSection.classList.remove('hidden');
+            els.examplesContainer.innerHTML = examples.map((ex, i) => (!isView || ex.en?.trim()) ? `
+                <div class="example-card p-4 rounded-2xl border border-purple-100 space-y-2 relative group hover:shadow-md transition-all">
+                    <textarea oninput="updateExample(${i}, 'en', this.value)" class="${isView?'disabled-input':'bg-white border-purple-50'} w-full font-bold text-purple-900 outline-none min-h-[40px] px-3 py-2 rounded-xl border ex-en-text" ${isView?'readonly':''}>${ex.en}</textarea>
+                    <input type="text" value="${ex.ja}" oninput="updateExample(${i}, 'ja', this.value)" placeholder="日本語訳" class="${isView?'disabled-input':'bg-white border-purple-50'} w-full text-purple-700 outline-none px-3 py-1.5 rounded-lg border shadow-sm ex-ja-text" ${isView?'readonly':''}>
+                    ${!isView ? `<button onclick="removeExample(${i})" class="absolute top-2 right-2 text-purple-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="x-circle" class="w-4.5 h-4.5"></i></button>` : ''}
+                </div>` : '').join('');
+            lucide.createIcons();
+        }
+
+        function updateSenseProp(si, key, val) { dictionaryData[editingIndex].senses[si][key] = val; renderList(); if(key==='pos') updateDropdowns(); }
+        function updateDefinition(si, di, key, val) { dictionaryData[editingIndex].senses[si].definitions[di][key] = (key==='grade')?parseInt(val):val; renderList(); }
+        function addDefinition(si) { dictionaryData[editingIndex].senses[si].definitions.push({ meaning: "", grade: 1 }); renderSenses(); }
+        function removeDefinition(si, di) { dictionaryData[editingIndex].senses[si].definitions.splice(di, 1); renderSenses(); renderList(); }
+        function updateUsage(si, ui, key, val) { if(!dictionaryData[editingIndex].senses[si].usage) dictionaryData[editingIndex].senses[si].usage = []; dictionaryData[editingIndex].senses[si].usage[ui][key] = val; renderList(); }
+        function addUsage(si) { if(!dictionaryData[editingIndex].senses[si].usage) dictionaryData[editingIndex].senses[si].usage = []; dictionaryData[editingIndex].senses[si].usage.push({ type: "活用", content: "" }); renderSenses(); }
+        function removeUsage(si, ui) { dictionaryData[editingIndex].senses[si].usage.splice(ui, 1); renderSenses(); renderList(); }
+        function updateNote(si, ni, key, val) { let s = dictionaryData[editingIndex].senses[si]; if(!Array.isArray(s.notes)) s.notes = s.notes ? [{ semantic: { type: "備考", content: s.notes } }] : []; s.notes[ni].semantic[key] = val; renderList(); }
+        function addNote(si) { let s = dictionaryData[editingIndex].senses[si]; if(!Array.isArray(s.notes)) s.notes = s.notes ? [{ semantic: { type: "備考", content: s.notes } }] : []; s.notes.push({ semantic: { type: "備考", content: "" } }); renderSenses(); }
+        function removeNote(si, ni) { dictionaryData[editingIndex].senses[si].notes.splice(ni, 1); renderSenses(); renderList(); }
+        function updateRelatedWord(si, rwi, key, val) { if(!dictionaryData[editingIndex].senses[si].related_words) dictionaryData[editingIndex].senses[si].related_words = []; dictionaryData[editingIndex].senses[si].related_words[rwi][key] = val; renderList(); }
+        function addRelatedWord(si) { if(!dictionaryData[editingIndex].senses[si].related_words) dictionaryData[editingIndex].senses[si].related_words = []; dictionaryData[editingIndex].senses[si].related_words.push({ type: "関連", word: "", meaning: "" }); renderSenses(); }
+        function removeRelatedWord(si, rwi) { dictionaryData[editingIndex].senses[si].related_words.splice(rwi, 1); renderSenses(); renderList(); }
+        function updatePhraseProp(si, pi, key, val) { dictionaryData[editingIndex].senses[si].phrases[pi][key] = val; renderList(); }
+        function updatePhraseDef(si, pi, pdi, key, val) { dictionaryData[editingIndex].senses[si].phrases[pi].definitions[pdi][key] = val; renderList(); }
+        function addPhrase(si) { if(!dictionaryData[editingIndex].senses[si].phrases) dictionaryData[editingIndex].senses[si].phrases = []; dictionaryData[editingIndex].senses[si].phrases.push({ phrase: "", definitions: [{ meaning: "" }] }); renderSenses(); }
+        function removePhrase(si, pi) { dictionaryData[editingIndex].senses[si].phrases.splice(pi, 1); renderSenses(); renderList(); }
+        function updateExample(i, key, val) { dictionaryData[editingIndex].examples[i][key] = val; renderList(); }
+        function addExample() { dictionaryData[editingIndex].examples.push({ en: "", ja: "" }); renderExamples(); }
+        function removeExample(i) { dictionaryData[editingIndex].examples.splice(i, 1); renderExamples(); renderList(); }
+        function addSense() { dictionaryData[editingIndex].senses.push({ pos: "名", definitions: [{meaning: "", grade: 1}], usage: [], notes: [], phrases: [], related_words: [] }); renderSenses(); }
+        function removeSense(si) { if(confirm('このブロックを削除しますか？')) { dictionaryData[editingIndex].senses.splice(si, 1); renderSenses(); renderList(); } }
+
+        function renderList() {
+            const hQ = els.searchHeadword.value.trim(), mQ = els.searchMeaning.value.trim(), kQ = els.searchKeyword.value.trim();
+            const posF = els.filterPos.value, gradeF = els.filterGrade.value, tagF = els.filterTags.value, srcF = els.filterSource.value, sort = els.sortOrder.value;
+
+            let filtered = dictionaryData.map((item, i) => ({ ...item, originalIndex: i }))
+                .filter(item => {
+                    const senses = item.senses || [], examples = item.examples || [];
+                    if (hQ && !wildcardMatch(item.word, hQ, true)) return false;
+                    if (mQ) {
+                        const allMeanings = senses.map(s => (s.definitions || []).map(d => d.meaning)).flat().join(' ');
+                        if (!wildcardMatch(allMeanings, mQ)) return false;
+                    }
+                    const pM = posF === 'all' || senses.some(s => s.pos === posF);
+                    const gM = gradeF === 'all' || senses.some(s => (s.definitions || []).some(d => (d.grade || "").toString() === gradeF));
+                    const tM = tagF === 'all' || (item.tags || []).includes(tagF);
+                    const sM = srcF === 'all' || item.dataSource === srcF;
+                    if (!pM || !gM || !tM || !sM) return false;
+
+                    if (kQ) {
+                        if (activeSearchTargets.size === 0) {
+                            const pool = [
+                                item.word, item.pronunciation, item.dataSource, item.subID, ...(item.tags || []),
+                                item.classification ? [item.classification.category, item.classification.subcategory] : [],
+                                ...examples.map(ex => [ex.en, ex.ja]),
+                                ...senses.map(s => [s.pos, ...(Array.isArray(s.notes) ? s.notes.map(n => [n.semantic?.type, n.semantic?.content]) : []),
+                                    ...(Array.isArray(s.usage) ? s.usage.map(u => [u.type, u.content]) : []),
+                                    ...(s.related_words || []).map(rw => [rw.word, rw.meaning, rw.type]),
+                                    ...(s.definitions || []).map(d => d.meaning),
+                                    ...(s.phrases || []).map(p => [p.phrase, ...(p.definitions || []).map(pd => pd.meaning)])
+                                ].flat())
+                            ].flat().filter(t => t).join(' ');
+                            if (!wildcardMatch(pool, kQ)) return false;
+                        } else {
+                            let found = false;
+                            if (activeSearchTargets.has('related') && wildcardMatch(senses.map(s => (s.related_words || []).map(rw => [rw.word, rw.meaning, rw.type])).flat(2).join(' '), kQ)) found = true;
+                            if (!found && activeSearchTargets.has('usage') && wildcardMatch(senses.map(s => (s.usage || []).map(u => [u.type, u.content])).flat(2).join(' '), kQ)) found = true;
+                            if (!found && activeSearchTargets.has('notes') && wildcardMatch(senses.map(s => (Array.isArray(s.notes) ? s.notes.map(n => [n.semantic?.type, n.semantic?.content]) : [])).flat(2).join(' '), kQ)) found = true;
+                            if (!found && activeSearchTargets.has('phrases') && wildcardMatch(senses.map(s => (s.phrases || []).map(p => [p.phrase, ...(p.definitions || []).map(pd => pd.meaning)])).flat(2).join(' '), kQ)) found = true;
+                            if (!found && activeSearchTargets.has('examples') && wildcardMatch(examples.map(ex => [ex.en, ex.ja]).flat().join(' '), kQ)) found = true;
+                            if (!found) return false;
+                        }
+                    }
+                    return true;
+                });
+
+            filtered.sort((a, b) => {
+                if (sort === 'word_asc') return a.word.localeCompare(b.word);
+                if (sort === 'word_desc') return b.word.localeCompare(a.word);
+                if (sort === 'source_asc') return (a.dataSource || "").localeCompare(b.dataSource || "");
+                if (sort === 'id_asc') return (parseInt(a.subID) || 0) - (parseInt(b.subID) || 0);
+                return 0;
+            });
+
+            if (dictionaryData.length > 0) {
+                els.statsBox.classList.remove('hidden'); els.totalMatchCount.innerText = `${filtered.length} ITEMS`;
+                const stats = filtered.reduce((acc, item) => {
+                    (item.senses || []).forEach(s => { if(s.pos) acc.pos[s.pos] = (acc.pos[s.pos] || 0) + 1; });
+                    return acc;
+                }, { pos: {} });
+                els.posBreakdown.innerHTML = Object.entries(stats.pos).sort((a,b)=>b[1]-a[1]).map(([p,c])=>`<span>${p}:${c}</span>`).join(' · ');
+            }
+
+            els.resultsList.innerHTML = filtered.map(item => `
+                <div onclick="openEditor(${item.originalIndex})" class="p-3 bg-white rounded-xl border-2 cursor-pointer transition-all shadow-sm group ${item.originalIndex === editingIndex ? 'editing-active ring-2 ring-blue-500/10' : 'border-white hover:border-slate-200'}">
+                    <div class="flex items-start justify-between mb-1">
+                        <span class="font-black text-slate-900 group-hover:text-blue-600 transition-colors uppercase leading-tight">${item.word}</span>
+                        <div class="flex gap-1 items-center opacity-70">
+                            ${item.dataSource ? `<span class="id-badge">${item.dataSource}</span>` : ''}
+                            ${item.subID ? `<span class="id-badge bg-blue-50 border-blue-100 text-blue-500">${item.subID}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between gap-2">
+                        <p class="text-[10px] text-slate-500 truncate flex-1">${item.senses?.[0]?.definitions?.[0]?.meaning || ''}</p>
+                        ${item.senses?.[0]?.pos ? `<span class="list-pos-badge">${item.senses[0].pos}</span>` : ''}
+                    </div>
+                </div>`).join('');
+        }
+
+        function updateDropdowns() {
+            const posSet = new Set(), tagSet = new Set(), srcSet = new Set();
+            dictionaryData.forEach(item => {
+                (item.senses || []).forEach(s => { if(s.pos) posSet.add(s.pos); });
+                (item.tags || []).forEach(t => tagSet.add(t));
+                if(item.dataSource) srcSet.add(item.dataSource);
+            });
+            els.filterPos.innerHTML = '<option value="all">品詞</option>' + Array.from(posSet).sort().map(p => `<option value="${p}">${p}</option>`).join('');
+            els.filterTags.innerHTML = '<option value="all">Tags</option>' + Array.from(tagSet).sort().map(t => `<option value="${t}">${t}</option>`).join('');
+            els.filterSource.innerHTML = '<option value="all">Source</option>' + Array.from(srcSet).sort().map(s => `<option value="${s}">${s}</option>`).join('');
+            updateFilterHighlighting();
+        }
+
+        function addNewWord() {
+            const newW = { word: "NEW ENTRY", pronunciation: "", dataSource: dictionaryData[0]?.dataSource || "MySource", subID: "", senses: [{pos: "名", definitions: [{meaning: "", grade: 1}], usage: [], notes: [], phrases: [], related_words: []}], examples: [], tags: [], classification: null };
+            dictionaryData.unshift(newW); updateDropdowns(); renderList(); openEditor(0);
+        }
+
+        function deleteCurrentWord() {
+            if (editingIndex !== -1 && confirm('削除しますか？')) {
+                dictionaryData.splice(editingIndex, 1); editingIndex = -1;
+                els.editorForm.classList.add('hidden'); els.editorPlaceholder.classList.remove('hidden');
+                els.activeWordCount.innerText = dictionaryData.length; updateDropdowns(); renderList();
+            }
+        }
+
+        function bulkRenameDataSource() {
+            const oldId = els.bulkOldId.value.trim(), newId = els.bulkNewId.value.trim();
+            if (!oldId || !newId) return;
+            if (confirm(`ID「${oldId}」を「${newId}」に一括変更しますか？`)) {
+                dictionaryData.forEach(i => { if(i.dataSource === oldId) i.dataSource = newId; });
+                updateDropdowns(); renderList(); els.bulkOldId.value = ""; els.bulkNewId.value = ""; els.sourceModal.classList.add('hidden');
+            }
+        }
+
+        function exportJson() {
+            const blob = new Blob([JSON.stringify(dictionaryData, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+            a.download = `SensePro_Data_${new Date().toISOString().slice(0,10)}.json`; a.click();
+        }
+
+        init();
+    </script>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
