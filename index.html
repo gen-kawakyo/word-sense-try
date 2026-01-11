@@ -2,8 +2,8 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Dictionary Pro V21</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Smart Dictionary Pro V22</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -23,6 +23,7 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: #f8fafc;
             font-size: var(--base-font-size);
+            overscroll-behavior-y: none; /* スマホでの引っ張り更新無効化 */
         }
         
         #editWord { font-size: var(--word-font-size); }
@@ -82,6 +83,13 @@
             ring: 1px;
             ring-color: #93c5fd;
         }
+
+        /* Mobile View Transitions */
+        .mobile-hidden { display: none !important; }
+        @media (min-width: 768px) {
+            .mobile-hidden { display: block !important; } /* Reset on desktop */
+            .desktop-hidden { display: none !important; }
+        }
     </style>
 <link rel="stylesheet" href="/index.css">
 </head>
@@ -89,77 +97,87 @@
 
     <div class="h-screen flex flex-col overflow-hidden">
         <!-- Header -->
-        <header class="bg-white border-b border-slate-200 px-6 py-2 flex items-center justify-between shadow-sm z-50">
-            <div class="flex items-center gap-4">
-                <h1 class="text-xl font-black text-slate-900 flex items-center gap-2">
-                    <i data-lucide="database" class="text-blue-600"></i>
-                    <span>Sense <span class="text-blue-600">Pro V21</span></span>
+        <header class="bg-white border-b border-slate-200 px-4 py-2 flex items-center justify-between shadow-sm z-50 shrink-0 h-14">
+            <div class="flex items-center gap-2 md:gap-4">
+                <button id="mobileBackBtn" class="desktop-hidden hidden mr-1 p-1 text-slate-500 hover:text-blue-600 font-black text-xs flex items-center gap-1 bg-slate-100 rounded-lg px-2">
+                    <i data-lucide="chevron-left" class="w-4 h-4"></i> LIST
+                </button>
+                <h1 class="text-lg md:text-xl font-black text-slate-900 flex items-center gap-2 truncate">
+                    <i data-lucide="database" class="text-blue-600 w-5 h-5"></i>
+                    <span class="hidden md:inline">Sense <span class="text-blue-600">Pro V22</span></span>
+                    <span class="md:hidden">Sense<span class="text-blue-600">Pro</span></span>
                 </h1>
                 
-                <div class="flex bg-slate-100 p-1 rounded-xl border border-slate-200 ml-4">
-                    <button id="viewModeBtn" class="px-4 py-1.5 rounded-lg text-sm font-bold bg-white shadow-sm text-blue-600 transition-all">閲覧</button>
-                    <button id="editModeBtn" class="px-4 py-1.5 rounded-lg text-sm font-bold text-slate-500 hover:text-slate-700 transition-all">編集</button>
-                </div>
-
-                <div class="flex items-center gap-2 ml-2">
-                    <button id="openSourceModalBtn" class="p-2 text-slate-500 hover:text-blue-600 transition-colors" title="ソース管理">
-                        <i data-lucide="layers" class="w-5 h-5"></i>
-                    </button>
-                    <button id="openSettingsBtn" class="p-2 text-slate-500 hover:text-blue-600 transition-colors" title="表示設定">
-                        <i data-lucide="settings" class="w-5 h-5"></i>
-                    </button>
+                <div class="flex bg-slate-100 p-1 rounded-xl border border-slate-200 ml-2">
+                    <button id="viewModeBtn" class="px-3 py-1 rounded-lg text-xs font-bold bg-white shadow-sm text-blue-600 transition-all">閲覧</button>
+                    <button id="editModeBtn" class="px-3 py-1 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-700 transition-all">編集</button>
                 </div>
             </div>
 
-            <div class="flex items-center gap-3">
-                <div id="fileInfoDisplay" class="hidden text-[10px] font-bold text-slate-400 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
+            <div class="flex items-center gap-2">
+                <button id="openSourceModalBtn" class="p-1.5 text-slate-500 hover:text-blue-600 transition-colors" title="ソース管理">
+                    <i data-lucide="layers" class="w-5 h-5"></i>
+                </button>
+                <button id="openSettingsBtn" class="p-1.5 text-slate-500 hover:text-blue-600 transition-colors" title="表示設定">
+                    <i data-lucide="settings" class="w-5 h-5"></i>
+                </button>
+                
+                <!-- PC Only Buttons -->
+                <div id="fileInfoDisplay" class="hidden md:flex text-[10px] font-bold text-slate-400 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
                     <span id="activeWordCount">0</span> ITEMS
                 </div>
-                <button id="exportBtn" class="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold transition-all shadow-md active:scale-95">
+                <button id="exportBtn" class="hidden md:flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold transition-all shadow-md active:scale-95">
                     <i data-lucide="download" class="w-4 h-4"></i>
                     <span>JSON保存</span>
                 </button>
-                <label class="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl cursor-pointer text-sm font-bold transition-all shadow-md active:scale-95">
+                <label class="hidden md:flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl cursor-pointer text-sm font-bold transition-all shadow-md active:scale-95">
                     <i data-lucide="file-up" class="w-4 h-4"></i>
                     <span>読み込み</span>
                     <input type="file" id="fileInput" class="hidden" accept=".json" multiple>
+                </label>
+                <!-- Mobile Menu Button (Future use) -->
+                <label class="md:hidden p-2 text-blue-600">
+                    <i data-lucide="file-up" class="w-5 h-5"></i>
+                    <input type="file" id="fileInputMobile" class="hidden" accept=".json" multiple>
                 </label>
             </div>
         </header>
 
         <!-- Main -->
-        <main class="flex-1 overflow-hidden flex flex-col md:flex-row">
+        <main class="flex-1 overflow-hidden flex flex-col md:flex-row relative">
             
-            <!-- Sidebar with Advanced Search -->
-            <aside class="w-full md:w-[380px] lg:w-[440px] border-r border-slate-200 bg-white flex flex-col shadow-inner">
-                <div class="p-4 border-b border-slate-100 space-y-3 bg-slate-50/50">
+            <!-- Sidebar with Advanced Search (List View) -->
+            <aside id="sidebarArea" class="w-full md:w-[380px] lg:w-[440px] border-r border-slate-200 bg-white flex flex-col shadow-inner absolute md:static inset-0 z-10">
+                <div class="p-3 border-b border-slate-100 space-y-2 bg-slate-50/50">
                     
                     <!-- Unified Search Fields -->
                     <div class="grid grid-cols-1 gap-2">
                         <div class="relative">
                             <i data-lucide="type" class="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 w-3.5 h-3.5"></i>
-                            <input type="text" id="searchHeadword" placeholder="見出し語 (通常:前方一致, *:含む)..." class="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500/10 font-bold shadow-sm">
+                            <input type="text" id="searchHeadword" placeholder="見出し語..." class="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500/10 font-bold shadow-sm">
                         </div>
-                        <div class="relative">
-                            <i data-lucide="languages" class="absolute left-3 top-1/2 -translate-y-1/2 text-emerald-500 w-3.5 h-3.5"></i>
-                            <input type="text" id="searchMeaning" placeholder="意味 (日本語)..." class="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-emerald-500/10 font-medium shadow-sm">
-                        </div>
-                        <div class="relative">
-                            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5"></i>
-                            <input type="text" id="searchKeyword" placeholder="キーワード (詳細検索)..." class="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-slate-500/10 font-medium shadow-sm">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="relative">
+                                <i data-lucide="languages" class="absolute left-3 top-1/2 -translate-y-1/2 text-emerald-500 w-3.5 h-3.5"></i>
+                                <input type="text" id="searchMeaning" placeholder="意味..." class="w-full pl-9 pr-2 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-emerald-500/10 font-medium shadow-sm">
+                            </div>
+                            <div class="relative">
+                                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5"></i>
+                                <input type="text" id="searchKeyword" placeholder="KW..." class="w-full pl-9 pr-2 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-slate-500/10 font-medium shadow-sm">
+                            </div>
                         </div>
                     </div>
 
                     <!-- Filters -->
                     <div class="grid grid-cols-4 gap-1.5">
-                        <select id="filterPos" class="filter-select pl-1.5 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-[10px] font-bold outline-none shadow-sm"><option value="all">品詞</option></select>
-                        <select id="filterGrade" class="filter-select pl-1.5 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-[10px] font-bold outline-none shadow-sm">
+                        <select id="filterPos" class="filter-select pl-1.5 pr-2 py-1.5 bg-white border border-slate-200 rounded-lg text-[10px] font-bold outline-none shadow-sm"><option value="all">品詞</option></select>
+                        <select id="filterGrade" class="filter-select pl-1.5 pr-2 py-1.5 bg-white border border-slate-200 rounded-lg text-[10px] font-bold outline-none shadow-sm">
                             <option value="all">Grade</option>
                             <option value="1">G1</option><option value="2">G2</option><option value="3">G3</option>
                             <option value="4">G4</option>
                         </select>
-                        <select id="filterSource" class="filter-select pl-1.5 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-[10px] font-bold outline-none shadow-sm"><option value="all">Source</option></select>
-                        <select id="filterTags" class="filter-select pl-1.5 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-[10px] font-bold outline-none shadow-sm"><option value="all">Tags</option></select>
+                        <select id="filterSource" class="filter-select pl-1.5 pr-2 py-1.5 bg-white border border-slate-200 rounded-lg text-[10px] font-bold outline-none shadow-sm"><option value="all">Source</option></select>
+                        <select id="filterTags" class="filter-select pl-1.5 pr-2 py-1.5 bg-white border border-slate-200 rounded-lg text-[10px] font-bold outline-none shadow-sm"><option value="all">Tags</option></select>
                     </div>
 
                     <!-- 8-Grid Module Toggles -->
@@ -174,7 +192,7 @@
                         <div class="search-type-btn search-type-placeholder"></div>
                     </div>
 
-                    <div id="statsBox" class="bg-blue-50/50 rounded-lg p-2.5 border border-blue-100 hidden space-y-1.5">
+                    <div id="statsBox" class="bg-blue-50/50 rounded-lg p-2 border border-blue-100 hidden space-y-1">
                         <div class="flex items-center justify-between text-[10px] font-black text-blue-700 uppercase">
                             <span id="totalMatchCount">0 ITEMS</span>
                             <select id="sortOrder" class="filter-select bg-transparent border border-transparent rounded-lg outline-none text-blue-600 cursor-pointer text-xs font-black px-1">
@@ -192,37 +210,37 @@
                     </button>
                 </div>
                 
-                <div id="resultsList" class="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-2 bg-slate-50/20"></div>
+                <div id="resultsList" class="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-2 bg-slate-50/20 pb-20 md:pb-3"></div>
             </aside>
 
-            <!-- Content Area -->
-            <section class="flex-1 bg-slate-50 overflow-y-auto custom-scrollbar relative">
+            <!-- Content Area (Detail View) -->
+            <section id="contentArea" class="w-full flex-1 bg-slate-50 overflow-y-auto custom-scrollbar relative hidden md:block">
                 <div id="editorPlaceholder" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 p-10 bg-slate-50">
                     <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm border border-slate-100">
                         <i data-lucide="book-open" class="w-8 h-8 text-slate-300"></i>
                     </div>
-                    <h3 class="font-bold text-slate-600">Smart Dictionary Pro V21</h3>
-                    <p class="text-xs mt-2 text-slate-400 text-center">自動読み込み機能を搭載しました。<br>各セクションのカラーを統一し、フィルタ状況を可視化しています。</p>
+                    <h3 class="font-bold text-slate-600">Smart Dictionary Pro V22</h3>
+                    <p class="text-xs mt-2 text-slate-400 text-center">左側のリストから単語を選択してください。<br>スマホでは画面が切り替わります。</p>
                 </div>
 
-                <div id="editorForm" class="hidden p-8 max-w-4xl mx-auto w-full space-y-8 pb-64">
+                <div id="editorForm" class="hidden p-4 md:p-8 max-w-4xl mx-auto w-full space-y-6 pb-32">
                     
-                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 relative">
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4 relative">
                         <div class="flex items-center justify-between">
                             <div class="flex gap-2">
                                 <span id="displayDataSource" class="id-badge">Source</span>
                                 <span id="displaySubID" class="id-badge">Sub-ID</span>
                             </div>
-                            <button id="deleteWordBtn" class="hidden text-red-400 hover:text-red-600 text-[10px] font-black uppercase transition-colors">DELETE ENTRY</button>
+                            <button id="deleteWordBtn" class="hidden text-red-400 hover:text-red-600 text-[10px] font-black uppercase transition-colors">DELETE</button>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <input type="text" id="editWord" placeholder="Word / Phrase" class="w-full px-4 py-2 bg-slate-50 border border-transparent rounded-xl font-black outline-none focus:bg-white focus:border-blue-100 transition-all">
-                            <input type="text" id="editPron" placeholder="Pronunciation" class="w-full px-4 py-2 bg-slate-50 border border-transparent rounded-xl font-serif italic text-xl outline-none focus:bg-white focus:border-blue-100 transition-all">
+                        <div class="grid grid-cols-1 gap-3">
+                            <input type="text" id="editWord" placeholder="Word / Phrase" class="w-full px-2 py-1 bg-slate-50 border border-transparent rounded-xl font-black outline-none focus:bg-white focus:border-blue-100 transition-all">
+                            <input type="text" id="editPron" placeholder="Pronunciation" class="w-full px-2 py-1 bg-slate-50 border border-transparent rounded-xl font-serif italic text-lg outline-none focus:bg-white focus:border-blue-100 transition-all">
                         </div>
                         <div id="metadataDisplay" class="flex flex-wrap gap-2 pt-2 border-t border-slate-50"></div>
                     </div>
 
-                    <div id="sensesContainer" class="space-y-8"></div>
+                    <div id="sensesContainer" class="space-y-6"></div>
                     
                     <div id="editModeControls" class="hidden">
                         <button onclick="addSense()" class="w-full py-4 border-2 border-dashed border-slate-300 rounded-2xl text-slate-400 font-bold bg-white/50 hover:bg-white transition-all shadow-sm">
@@ -230,12 +248,12 @@
                         </button>
                     </div>
 
-                    <div id="examplesSection" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <div id="examplesSection" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
                         <div class="flex items-center justify-between">
                             <h3 class="text-[10px] font-black text-purple-600 uppercase tracking-widest flex items-center gap-1">
                                 <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> SENTENCE
                             </h3>
-                            <button id="addExampleBtn" class="hidden text-purple-600 text-[10px] font-black">+ ADD EXAMPLE</button>
+                            <button id="addExampleBtn" class="hidden text-purple-600 text-[10px] font-black">+ ADD</button>
                         </div>
                         <div id="examplesContainer" class="space-y-3"></div>
                     </div>
@@ -303,8 +321,9 @@
         let currentMode = 'view';
         let editingIndex = -1;
         let activeSearchTargets = new Set();
+        // State to track if we are viewing details on mobile
+        let isMobileDetailView = false;
 
-        // ★自動読み込みするファイルリスト (wordlistフォルダを作ってその中に入れてください)
         const defaultDataFiles = [
             'wordlist/Gr25_sp.json',
             'wordlist/Gr25_t1-1200.json',
@@ -313,7 +332,11 @@
 
         const els = {
             fileInput: document.getElementById('fileInput'),
+            fileInputMobile: document.getElementById('fileInputMobile'),
             resultsList: document.getElementById('resultsList'),
+            sidebarArea: document.getElementById('sidebarArea'),
+            contentArea: document.getElementById('contentArea'),
+            mobileBackBtn: document.getElementById('mobileBackBtn'),
             viewModeBtn: document.getElementById('viewModeBtn'),
             editModeBtn: document.getElementById('editModeBtn'),
             exportBtn: document.getElementById('exportBtn'),
@@ -378,8 +401,10 @@
             lucide.createIcons();
             loadSettings();
             
-            // イベントリスナー設定
+            // Events
             els.fileInput.addEventListener('change', handleFileUpload);
+            els.fileInputMobile.addEventListener('change', handleFileUpload);
+            
             [els.searchHeadword, els.searchMeaning, els.searchKeyword, els.filterPos, els.filterGrade, els.filterTags, els.filterSource, els.sortOrder].forEach(el => {
                 el.addEventListener('input', () => { updateFilterHighlighting(); renderList(); });
             });
@@ -403,8 +428,14 @@
             els.closeSourceModalBtn.addEventListener('click', () => els.sourceModal.classList.add('hidden'));
             els.openSettingsBtn.addEventListener('click', () => els.settingsModal.classList.remove('hidden'));
             els.closeSettingsBtn.addEventListener('click', () => els.settingsModal.classList.add('hidden'));
+            
+            // Mobile specific
+            els.mobileBackBtn.addEventListener('click', closeMobileDetail);
+            window.addEventListener('resize', handleResize);
+
             [els.rangeBaseFont, els.rangeWordFont, els.rangeContentFont, els.rangeRelWordFont, els.rangeTypeFont, els.rangeExEnFont, els.rangeExJaFont].forEach(el => el.addEventListener('input', applySettings));
             els.resetSettingsBtn.addEventListener('click', resetSettings);
+            
             [els.editWord, els.editPron].forEach(input => {
                 input.addEventListener('input', () => {
                     if (editingIndex === -1 || currentMode === 'view') return;
@@ -414,28 +445,57 @@
                 });
             });
 
-            // ★初期データの読み込みを開始
             loadInitialData();
         }
 
-        // ★自動読み込み用の関数
+        // Mobile Layout Handlers
+        function openMobileDetail() {
+            if (window.innerWidth < 768) {
+                isMobileDetailView = true;
+                els.sidebarArea.classList.add('hidden');
+                els.contentArea.classList.remove('hidden');
+                els.mobileBackBtn.classList.remove('hidden');
+            }
+        }
+
+        function closeMobileDetail() {
+            isMobileDetailView = false;
+            els.sidebarArea.classList.remove('hidden');
+            els.contentArea.classList.add('hidden');
+            els.mobileBackBtn.classList.add('hidden');
+        }
+
+        function handleResize() {
+            if (window.innerWidth >= 768) {
+                // Desktop view - reset to standard layout
+                els.sidebarArea.classList.remove('hidden');
+                els.contentArea.classList.remove('hidden');
+                els.mobileBackBtn.classList.add('hidden');
+            } else {
+                // Mobile view - respect state
+                if (isMobileDetailView) {
+                    els.sidebarArea.classList.add('hidden');
+                    els.contentArea.classList.remove('hidden');
+                    els.mobileBackBtn.classList.remove('hidden');
+                } else {
+                    els.sidebarArea.classList.remove('hidden');
+                    els.contentArea.classList.add('hidden');
+                    els.mobileBackBtn.classList.add('hidden');
+                }
+            }
+        }
+
         async function loadInitialData() {
             let loadedCount = 0;
             for (const filePath of defaultDataFiles) {
                 try {
                     const response = await fetch(filePath);
-                    if (!response.ok) {
-                        console.warn(`File not found or failed to load: ${filePath}`);
-                        continue; 
-                    }
+                    if (!response.ok) { continue; }
                     const data = await response.json();
                     if (Array.isArray(data)) {
-                        // ファイル名からSourceを推測 (パスを除去してファイル名だけに)
                         const fileName = filePath.split('/').pop();
                         const inferredSource = fileName.split('_')[0].split('-')[0].replace('.json', '');
-                        
                         const normalizedData = data.map(item => {
-                            // 既存の正規化ロジックを再利用
                             const title = item.word || item.phrase || "UNTITLED";
                             const subID = item.subID || item.id || "";
                             let senses = item.senses;
@@ -452,17 +512,13 @@
                         dictionaryData = dictionaryData.concat(normalizedData);
                         loadedCount++;
                     }
-                } catch (err) {
-                    console.warn(`Error loading ${filePath}:`, err);
-                }
+                } catch (err) { console.warn(`Error loading ${filePath}:`, err); }
             }
-
             if (dictionaryData.length > 0) {
                 updateDropdowns();
                 renderList();
                 els.fileInfoDisplay.classList.remove('hidden');
                 els.activeWordCount.innerText = dictionaryData.length;
-                console.log(`Loaded ${loadedCount} default files. Total items: ${dictionaryData.length}`);
             }
         }
 
@@ -491,7 +547,7 @@
         }
 
         function loadSettings() {
-            const s = JSON.parse(localStorage.getItem('sensepro_v21_settings') || '{"base":14,"word":1.8,"content":0.9,"relW":0.9,"type":0.7,"exEn":0.9,"exJa":0.8}');
+            const s = JSON.parse(localStorage.getItem('sensepro_v22_settings') || '{"base":14,"word":1.8,"content":0.9,"relW":0.9,"type":0.7,"exEn":0.9,"exJa":0.8}');
             els.rangeBaseFont.value = s.base; els.rangeWordFont.value = s.word; els.rangeContentFont.value = s.content;
             els.rangeRelWordFont.value = s.relW; els.rangeTypeFont.value = s.type; els.rangeExEnFont.value = s.exEn; els.rangeExJaFont.value = s.exJa;
             applySettings();
@@ -513,7 +569,7 @@
             els.valBaseFont.innerText = b + 'px'; els.valWordFont.innerText = w + 'rem'; els.valContentFont.innerText = c + 'rem';
             els.valRelWordFont.innerText = rw + 'rem'; els.valTypeFont.innerText = t + 'rem'; els.valExEnFont.innerText = ee + 'rem'; els.valExJaFont.innerText = ej + 'rem';
             
-            localStorage.setItem('sensepro_v21_settings', JSON.stringify({ base:b, word:w, content:c, relW:rw, type:t, exEn:ee, exJa:ej }));
+            localStorage.setItem('sensepro_v22_settings', JSON.stringify({ base:b, word:w, content:c, relW:rw, type:t, exEn:ee, exJa:ej }));
         }
 
         function resetSettings() {
@@ -588,6 +644,10 @@
 
             const isView = currentMode === 'view';
             [els.editWord, els.editPron].forEach(input => { input.readOnly = isView; input.classList.toggle('disabled-input', isView); });
+            
+            // Trigger mobile view switch
+            openMobileDetail();
+            
             renderSenses(); renderExamples(); renderList(); lucide.createIcons();
         }
 
@@ -604,8 +664,8 @@
                 const hasRelated = related.some(rw => rw.word?.trim()), hasPhrases = phrases.some(p => p.phrase?.trim());
 
                 return `
-                <div class="sense-card bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-6">
-                    <div class="flex items-center justify-between border-b border-slate-50 pb-3">
+                <div class="sense-card bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200 space-y-5">
+                    <div class="flex items-center justify-between border-b border-slate-50 pb-2">
                         <div class="flex items-center gap-2">
                             <span class="type-label-text font-black text-slate-400 uppercase flex items-center gap-1"><i data-lucide="tag" class="w-3 h-3"></i> POS</span>
                             <input type="text" value="${s.pos || ''}" oninput="updateSenseProp(${si}, 'pos', this.value)" class="${inputClass} px-3 py-1 rounded-lg text-xs font-bold w-32 outline-none border border-transparent shadow-sm" ${disabledAttr}>
@@ -615,75 +675,79 @@
                     <div class="space-y-3">
                         <div class="flex items-center justify-between">
                             <label class="type-label-text font-black text-blue-500 uppercase flex items-center gap-1"><i data-lucide="book" class="w-3 h-3"></i> Meaning</label>
-                            ${!isView ? `<button onclick="addDefinition(${si})" class="text-blue-500 text-[10px] font-black hover:underline">+ ADD MEANING</button>` : ''}
+                            ${!isView ? `<button onclick="addDefinition(${si})" class="text-blue-500 text-[10px] font-black hover:underline">+ ADD</button>` : ''}
                         </div>
                         <div class="space-y-2">
                             ${defs.map((d, di) => `
-                                <div class="flex gap-2 items-center group">
-                                    <input type="text" value="${d.meaning}" oninput="updateDefinition(${si}, ${di}, 'meaning', this.value)" class="${inputClass} meaning-text flex-1 px-4 py-2 rounded-xl outline-none shadow-sm border border-transparent" ${disabledAttr}>
-                                    <select onchange="updateDefinition(${si}, ${di}, 'grade', this.value)" class="${isView?'pointer-events-none':'bg-white'} border border-slate-200 rounded-xl text-xs font-bold px-2 py-2 outline-none" ${isView?'disabled':''}>
-                                        <option value="1" ${d.grade==1?'selected':''}>G1</option><option value="2" ${d.grade==2?'selected':''}>G2</option><option value="3" ${d.grade==3?'selected':''}>G3</option><option value="4" ${d.grade==4?'selected':''}>G4</option>
-                                    </select>
-                                    ${!isView ? `<button onclick="removeDefinition(${si}, ${di})" class="text-slate-200 hover:text-red-400 opacity-0 group-hover:opacity-100"><i data-lucide="x" class="w-4 h-4"></i></button>` : ''}
+                                <div class="flex gap-2 items-center group flex-wrap md:flex-nowrap">
+                                    <input type="text" value="${d.meaning}" oninput="updateDefinition(${si}, ${di}, 'meaning', this.value)" class="${inputClass} meaning-text w-full md:flex-1 px-4 py-2 rounded-xl outline-none shadow-sm border border-transparent" ${disabledAttr}>
+                                    <div class="flex gap-2 w-full md:w-auto">
+                                        <select onchange="updateDefinition(${si}, ${di}, 'grade', this.value)" class="${isView?'pointer-events-none':'bg-white'} border border-slate-200 rounded-xl text-xs font-bold px-2 py-2 outline-none w-20" ${isView?'disabled':''}>
+                                            <option value="1" ${d.grade==1?'selected':''}>G1</option><option value="2" ${d.grade==2?'selected':''}>G2</option><option value="3" ${d.grade==3?'selected':''}>G3</option><option value="4" ${d.grade==4?'selected':''}>G4</option>
+                                        </select>
+                                        ${!isView ? `<button onclick="removeDefinition(${si}, ${di})" class="text-slate-200 hover:text-red-400 opacity-100"><i data-lucide="x" class="w-4 h-4"></i></button>` : ''}
+                                    </div>
                                 </div>`).join('')}
                         </div>
                     </div>
                     ${(!isView || hasUsage) ? `
                     <div class="space-y-3">
                         <div class="flex items-center justify-between"><label class="type-label-text font-black text-cyan-600 uppercase flex items-center gap-1"><i data-lucide="activity" class="w-3 h-3"></i> Usage</label>
-                            ${!isView ? `<button onclick="addUsage(${si})" class="text-cyan-600 text-[10px] font-black hover:underline">+ ADD USAGE</button>` : ''}
+                            ${!isView ? `<button onclick="addUsage(${si})" class="text-cyan-600 text-[10px] font-black hover:underline">+ ADD</button>` : ''}
                         </div>
-                        <div class="flex flex-wrap gap-2">
+                        <div class="flex flex-col gap-2">
                             ${usage.map((u, ui) => (!isView || u.content?.trim()) ? `
-                                <div class="inline-flex items-center gap-1 bg-cyan-50 px-3 py-1.5 rounded-xl border border-cyan-100 text-[10px] group min-w-[320px] flex-1">
-                                    <input type="text" value="${u.type || ''}" oninput="updateUsage(${si}, ${ui}, 'type', this.value)" placeholder="タイプ" class="bg-white type-label-text border border-cyan-50 px-2 py-1 rounded w-32 outline-none text-cyan-500 font-bold" ${disabledAttr}>
-                                    <input type="text" value="${u.content || ''}" oninput="updateUsage(${si}, ${ui}, 'content', this.value)" placeholder="内容" class="bg-white border border-cyan-50 px-2 py-1 rounded flex-1 outline-none font-black text-cyan-800 usage-text" ${disabledAttr}>
-                                    ${!isView ? `<button onclick="removeUsage(${si}, ${ui})" class="text-cyan-200 hover:text-red-400 ml-1"><i data-lucide="x" class="w-3 h-3"></i></button>` : ''}
+                                <div class="flex flex-col md:flex-row md:items-center gap-1 bg-cyan-50 px-3 py-2 rounded-xl border border-cyan-100 text-[10px] group">
+                                    <input type="text" value="${u.type || ''}" oninput="updateUsage(${si}, ${ui}, 'type', this.value)" placeholder="タイプ" class="bg-white type-label-text border border-cyan-50 px-2 py-1 rounded w-full md:w-32 outline-none text-cyan-500 font-bold" ${disabledAttr}>
+                                    <input type="text" value="${u.content || ''}" oninput="updateUsage(${si}, ${ui}, 'content', this.value)" placeholder="内容" class="bg-white border border-cyan-50 px-2 py-1 rounded w-full md:flex-1 outline-none font-black text-cyan-800 usage-text" ${disabledAttr}>
+                                    ${!isView ? `<button onclick="removeUsage(${si}, ${ui})" class="text-cyan-200 hover:text-red-400 self-end md:self-auto"><i data-lucide="x" class="w-3 h-3"></i></button>` : ''}
                                 </div>` : '').join('')}
                         </div>
                     </div>` : ''}
                     ${(!isView || hasNotes) ? `
                     <div class="space-y-3">
                         <div class="flex items-center justify-between"><label class="type-label-text font-black text-amber-600 uppercase flex items-center gap-1"><i data-lucide="info" class="w-3 h-3"></i> Notes</label>
-                            ${!isView ? `<button onclick="addNote(${si})" class="text-amber-600 text-[10px] font-black hover:underline">+ ADD NOTE</button>` : ''}
+                            ${!isView ? `<button onclick="addNote(${si})" class="text-amber-600 text-[10px] font-black hover:underline">+ ADD</button>` : ''}
                         </div>
                         <div class="flex flex-col gap-2">
                             ${notes.map((n, ni) => (!isView || n.semantic?.content?.trim()) ? `
-                                <div class="flex items-center gap-1 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-100 text-[10px] group w-full">
-                                    <input type="text" value="${n.semantic?.type || '備考'}" oninput="updateNote(${si}, ${ni}, 'type', this.value)" class="bg-white type-label-text border border-amber-50 px-2 py-1 rounded w-32 outline-none text-amber-600 font-bold" ${disabledAttr}>
-                                    <input type="text" value="${n.semantic?.content || ''}" oninput="updateNote(${si}, ${ni}, 'content', this.value)" placeholder="内容" class="bg-white border border-amber-50 px-2 py-1 rounded flex-1 outline-none text-amber-800 font-medium note-text" ${disabledAttr}>
-                                    ${!isView ? `<button onclick="removeNote(${si}, ${ni})" class="text-amber-200 hover:text-red-400 opacity-0 group-hover:opacity-100 ml-1"><i data-lucide="x" class="w-3.5 h-3.5"></i></button>` : ''}
+                                <div class="flex flex-col md:flex-row md:items-center gap-1 bg-amber-50 px-3 py-2 rounded-xl border border-amber-100 text-[10px] group">
+                                    <input type="text" value="${n.semantic?.type || '備考'}" oninput="updateNote(${si}, ${ni}, 'type', this.value)" class="bg-white type-label-text border border-amber-50 px-2 py-1 rounded w-full md:w-32 outline-none text-amber-600 font-bold" ${disabledAttr}>
+                                    <input type="text" value="${n.semantic?.content || ''}" oninput="updateNote(${si}, ${ni}, 'content', this.value)" placeholder="内容" class="bg-white border border-amber-50 px-2 py-1 rounded w-full md:flex-1 outline-none text-amber-800 font-medium note-text" ${disabledAttr}>
+                                    ${!isView ? `<button onclick="removeNote(${si}, ${ni})" class="text-amber-200 hover:text-red-400 self-end md:self-auto"><i data-lucide="x" class="w-3.5 h-3.5"></i></button>` : ''}
                                 </div>` : '').join('')}
                         </div>
                     </div>` : ''}
                     ${(!isView || hasRelated) ? `
                     <div class="space-y-3">
                         <div class="flex items-center justify-between"><label class="type-label-text font-black text-indigo-600 uppercase flex items-center gap-1"><i data-lucide="link" class="w-3 h-3"></i> Related</label>
-                            ${!isView ? `<button onclick="addRelatedWord(${si})" class="text-indigo-600 text-[10px] font-black hover:underline">+ ADD RELATED</button>` : ''}
+                            ${!isView ? `<button onclick="addRelatedWord(${si})" class="text-indigo-600 text-[10px] font-black hover:underline">+ ADD</button>` : ''}
                         </div>
                         <div class="flex flex-col gap-2">
                             ${related.map((rw, rwi) => (!isView || rw.word?.trim()) ? `
-                                <div class="flex items-center gap-2 bg-indigo-50/30 p-2.5 rounded-xl border border-indigo-100 group">
-                                    <input type="text" value="${rw.type || ''}" oninput="updateRelatedWord(${si}, ${rwi}, 'type', this.value)" placeholder="関連" class="bg-white px-2 py-1 rounded border border-indigo-50 type-label-text w-24 font-bold text-indigo-400 outline-none" ${disabledAttr}>
-                                    <input type="text" value="${rw.word || ''}" oninput="updateRelatedWord(${si}, ${rwi}, 'word', this.value)" placeholder="単語" class="bg-white px-3 py-1.5 rounded border border-indigo-50 flex-1 font-black text-indigo-900 rel-word-text outline-none" ${disabledAttr}>
-                                    <input type="text" value="${rw.meaning || ''}" oninput="updateRelatedWord(${si}, ${rwi}, 'meaning', this.value)" placeholder="意味" class="bg-white px-3 py-1.5 rounded border border-indigo-50 flex-1 text-indigo-600 meaning-text outline-none" ${disabledAttr}>
-                                    ${!isView ? `<button onclick="removeRelatedWord(${si}, ${rwi})" class="text-indigo-200 hover:text-red-400 opacity-0 group-hover:opacity-100 px-1 transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
+                                <div class="flex flex-col md:flex-row items-center gap-2 bg-indigo-50/30 p-2.5 rounded-xl border border-indigo-100 group">
+                                    <div class="flex w-full md:w-auto gap-2">
+                                        <input type="text" value="${rw.type || ''}" oninput="updateRelatedWord(${si}, ${rwi}, 'type', this.value)" placeholder="関連" class="bg-white px-2 py-1 rounded border border-indigo-50 type-label-text w-16 font-bold text-indigo-400 outline-none" ${disabledAttr}>
+                                        <input type="text" value="${rw.word || ''}" oninput="updateRelatedWord(${si}, ${rwi}, 'word', this.value)" placeholder="単語" class="bg-white px-3 py-1.5 rounded border border-indigo-50 flex-1 font-black text-indigo-900 rel-word-text outline-none" ${disabledAttr}>
+                                    </div>
+                                    <input type="text" value="${rw.meaning || ''}" oninput="updateRelatedWord(${si}, ${rwi}, 'meaning', this.value)" placeholder="意味" class="bg-white px-3 py-1.5 rounded border border-indigo-50 w-full md:flex-1 text-indigo-600 meaning-text outline-none" ${disabledAttr}>
+                                    ${!isView ? `<button onclick="removeRelatedWord(${si}, ${rwi})" class="text-indigo-200 hover:text-red-400 self-end md:self-auto"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
                                 </div>` : '').join('')}
                         </div>
                     </div>` : ''}
                     ${(!isView || hasPhrases) ? `
                     <div class="space-y-4">
                         <div class="flex items-center justify-between"><label class="type-label-text font-black text-emerald-600 uppercase flex items-center gap-1"><i data-lucide="git-branch" class="w-3.5 h-3.5"></i> Phrases</label>
-                            ${!isView ? `<button onclick="addPhrase(${si})" class="text-emerald-600 text-[10px] font-black hover:underline">+ ADD PHRASE</button>` : ''}
+                            ${!isView ? `<button onclick="addPhrase(${si})" class="text-emerald-600 text-[10px] font-black hover:underline">+ ADD</button>` : ''}
                         </div>
                         <div class="grid grid-cols-1 gap-3">
                             ${phrases.map((p, pi) => (!isView || p.phrase?.trim()) ? `
                                 <div class="phrase-card bg-emerald-50/10 p-4 rounded-2xl border border-emerald-50 space-y-3 relative group">
                                     <input type="text" value="${p.phrase}" oninput="updatePhraseProp(${si}, ${pi}, 'phrase', this.value)" class="${isView?'disabled-input':'bg-white shadow-sm border-emerald-50'} w-full px-3 py-2 rounded-xl font-black text-emerald-700 outline-none border phrase-text" ${disabledAttr}>
-                                    <div class="pl-4 border-l-2 border-emerald-100 space-y-2">
+                                    <div class="pl-2 border-l-2 border-emerald-100 space-y-2">
                                         ${(p.definitions || []).map((pd, pdi) => `<input type="text" value="${pd.meaning}" oninput="updatePhraseDef(${si}, ${pi}, ${pdi}, 'meaning', this.value)" class="${isView?'disabled-input':'bg-white'} w-full px-3 py-1.5 rounded-lg text-xs outline-none shadow-sm phrase-text" ${disabledAttr} placeholder="意味">`).join('')}
                                     </div>
-                                    ${!isView ? `<button onclick="removePhrase(${si}, ${pi})" class="absolute top-2 right-2 text-emerald-200 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
+                                    ${!isView ? `<button onclick="removePhrase(${si}, ${pi})" class="absolute top-2 right-2 text-emerald-200 hover:text-red-500 opacity-100 md:opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
                                 </div>` : '').join('')}
                         </div>
                     </div>` : ''}
@@ -701,11 +765,12 @@
                 <div class="example-card p-4 rounded-2xl border border-purple-100 space-y-2 relative group hover:shadow-md transition-all">
                     <textarea oninput="updateExample(${i}, 'en', this.value)" class="${isView?'disabled-input':'bg-white border-purple-50'} w-full font-bold text-purple-900 outline-none min-h-[40px] px-3 py-2 rounded-xl border ex-en-text" ${isView?'readonly':''}>${ex.en}</textarea>
                     <input type="text" value="${ex.ja}" oninput="updateExample(${i}, 'ja', this.value)" placeholder="日本語訳" class="${isView?'disabled-input':'bg-white border-purple-50'} w-full text-purple-700 outline-none px-3 py-1.5 rounded-lg border shadow-sm ex-ja-text" ${isView?'readonly':''}>
-                    ${!isView ? `<button onclick="removeExample(${i})" class="absolute top-2 right-2 text-purple-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="x-circle" class="w-4.5 h-4.5"></i></button>` : ''}
+                    ${!isView ? `<button onclick="removeExample(${i})" class="absolute top-2 right-2 text-purple-300 hover:text-red-500 opacity-100 md:opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="x-circle" class="w-4.5 h-4.5"></i></button>` : ''}
                 </div>` : '').join('');
             lucide.createIcons();
         }
 
+        // --- Data Update Functions ---
         function updateSenseProp(si, key, val) { dictionaryData[editingIndex].senses[si][key] = val; renderList(); if(key==='pos') updateDropdowns(); }
         function updateDefinition(si, di, key, val) { dictionaryData[editingIndex].senses[si].definitions[di][key] = (key==='grade')?parseInt(val):val; renderList(); }
         function addDefinition(si) { dictionaryData[editingIndex].senses[si].definitions.push({ meaning: "", grade: 1 }); renderSenses(); }
@@ -830,6 +895,7 @@
                 dictionaryData.splice(editingIndex, 1); editingIndex = -1;
                 els.editorForm.classList.add('hidden'); els.editorPlaceholder.classList.remove('hidden');
                 els.activeWordCount.innerText = dictionaryData.length; updateDropdowns(); renderList();
+                if(isMobileDetailView) closeMobileDetail();
             }
         }
 
