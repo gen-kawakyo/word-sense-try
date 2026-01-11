@@ -335,6 +335,7 @@
     </div>
 
     <script>
+        /* --- State & Config --- */
         let dictionaryData = [];
         let currentMode = 'view';
         let editingIndex = -1;
@@ -419,11 +420,16 @@
             resetSettingsBtn: document.getElementById('resetSettingsBtn'),
         };
 
+        /* --- Initialization --- */
         function init() {
             lucide.createIcons();
             loadSettings();
             initAlphaButtons();
             
+            // Initial data loading
+            loadInitialData();
+
+            // Set up event listeners
             els.fileInput.addEventListener('change', handleFileUpload);
             
             [els.searchHeadword, els.searchMeaning, els.searchKeyword, els.filterPos, els.filterGrade, els.filterTags, els.filterSource, els.sortOrder].forEach(el => {
@@ -486,35 +492,90 @@
                     renderList();
                 });
             });
-
-            loadInitialData();
         }
 
-        function initAlphaButtons() {
-            const chars = ['ALL', ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')];
-            els.mobileAlphaFilter.innerHTML = chars.map(c => 
-                `<button onclick="filterByChar('${c}')" data-char="${c}" class="az-btn flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 text-slate-500 font-bold text-xs border border-slate-200 hover:bg-blue-50 transition-all ${c==='ALL'?'active':''}">${c}</button>`
-            ).join('');
-        }
-
-        window.filterByChar = (char) => {
-            document.querySelectorAll('.az-btn').forEach(b => b.classList.remove('active'));
-            document.querySelector(`.az-btn[data-char="${char}"]`).classList.add('active');
-            
-            if(char === 'ALL') {
-                 els.searchHeadword.value = '';
-            } else {
-                 els.searchHeadword.value = char;
+        /* --- Logic: Data Processing & Persistence --- */
+        async function loadInitialData() {
+            let loadedCount = 0;
+            for (const filePath of defaultDataFiles) {
+                try {
+                    const response = await fetch(filePath);
+                    if (!response.ok) { continue; }
+                    const data = await response.json();
+                    if (Array.isArray(data)) {
+                        const fileName = filePath.split('/').pop();
+                        const inferredSource = fileName.split('_')[0].split('-')[0].replace('.json', '');
+                        const normalizedData = data.map(item => {
+                            const title = item.word || item.phrase || "UNTITLED";
+                            const subID = item.subID || item.id || "";
+                            let senses = item.senses;
+                            if (!senses && (item.definitions || item.notes)) {
+                                senses = [{ pos: "句", definitions: item.definitions || [], notes: item.notes || [], phrases: [], usage: [], related_words: [] }];
+                            }
+                            return {
+                                ...item, word: title, pronunciation: item.pronunciation || "",
+                                dataSource: item.dataSource || inferredSource || "Unknown",
+                                subID: subID.toString(), senses: senses || [], examples: item.examples || [],
+                                tags: item.tags || [], classification: item.classification || null
+                            };
+                        });
+                        dictionaryData = dictionaryData.concat(normalizedData);
+                        loadedCount++;
+                    }
+                } catch (err) { console.warn(`Error loading ${filePath}:`, err); }
             }
-            renderList();
+            if (dictionaryData.length > 0) {
+                updateDropdowns();
+                renderList();
+                els.fileInfoDisplay.classList.remove('hidden');
+                els.activeWordCount.innerText = dictionaryData.length;
+            }
         }
 
-        function autoResize(textarea) {
-            textarea.style.height = 'auto';
-            textarea.style.height = textarea.scrollHeight + 'px';
+        async function handleFileUpload(e) {
+            const files = e.target.files;
+            let tempNewData = [];
+            for (const file of files) {
+                try {
+                    const text = await file.text();
+                    const data = JSON.parse(text);
+                    if (Array.isArray(data)) {
+                        const inferredSource = file.name.split('_')[0].split('-')[0];
+                        const normalizedData = data.map(item => {
+                            const title = item.word || item.phrase || "UNTITLED";
+                            const subID = item.subID || item.id || "";
+                            let senses = item.senses;
+                            if (!senses && (item.definitions || item.notes)) {
+                                senses = [{ pos: "句", definitions: item.definitions || [], notes: item.notes || [], phrases: [], usage: [], related_words: [] }];
+                            }
+                            return {
+                                ...item, word: title, pronunciation: item.pronunciation || "",
+                                dataSource: item.dataSource || inferredSource || "Unknown",
+                                subID: subID.toString(), senses: senses || [], examples: item.examples || [],
+                                tags: item.tags || [], classification: item.classification || null
+                            };
+                        });
+                        tempNewData = tempNewData.concat(normalizedData);
+                    }
+                } catch (err) { alert('JSON形式エラー: ' + file.name); }
+            }
+            if(tempNewData.length > 0) {
+                dictionaryData = dictionaryData.concat(tempNewData);
+                updateDropdowns(); renderList();
+                els.fileInfoDisplay.classList.remove('hidden');
+                els.activeWordCount.innerText = dictionaryData.length;
+            }
+            e.target.value = '';
         }
 
-        // Logic to separate Words and Phrases
+        function exportJson() {
+            const blob = new Blob([JSON.stringify(dictionaryData, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+            a.download = `SensePro_Data_${new Date().toISOString().slice(0,10)}.json`; a.click();
+        }
+
+        /* --- Logic: Display Item Generation --- */
+        // Separates raw data into displayable items based on current mode (Word vs Phrase)
         function getDisplayItems() {
             let items = [];
             if (!dictionaryData) return [];
@@ -573,6 +634,7 @@
             return items;
         }
 
+        /* --- UI: Rendering --- */
         function renderList() {
             const hQ = els.searchHeadword.value.trim(), mQ = els.searchMeaning.value.trim(), kQ = els.searchKeyword.value.trim();
             const posF = els.filterPos.value, gradeF = els.filterGrade.value, tagF = els.filterTags.value, srcF = els.filterSource.value, sort = els.sortOrder.value;
@@ -665,247 +727,6 @@
                     ${item.isPhrase ? `<div class="text-[9px] text-slate-400 mt-1"><i data-lucide="corner-down-right" class="w-3 h-3 inline"></i> ${item.word}</div>` : ''}
                 </div>`).join('');
             lucide.createIcons();
-        }
-        
-        function updateSenseProp(si, key, val) { dictionaryData[editingIndex].senses[si][key] = val; renderList(); if(key==='pos') updateDropdowns(); }
-        function updateDefinition(si, di, key, val) { dictionaryData[editingIndex].senses[si].definitions[di][key] = (key==='grade')?parseInt(val):val; renderList(); }
-        function addDefinition(si) { dictionaryData[editingIndex].senses[si].definitions.push({ meaning: "", grade: 1 }); renderSenses(); }
-        function removeDefinition(si, di) { dictionaryData[editingIndex].senses[si].definitions.splice(di, 1); renderSenses(); renderList(); }
-        function updateUsage(si, ui, key, val) { if(!dictionaryData[editingIndex].senses[si].usage) dictionaryData[editingIndex].senses[si].usage = []; dictionaryData[editingIndex].senses[si].usage[ui][key] = val; renderList(); }
-        function addUsage(si) { if(!dictionaryData[editingIndex].senses[si].usage) dictionaryData[editingIndex].senses[si].usage = []; dictionaryData[editingIndex].senses[si].usage.push({ type: "活用", content: "" }); renderSenses(); }
-        function removeUsage(si, ui) { dictionaryData[editingIndex].senses[si].usage.splice(ui, 1); renderSenses(); renderList(); }
-        function updateNote(si, ni, key, val) { let s = dictionaryData[editingIndex].senses[si]; if(!Array.isArray(s.notes)) s.notes = s.notes ? [{ semantic: { type: "備考", content: s.notes } }] : []; s.notes[ni].semantic[key] = val; renderList(); }
-        function addNote(si) { let s = dictionaryData[editingIndex].senses[si]; if(!Array.isArray(s.notes)) s.notes = s.notes ? [{ semantic: { type: "備考", content: s.notes } }] : []; s.notes.push({ semantic: { type: "備考", content: "" } }); renderSenses(); }
-        function removeNote(si, ni) { dictionaryData[editingIndex].senses[si].notes.splice(ni, 1); renderSenses(); renderList(); }
-        function updateRelatedWord(si, rwi, key, val) { if(!dictionaryData[editingIndex].senses[si].related_words) dictionaryData[editingIndex].senses[si].related_words = []; dictionaryData[editingIndex].senses[si].related_words[rwi][key] = val; renderList(); }
-        function addRelatedWord(si) { if(!dictionaryData[editingIndex].senses[si].related_words) dictionaryData[editingIndex].senses[si].related_words = []; dictionaryData[editingIndex].senses[si].related_words.push({ type: "関連", word: "", meaning: "" }); renderSenses(); }
-        function removeRelatedWord(si, rwi) { dictionaryData[editingIndex].senses[si].related_words.splice(rwi, 1); renderSenses(); renderList(); }
-        function updatePhraseProp(si, pi, key, val) { dictionaryData[editingIndex].senses[si].phrases[pi][key] = val; renderList(); }
-        function updatePhraseDef(si, pi, pdi, key, val) { dictionaryData[editingIndex].senses[si].phrases[pi].definitions[pdi][key] = val; renderList(); }
-        function addPhrase(si) { if(!dictionaryData[editingIndex].senses[si].phrases) dictionaryData[editingIndex].senses[si].phrases = []; dictionaryData[editingIndex].senses[si].phrases.push({ phrase: "", definitions: [{ meaning: "" }] }); renderSenses(); }
-        function removePhrase(si, pi) { dictionaryData[editingIndex].senses[si].phrases.splice(pi, 1); renderSenses(); renderList(); }
-        function updateExample(i, key, val) { dictionaryData[editingIndex].examples[i][key] = val; renderList(); }
-        function addExample() { dictionaryData[editingIndex].examples.push({ en: "", ja: "" }); renderExamples(); }
-        function removeExample(i) { dictionaryData[editingIndex].examples.splice(i, 1); renderExamples(); renderList(); }
-        function addSense() { dictionaryData[editingIndex].senses.push({ pos: "名", definitions: [{meaning: "", grade: 1}], usage: [], notes: [], phrases: [], related_words: [] }); renderSenses(); }
-        function removeSense(si) { if(confirm('このブロックを削除しますか？')) { dictionaryData[editingIndex].senses.splice(si, 1); renderSenses(); renderList(); } }
-
-        function updateDropdowns() {
-            const posSet = new Set(), tagSet = new Set(), srcSet = new Set();
-            dictionaryData.forEach(item => {
-                (item.senses || []).forEach(s => { if(s.pos) posSet.add(s.pos); });
-                (item.tags || []).forEach(t => tagSet.add(t));
-                if(item.dataSource) srcSet.add(item.dataSource);
-            });
-            els.filterPos.innerHTML = '<option value="all">品詞</option>' + Array.from(posSet).sort().map(p => `<option value="${p}">${p}</option>`).join('');
-            els.filterTags.innerHTML = '<option value="all">Tags</option>' + Array.from(tagSet).sort().map(t => `<option value="${t}">${t}</option>`).join('');
-            els.filterSource.innerHTML = '<option value="all">Source</option>' + Array.from(srcSet).sort().map(s => `<option value="${s}">${s}</option>`).join('');
-            updateFilterHighlighting();
-        }
-
-        function addNewWord() {
-            const newW = { word: "NEW ENTRY", pronunciation: "", dataSource: dictionaryData[0]?.dataSource || "MySource", subID: "", senses: [{pos: "名", definitions: [{meaning: "", grade: 1}], usage: [], notes: [], phrases: [], related_words: []}], examples: [], tags: [], classification: null };
-            dictionaryData.unshift(newW); updateDropdowns(); renderList(); openEditor(0);
-        }
-
-        function deleteCurrentWord() {
-            if (editingIndex !== -1 && confirm('削除しますか？')) {
-                dictionaryData.splice(editingIndex, 1); editingIndex = -1;
-                els.editorForm.classList.add('hidden'); els.editorPlaceholder.classList.remove('hidden');
-                els.activeWordCount.innerText = dictionaryData.length; updateDropdowns(); renderList();
-                if(isMobileDetailView) closeMobileDetail();
-            }
-        }
-
-        function bulkRenameDataSource() {
-            const oldId = els.bulkOldId.value.trim(), newId = els.bulkNewId.value.trim();
-            if (!oldId || !newId) return;
-            if (confirm(`ID「${oldId}」を「${newId}」に一括変更しますか？`)) {
-                dictionaryData.forEach(i => { if(i.dataSource === oldId) i.dataSource = newId; });
-                updateDropdowns(); renderList(); els.bulkOldId.value = ""; els.bulkNewId.value = ""; els.sourceModal.classList.add('hidden');
-            }
-        }
-
-        function exportJson() {
-            const blob = new Blob([JSON.stringify(dictionaryData, null, 2)], { type: 'application/json' });
-            const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-            a.download = `SensePro_Data_${new Date().toISOString().slice(0,10)}.json`; a.click();
-        }
-
-        function openMobileDetail() {
-            if (window.innerWidth < 768) {
-                isMobileDetailView = true;
-                els.sidebarArea.classList.add('hidden');
-                els.contentArea.classList.remove('hidden');
-                els.mobileBackBtn.classList.remove('hidden');
-            }
-        }
-
-        function closeMobileDetail() {
-            isMobileDetailView = false;
-            els.sidebarArea.classList.remove('hidden');
-            els.contentArea.classList.add('hidden');
-            els.mobileBackBtn.classList.add('hidden');
-        }
-
-        function handleResize() {
-            if (window.innerWidth >= 768) {
-                els.sidebarArea.classList.remove('hidden');
-                els.contentArea.classList.remove('hidden');
-                els.mobileBackBtn.classList.add('hidden');
-            } else {
-                if (isMobileDetailView) {
-                    els.sidebarArea.classList.add('hidden');
-                    els.contentArea.classList.remove('hidden');
-                    els.mobileBackBtn.classList.remove('hidden');
-                } else {
-                    els.sidebarArea.classList.remove('hidden');
-                    els.contentArea.classList.add('hidden');
-                    els.mobileBackBtn.classList.add('hidden');
-                }
-            }
-        }
-
-        async function loadInitialData() {
-            let loadedCount = 0;
-            for (const filePath of defaultDataFiles) {
-                try {
-                    const response = await fetch(filePath);
-                    if (!response.ok) { continue; }
-                    const data = await response.json();
-                    if (Array.isArray(data)) {
-                        const fileName = filePath.split('/').pop();
-                        const inferredSource = fileName.split('_')[0].split('-')[0].replace('.json', '');
-                        const normalizedData = data.map(item => {
-                            const title = item.word || item.phrase || "UNTITLED";
-                            const subID = item.subID || item.id || "";
-                            let senses = item.senses;
-                            if (!senses && (item.definitions || item.notes)) {
-                                senses = [{ pos: "句", definitions: item.definitions || [], notes: item.notes || [], phrases: [], usage: [], related_words: [] }];
-                            }
-                            return {
-                                ...item, word: title, pronunciation: item.pronunciation || "",
-                                dataSource: item.dataSource || inferredSource || "Unknown",
-                                subID: subID.toString(), senses: senses || [], examples: item.examples || [],
-                                tags: item.tags || [], classification: item.classification || null
-                            };
-                        });
-                        dictionaryData = dictionaryData.concat(normalizedData);
-                        loadedCount++;
-                    }
-                } catch (err) { console.warn(`Error loading ${filePath}:`, err); }
-            }
-            if (dictionaryData.length > 0) {
-                updateDropdowns();
-                renderList();
-                els.fileInfoDisplay.classList.remove('hidden');
-                els.activeWordCount.innerText = dictionaryData.length;
-            }
-        }
-
-        function updateFilterHighlighting() {
-            const selects = [els.filterPos, els.filterGrade, els.filterSource, els.filterTags];
-            selects.forEach(sel => {
-                if (sel.value !== 'all') sel.classList.add('active-filter');
-                else sel.classList.remove('active-filter');
-            });
-            if (els.sortOrder.value !== 'word_asc') els.sortOrder.classList.add('active-filter');
-            else els.sortOrder.classList.remove('active-filter');
-        }
-
-        function wildcardMatch(target, pattern, isHeadword = false) {
-            if (!target || !pattern) return false;
-            target = target.toString().toLowerCase();
-            pattern = pattern.toString().toLowerCase();
-            if (isHeadword) {
-                if (pattern.startsWith('*')) return target.includes(pattern.substring(1));
-                return target.startsWith(pattern);
-            }
-            if (pattern.startsWith('*') && pattern.endsWith('*')) return target.includes(pattern.slice(1, -1));
-            else if (pattern.startsWith('*')) return target.endsWith(pattern.slice(1));
-            else if (pattern.endsWith('*')) return target.startsWith(pattern.slice(0, -1));
-            return target.includes(pattern);
-        }
-
-        function loadSettings() {
-            const s = JSON.parse(localStorage.getItem('sensepro_v24_settings') || '{"base":14,"word":1.8,"content":0.9,"relW":0.9,"type":0.7,"exEn":0.9,"exJa":0.8}');
-            els.rangeBaseFont.value = s.base; els.rangeWordFont.value = s.word; els.rangeContentFont.value = s.content;
-            els.rangeRelWordFont.value = s.relW; els.rangeTypeFont.value = s.type; els.rangeExEnFont.value = s.exEn; els.rangeExJaFont.value = s.exJa;
-            applySettings();
-        }
-
-        function applySettings() {
-            const b = els.rangeBaseFont.value, w = els.rangeWordFont.value, c = els.rangeContentFont.value, rw = els.rangeRelWordFont.value;
-            const t = els.rangeTypeFont.value, ee = els.rangeExEnFont.value, ej = els.rangeExJaFont.value;
-            
-            const root = document.documentElement;
-            root.style.setProperty('--base-font-size', b + 'px');
-            root.style.setProperty('--word-font-size', w + 'rem');
-            root.style.setProperty('--content-font-size', c + 'rem');
-            root.style.setProperty('--rel-word-size', rw + 'rem');
-            root.style.setProperty('--type-font-size', t + 'rem');
-            root.style.setProperty('--ex-en-font-size', ee + 'rem');
-            root.style.setProperty('--ex-ja-font-size', ej + 'rem');
-
-            els.valBaseFont.innerText = b + 'px'; els.valWordFont.innerText = w + 'rem'; els.valContentFont.innerText = c + 'rem';
-            els.valRelWordFont.innerText = rw + 'rem'; els.valTypeFont.innerText = t + 'rem'; els.valExEnFont.innerText = ee + 'rem'; els.valExJaFont.innerText = ej + 'rem';
-            
-            localStorage.setItem('sensepro_v24_settings', JSON.stringify({ base:b, word:w, content:c, relW:rw, type:t, exEn:ee, exJa:ej }));
-        }
-
-        function resetSettings() {
-            els.rangeBaseFont.value = 14; els.rangeWordFont.value = 1.8; els.rangeContentFont.value = 0.9; els.rangeRelWordFont.value = 0.9;
-            els.rangeTypeFont.value = 0.7; els.rangeExEnFont.value = 0.9; els.rangeExJaFont.value = 0.8;
-            applySettings();
-        }
-
-        async function handleFileUpload(e) {
-            const files = e.target.files;
-            let tempNewData = [];
-            for (const file of files) {
-                try {
-                    const text = await file.text();
-                    const data = JSON.parse(text);
-                    if (Array.isArray(data)) {
-                        const inferredSource = file.name.split('_')[0].split('-')[0];
-                        const normalizedData = data.map(item => {
-                            const title = item.word || item.phrase || "UNTITLED";
-                            const subID = item.subID || item.id || "";
-                            let senses = item.senses;
-                            if (!senses && (item.definitions || item.notes)) {
-                                senses = [{ pos: "句", definitions: item.definitions || [], notes: item.notes || [], phrases: [], usage: [], related_words: [] }];
-                            }
-                            return {
-                                ...item, word: title, pronunciation: item.pronunciation || "",
-                                dataSource: item.dataSource || inferredSource || "Unknown",
-                                subID: subID.toString(), senses: senses || [], examples: item.examples || [],
-                                tags: item.tags || [], classification: item.classification || null
-                            };
-                        });
-                        tempNewData = tempNewData.concat(normalizedData);
-                    }
-                } catch (err) { alert('JSON形式エラー: ' + file.name); }
-            }
-            if(tempNewData.length > 0) {
-                dictionaryData = dictionaryData.concat(tempNewData);
-                updateDropdowns(); renderList();
-                els.fileInfoDisplay.classList.remove('hidden');
-                els.activeWordCount.innerText = dictionaryData.length;
-            }
-            e.target.value = '';
-        }
-
-        function setMode(mode) {
-            currentMode = mode;
-            const isEdit = mode === 'edit';
-            els.editModeBtn.classList.toggle('bg-white', isEdit);
-            els.viewModeBtn.classList.toggle('bg-white', !isEdit);
-            els.addNewBtn.classList.toggle('hidden', !isEdit);
-            els.deleteWordBtn.classList.toggle('hidden', !isEdit);
-            els.editModeControls.classList.toggle('hidden', !isEdit);
-            els.addExampleBtn.classList.toggle('hidden', !isEdit);
-            if (editingIndex !== -1) openEditor(editingIndex);
-            renderList(); lucide.createIcons();
         }
 
         function openEditor(index) {
@@ -1050,6 +871,190 @@
                     ${!isView ? `<button onclick="removeExample(${i})" class="absolute top-2 right-2 text-purple-300 hover:text-red-500 opacity-100 md:opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="x-circle" class="w-4.5 h-4.5"></i></button>` : ''}
                 </div>` : '').join('');
             lucide.createIcons();
+        }
+
+        function updateFilterHighlighting() {
+            const selects = [els.filterPos, els.filterGrade, els.filterSource, els.filterTags];
+            selects.forEach(sel => {
+                if (sel.value !== 'all') sel.classList.add('active-filter');
+                else sel.classList.remove('active-filter');
+            });
+            if (els.sortOrder.value !== 'word_asc') els.sortOrder.classList.add('active-filter');
+            else els.sortOrder.classList.remove('active-filter');
+        }
+
+        /* --- UI: Editor Actions --- */
+        function updateSenseProp(si, key, val) { dictionaryData[editingIndex].senses[si][key] = val; renderList(); if(key==='pos') updateDropdowns(); }
+        function updateDefinition(si, di, key, val) { dictionaryData[editingIndex].senses[si].definitions[di][key] = (key==='grade')?parseInt(val):val; renderList(); }
+        function addDefinition(si) { dictionaryData[editingIndex].senses[si].definitions.push({ meaning: "", grade: 1 }); renderSenses(); }
+        function removeDefinition(si, di) { dictionaryData[editingIndex].senses[si].definitions.splice(di, 1); renderSenses(); renderList(); }
+        function updateUsage(si, ui, key, val) { if(!dictionaryData[editingIndex].senses[si].usage) dictionaryData[editingIndex].senses[si].usage = []; dictionaryData[editingIndex].senses[si].usage[ui][key] = val; renderList(); }
+        function addUsage(si) { if(!dictionaryData[editingIndex].senses[si].usage) dictionaryData[editingIndex].senses[si].usage = []; dictionaryData[editingIndex].senses[si].usage.push({ type: "活用", content: "" }); renderSenses(); }
+        function removeUsage(si, ui) { dictionaryData[editingIndex].senses[si].usage.splice(ui, 1); renderSenses(); renderList(); }
+        function updateNote(si, ni, key, val) { let s = dictionaryData[editingIndex].senses[si]; if(!Array.isArray(s.notes)) s.notes = s.notes ? [{ semantic: { type: "備考", content: s.notes } }] : []; s.notes[ni].semantic[key] = val; renderList(); }
+        function addNote(si) { let s = dictionaryData[editingIndex].senses[si]; if(!Array.isArray(s.notes)) s.notes = s.notes ? [{ semantic: { type: "備考", content: s.notes } }] : []; s.notes.push({ semantic: { type: "備考", content: "" } }); renderSenses(); }
+        function removeNote(si, ni) { dictionaryData[editingIndex].senses[si].notes.splice(ni, 1); renderSenses(); renderList(); }
+        function updateRelatedWord(si, rwi, key, val) { if(!dictionaryData[editingIndex].senses[si].related_words) dictionaryData[editingIndex].senses[si].related_words = []; dictionaryData[editingIndex].senses[si].related_words[rwi][key] = val; renderList(); }
+        function addRelatedWord(si) { if(!dictionaryData[editingIndex].senses[si].related_words) dictionaryData[editingIndex].senses[si].related_words = []; dictionaryData[editingIndex].senses[si].related_words.push({ type: "関連", word: "", meaning: "" }); renderSenses(); }
+        function removeRelatedWord(si, rwi) { dictionaryData[editingIndex].senses[si].related_words.splice(rwi, 1); renderSenses(); renderList(); }
+        function updatePhraseProp(si, pi, key, val) { dictionaryData[editingIndex].senses[si].phrases[pi][key] = val; renderList(); }
+        function updatePhraseDef(si, pi, pdi, key, val) { dictionaryData[editingIndex].senses[si].phrases[pi].definitions[pdi][key] = val; renderList(); }
+        function addPhrase(si) { if(!dictionaryData[editingIndex].senses[si].phrases) dictionaryData[editingIndex].senses[si].phrases = []; dictionaryData[editingIndex].senses[si].phrases.push({ phrase: "", definitions: [{ meaning: "" }] }); renderSenses(); }
+        function removePhrase(si, pi) { dictionaryData[editingIndex].senses[si].phrases.splice(pi, 1); renderSenses(); renderList(); }
+        function updateExample(i, key, val) { dictionaryData[editingIndex].examples[i][key] = val; renderList(); }
+        function addExample() { dictionaryData[editingIndex].examples.push({ en: "", ja: "" }); renderExamples(); }
+        function removeExample(i) { dictionaryData[editingIndex].examples.splice(i, 1); renderExamples(); renderList(); }
+        function addSense() { dictionaryData[editingIndex].senses.push({ pos: "名", definitions: [{meaning: "", grade: 1}], usage: [], notes: [], phrases: [], related_words: [] }); renderSenses(); }
+        function removeSense(si) { if(confirm('このブロックを削除しますか？')) { dictionaryData[editingIndex].senses.splice(si, 1); renderSenses(); renderList(); } }
+
+        function updateDropdowns() {
+            const posSet = new Set(), tagSet = new Set(), srcSet = new Set();
+            dictionaryData.forEach(item => {
+                (item.senses || []).forEach(s => { if(s.pos) posSet.add(s.pos); });
+                (item.tags || []).forEach(t => tagSet.add(t));
+                if(item.dataSource) srcSet.add(item.dataSource);
+            });
+            els.filterPos.innerHTML = '<option value="all">品詞</option>' + Array.from(posSet).sort().map(p => `<option value="${p}">${p}</option>`).join('');
+            els.filterTags.innerHTML = '<option value="all">Tags</option>' + Array.from(tagSet).sort().map(t => `<option value="${t}">${t}</option>`).join('');
+            els.filterSource.innerHTML = '<option value="all">Source</option>' + Array.from(srcSet).sort().map(s => `<option value="${s}">${s}</option>`).join('');
+            updateFilterHighlighting();
+        }
+
+        function addNewWord() {
+            const newW = { word: "NEW ENTRY", pronunciation: "", dataSource: dictionaryData[0]?.dataSource || "MySource", subID: "", senses: [{pos: "名", definitions: [{meaning: "", grade: 1}], usage: [], notes: [], phrases: [], related_words: []}], examples: [], tags: [], classification: null };
+            dictionaryData.unshift(newW); updateDropdowns(); renderList(); openEditor(0);
+        }
+
+        function deleteCurrentWord() {
+            if (editingIndex !== -1 && confirm('削除しますか？')) {
+                dictionaryData.splice(editingIndex, 1); editingIndex = -1;
+                els.editorForm.classList.add('hidden'); els.editorPlaceholder.classList.remove('hidden');
+                els.activeWordCount.innerText = dictionaryData.length; updateDropdowns(); renderList();
+                if(isMobileDetailView) closeMobileDetail();
+            }
+        }
+
+        function bulkRenameDataSource() {
+            const oldId = els.bulkOldId.value.trim(), newId = els.bulkNewId.value.trim();
+            if (!oldId || !newId) return;
+            if (confirm(`ID「${oldId}」を「${newId}」に一括変更しますか？`)) {
+                dictionaryData.forEach(i => { if(i.dataSource === oldId) i.dataSource = newId; });
+                updateDropdowns(); renderList(); els.bulkOldId.value = ""; els.bulkNewId.value = ""; els.sourceModal.classList.add('hidden');
+            }
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            const isEdit = mode === 'edit';
+            els.editModeBtn.classList.toggle('bg-white', isEdit);
+            els.viewModeBtn.classList.toggle('bg-white', !isEdit);
+            els.addNewBtn.classList.toggle('hidden', !isEdit);
+            els.deleteWordBtn.classList.toggle('hidden', !isEdit);
+            els.editModeControls.classList.toggle('hidden', !isEdit);
+            els.addExampleBtn.classList.toggle('hidden', !isEdit);
+            if (editingIndex !== -1) openEditor(editingIndex);
+            renderList(); lucide.createIcons();
+        }
+        
+        /* --- Utils & Helpers --- */
+        function initAlphaButtons() {
+            const chars = ['ALL', ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')];
+            els.mobileAlphaFilter.innerHTML = chars.map(c => 
+                `<button onclick="filterByChar('${c}')" data-char="${c}" class="az-btn flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 text-slate-500 font-bold text-xs border border-slate-200 hover:bg-blue-50 transition-all ${c==='ALL'?'active':''}">${c}</button>`
+            ).join('');
+        }
+
+        window.filterByChar = (char) => {
+            document.querySelectorAll('.az-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector(`.az-btn[data-char="${char}"]`).classList.add('active');
+            if(char === 'ALL') els.searchHeadword.value = '';
+            else els.searchHeadword.value = char;
+            renderList();
+        }
+
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        }
+        
+        function wildcardMatch(target, pattern, isHeadword = false) {
+            if (!target || !pattern) return false;
+            target = target.toString().toLowerCase();
+            pattern = pattern.toString().toLowerCase();
+            if (isHeadword) {
+                if (pattern.startsWith('*')) return target.includes(pattern.substring(1));
+                return target.startsWith(pattern);
+            }
+            if (pattern.startsWith('*') && pattern.endsWith('*')) return target.includes(pattern.slice(1, -1));
+            else if (pattern.startsWith('*')) return target.endsWith(pattern.slice(1));
+            else if (pattern.endsWith('*')) return target.startsWith(pattern.slice(0, -1));
+            return target.includes(pattern);
+        }
+
+        function loadSettings() {
+            const s = JSON.parse(localStorage.getItem('sensepro_v24_settings') || '{"base":14,"word":1.8,"content":0.9,"relW":0.9,"type":0.7,"exEn":0.9,"exJa":0.8}');
+            els.rangeBaseFont.value = s.base; els.rangeWordFont.value = s.word; els.rangeContentFont.value = s.content;
+            els.rangeRelWordFont.value = s.relW; els.rangeTypeFont.value = s.type; els.rangeExEnFont.value = s.exEn; els.rangeExJaFont.value = s.exJa;
+            applySettings();
+        }
+
+        function applySettings() {
+            const b = els.rangeBaseFont.value, w = els.rangeWordFont.value, c = els.rangeContentFont.value, rw = els.rangeRelWordFont.value;
+            const t = els.rangeTypeFont.value, ee = els.rangeExEnFont.value, ej = els.rangeExJaFont.value;
+            
+            const root = document.documentElement;
+            root.style.setProperty('--base-font-size', b + 'px');
+            root.style.setProperty('--word-font-size', w + 'rem');
+            root.style.setProperty('--content-font-size', c + 'rem');
+            root.style.setProperty('--rel-word-size', rw + 'rem');
+            root.style.setProperty('--type-font-size', t + 'rem');
+            root.style.setProperty('--ex-en-font-size', ee + 'rem');
+            root.style.setProperty('--ex-ja-font-size', ej + 'rem');
+
+            els.valBaseFont.innerText = b + 'px'; els.valWordFont.innerText = w + 'rem'; els.valContentFont.innerText = c + 'rem';
+            els.valRelWordFont.innerText = rw + 'rem'; els.valTypeFont.innerText = t + 'rem'; els.valExEnFont.innerText = ee + 'rem'; els.valExJaFont.innerText = ej + 'rem';
+            
+            localStorage.setItem('sensepro_v24_settings', JSON.stringify({ base:b, word:w, content:c, relW:rw, type:t, exEn:ee, exJa:ej }));
+        }
+
+        function resetSettings() {
+            els.rangeBaseFont.value = 14; els.rangeWordFont.value = 1.8; els.rangeContentFont.value = 0.9; els.rangeRelWordFont.value = 0.9;
+            els.rangeTypeFont.value = 0.7; els.rangeExEnFont.value = 0.9; els.rangeExJaFont.value = 0.8;
+            applySettings();
+        }
+
+        function openMobileDetail() {
+            if (window.innerWidth < 768) {
+                isMobileDetailView = true;
+                els.sidebarArea.classList.add('hidden');
+                els.contentArea.classList.remove('hidden');
+                els.mobileBackBtn.classList.remove('hidden');
+            }
+        }
+
+        function closeMobileDetail() {
+            isMobileDetailView = false;
+            els.sidebarArea.classList.remove('hidden');
+            els.contentArea.classList.add('hidden');
+            els.mobileBackBtn.classList.add('hidden');
+        }
+
+        function handleResize() {
+            if (window.innerWidth >= 768) {
+                els.sidebarArea.classList.remove('hidden');
+                els.contentArea.classList.remove('hidden');
+                els.mobileBackBtn.classList.add('hidden');
+            } else {
+                if (isMobileDetailView) {
+                    els.sidebarArea.classList.add('hidden');
+                    els.contentArea.classList.remove('hidden');
+                    els.mobileBackBtn.classList.remove('hidden');
+                } else {
+                    els.sidebarArea.classList.remove('hidden');
+                    els.contentArea.classList.add('hidden');
+                    els.mobileBackBtn.classList.add('hidden');
+                }
+            }
         }
 
         init();
