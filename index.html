@@ -344,7 +344,6 @@
         let touchStartY = 0;
         let isPhraseMode = false;
 
-        // FIXED: Removed 'wordlist/' prefix to match the file structure in the prompt.
         const defaultDataFiles = [
             'wordlist/Gr25_sp.json',
             'wordlist/Gr25_t1-1200.json',
@@ -520,36 +519,57 @@
             let items = [];
             if (!dictionaryData) return [];
             
-            if (isPhraseMode) {
-                // Phrase Mode: Only list phrases extracted from words
-                dictionaryData.forEach((item, i) => {
+            dictionaryData.forEach((item, i) => {
+                // Determine if this is a top-level phrase entry (has 'phrase' key)
+                const isTopLevelPhrase = item.hasOwnProperty('phrase') && item.phrase;
+
+                if (isPhraseMode) {
+                    // --- Phrase Mode ---
+                    
+                    // 1. Include top-level phrase entries
+                    if (isTopLevelPhrase) {
+                        items.push({
+                            originalIndex: i,
+                            isPhrase: true,
+                            displayWord: item.phrase,
+                            displayMeaning: item.senses?.[0]?.definitions?.[0]?.meaning || '',
+                            ...item
+                        });
+                    }
+
+                    // 2. Extract nested phrases from word entries
                     if (item.senses) {
                         item.senses.forEach(sense => {
                             if (sense.phrases) {
                                 sense.phrases.forEach(phrase => {
                                     items.push({
-                                        originalIndex: i, // Links back to parent
+                                        originalIndex: i, // Links back to parent word
                                         isPhrase: true,
                                         displayWord: phrase.phrase,
                                         displayMeaning: (phrase.definitions || []).map(d => d.meaning).join(', '),
-                                        // Include parent metadata for filtering
-                                        ...item
+                                        ...item // Inherit metadata from parent
                                     });
                                 });
                             }
                         });
                     }
-                });
-            } else {
-                // Word Mode: Only list the top-level word entries
-                items = dictionaryData.map((item, i) => ({
-                    originalIndex: i,
-                    isPhrase: false,
-                    displayWord: item.word,
-                    displayMeaning: item.senses?.[0]?.definitions?.[0]?.meaning || '',
-                    ...item
-                }));
-            }
+                    
+                } else {
+                    // --- Word Mode ---
+                    
+                    // Only include items that are words (have 'word' key) and are NOT top-level phrases
+                    if (!isTopLevelPhrase && item.word) {
+                        items.push({
+                            originalIndex: i,
+                            isPhrase: false,
+                            displayWord: item.word,
+                            displayMeaning: item.senses?.[0]?.definitions?.[0]?.meaning || '',
+                            ...item
+                        });
+                    }
+                }
+            });
+            
             return items;
         }
 
