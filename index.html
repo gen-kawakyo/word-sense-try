@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Smart Dictionary Pro V23</title>
+    <title>Word Sense Junior V1</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -37,9 +37,7 @@
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         
-        /* Hide scrollbar for Chrome, Safari and Opera */
         .scrollbar-hide::-webkit-scrollbar { display: none; }
-        /* Hide scrollbar for IE, Edge and Firefox */
         .scrollbar-hide { -ms-overflow-style: none;  scrollbar-width: none; }
 
         .sense-card { border-left: 4px solid #3b82f6; }
@@ -72,7 +70,6 @@
         .search-type-btn[data-type="related"].active { background: #4f46e5; }
         .search-type-btn[data-type="usage"].active { background: #0891b2; }
         .search-type-btn[data-type="notes"].active { background: #d97706; }
-        .search-type-btn[data-type="phrases"].active { background: #059669; }
         .search-type-btn[data-type="examples"].active { background: #9333ea; }
 
         .search-type-placeholder {
@@ -88,8 +85,19 @@
             ring-color: #93c5fd;
         }
         
-        /* A-Z Button Active State */
         .az-btn.active { background-color: #2563eb; color: white; border-color: #2563eb; }
+        
+        /* Phrase Mode Toggle */
+        .phrase-toggle-btn {
+            transition: all 0.2s;
+            background-color: #f1f5f9;
+            color: #64748b;
+        }
+        .phrase-toggle-btn.active {
+            background-color: #10b981; /* Emerald */
+            color: white;
+            border-color: #10b981;
+        }
 
         .mobile-hidden { display: none !important; }
         @media (min-width: 768px) {
@@ -105,14 +113,13 @@
         <!-- Header -->
         <header class="bg-white border-b border-slate-200 px-4 py-2 flex items-center justify-between shadow-sm z-50 shrink-0 h-14">
             <div class="flex items-center gap-2 md:gap-4 flex-1">
-                <!-- Back Button (Mobile) -->
                 <button id="mobileBackBtn" class="desktop-hidden hidden mr-1 px-3 py-1.5 bg-blue-600 text-white hover:bg-blue-700 rounded-lg text-xs font-black shadow-md flex items-center gap-1 transition-all active:scale-95">
                     <i data-lucide="chevron-left" class="w-4 h-4"></i> LIST
                 </button>
                 <h1 class="text-lg md:text-xl font-black text-slate-900 flex items-center gap-2 truncate">
-                    <i data-lucide="database" class="text-blue-600 w-5 h-5"></i>
-                    <span class="hidden md:inline">Sense <span class="text-blue-600">Pro V23</span></span>
-                    <span class="md:hidden">Sense<span class="text-blue-600">Pro</span></span>
+                    <i data-lucide="book-open-check" class="text-blue-600 w-6 h-6"></i>
+                    <span class="hidden md:inline">Word Sense <span class="text-blue-600">Junior V1</span></span>
+                    <span class="md:hidden">WS<span class="text-blue-600">Jr V1</span></span>
                 </h1>
                 
                 <div class="flex bg-slate-100 p-1 rounded-xl border border-slate-200 ml-2">
@@ -129,7 +136,6 @@
                     <i data-lucide="settings" class="w-5 h-5"></i>
                 </button>
                 
-                <!-- PC Only Buttons -->
                 <div id="fileInfoDisplay" class="hidden md:flex text-[10px] font-bold text-slate-400 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
                     <span id="activeWordCount">0</span> ITEMS
                 </div>
@@ -152,21 +158,35 @@
             <aside id="sidebarArea" class="w-full md:w-[380px] lg:w-[440px] border-r border-slate-200 bg-white flex flex-col shadow-inner absolute md:static inset-0 z-10">
                 <div class="p-3 border-b border-slate-100 space-y-2 bg-slate-50/50">
                     
-                    <!-- Unified Search Fields -->
-                    <div class="grid grid-cols-1 gap-2">
-                        <div class="relative">
+                    <!-- Unified Search Fields Row 1 -->
+                    <div class="flex gap-2">
+                        <div class="relative flex-1">
                             <i data-lucide="type" class="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 w-3.5 h-3.5"></i>
                             <input type="text" id="searchHeadword" placeholder="見出し語..." class="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500/10 font-bold shadow-sm">
                         </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <div class="relative">
-                                <i data-lucide="languages" class="absolute left-3 top-1/2 -translate-y-1/2 text-emerald-500 w-3.5 h-3.5"></i>
-                                <input type="text" id="searchMeaning" placeholder="意味..." class="w-full pl-9 pr-2 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-emerald-500/10 font-medium shadow-sm">
-                            </div>
-                            <div class="relative">
-                                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5"></i>
-                                <input type="text" id="searchKeyword" placeholder="KW..." class="w-full pl-9 pr-2 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-slate-500/10 font-medium shadow-sm">
-                            </div>
+                        <button id="phraseModeToggle" class="phrase-toggle-btn px-3 py-2 rounded-xl text-[10px] font-black border border-slate-200 shadow-sm flex items-center gap-1 transition-colors">
+                             <i data-lucide="quote" class="w-3 h-3"></i> 語句
+                        </button>
+                    </div>
+
+                    <!-- A-Z Index Bar with Scroll Arrows -->
+                    <div class="relative group h-9 flex items-center">
+                        <button id="azLeft" class="hidden md:flex absolute left-0 top-0 bottom-0 w-6 items-center justify-center bg-white/80 text-slate-400 hover:text-blue-600 z-10 rounded-l-lg"><i data-lucide="chevron-left" class="w-3 h-3"></i></button>
+                        <div class="overflow-x-auto scrollbar-hide scroll-smooth w-full px-1" id="azContainer">
+                            <div class="flex gap-1.5" id="mobileAlphaFilter"></div>
+                        </div>
+                        <button id="azRight" class="hidden md:flex absolute right-0 top-0 bottom-0 w-6 items-center justify-center bg-white/80 text-slate-400 hover:text-blue-600 z-10 rounded-r-lg"><i data-lucide="chevron-right" class="w-3 h-3"></i></button>
+                    </div>
+
+                    <!-- Unified Search Fields Row 2 -->
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="relative">
+                            <i data-lucide="languages" class="absolute left-3 top-1/2 -translate-y-1/2 text-emerald-500 w-3.5 h-3.5"></i>
+                            <input type="text" id="searchMeaning" placeholder="意味(のみ)..." class="w-full pl-9 pr-2 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-emerald-500/10 font-medium shadow-sm">
+                        </div>
+                        <div class="relative">
+                            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5"></i>
+                            <input type="text" id="searchKeyword" placeholder="KW(全体)..." class="w-full pl-9 pr-2 py-2 bg-white border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-slate-500/10 font-medium shadow-sm">
                         </div>
                     </div>
 
@@ -182,21 +202,12 @@
                         <select id="filterTags" class="filter-select pl-1.5 pr-2 py-1.5 bg-white border border-slate-200 rounded-lg text-[10px] font-bold outline-none shadow-sm"><option value="all">Tags</option></select>
                     </div>
 
-                    <!-- PC Only: 8-Grid Module Toggles -->
+                    <!-- PC Only: 4-Grid Keyword Target Toggles -->
                     <div class="hidden md:grid grid-cols-4 gap-1.5 pt-1">
                         <button class="search-type-btn" data-type="related">関連語</button>
                         <button class="search-type-btn" data-type="usage">用法</button>
                         <button class="search-type-btn" data-type="notes">Notes</button>
-                        <button class="search-type-btn" data-type="phrases">語句</button>
                         <button class="search-type-btn" data-type="examples">例文</button>
-                        <div class="search-type-btn search-type-placeholder"></div>
-                        <div class="search-type-btn search-type-placeholder"></div>
-                        <div class="search-type-btn search-type-placeholder"></div>
-                    </div>
-
-                    <!-- Mobile Only: A-Z Index Bar -->
-                    <div class="md:hidden mt-1 overflow-x-auto pb-1 scrollbar-hide">
-                        <div class="flex gap-1.5 px-0.5" id="mobileAlphaFilter"></div>
                     </div>
 
                     <div id="statsBox" class="bg-blue-50/50 rounded-lg p-2 border border-blue-100 hidden space-y-1">
@@ -226,7 +237,7 @@
                     <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm border border-slate-100">
                         <i data-lucide="book-open" class="w-8 h-8 text-slate-300"></i>
                     </div>
-                    <h3 class="font-bold text-slate-600">Smart Dictionary Pro V23</h3>
+                    <h3 class="font-bold text-slate-600">Word Sense Junior V1</h3>
                     <p class="text-xs mt-2 text-slate-400 text-center">左側のリストから単語を選択してください。<br>スマホでは画面が切り替わります。</p>
                 </div>
 
@@ -304,7 +315,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Source Modal -->
     <div id="sourceModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-6 modal-overlay">
         <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
@@ -331,10 +342,13 @@
         let isMobileDetailView = false;
         let touchStartX = 0;
         let touchStartY = 0;
+        let isPhraseMode = false;
 
+        // FIXED: Removed 'wordlist/' prefix to match the file structure in the prompt.
         const defaultDataFiles = [
             'wordlist/Gr25_sp.json',
             'wordlist/Gr25_t1-1200.json',
+            'wordlist/Gr25-R.json',
             'wordlist/Hwg_A-Z.json'
         ];
 
@@ -370,24 +384,25 @@
             bulkNewId: document.getElementById('bulkNewId'),
             bulkRenameBtn: document.getElementById('bulkRenameBtn'),
             mobileAlphaFilter: document.getElementById('mobileAlphaFilter'),
-            // Search & Sort
+            azContainer: document.getElementById('azContainer'),
+            azLeft: document.getElementById('azLeft'),
+            azRight: document.getElementById('azRight'),
             searchHeadword: document.getElementById('searchHeadword'),
             searchMeaning: document.getElementById('searchMeaning'),
             searchKeyword: document.getElementById('searchKeyword'),
+            phraseModeToggle: document.getElementById('phraseModeToggle'),
             filterPos: document.getElementById('filterPos'),
             filterGrade: document.getElementById('filterGrade'),
             filterTags: document.getElementById('filterTags'),
             filterSource: document.getElementById('filterSource'),
             sortOrder: document.getElementById('sortOrder'),
             searchTypeBtns: document.querySelectorAll('.search-type-btn'),
-            // Modals
             openSourceModalBtn: document.getElementById('openSourceModalBtn'),
             closeSourceModalBtn: document.getElementById('closeSourceModalBtn'),
             sourceModal: document.getElementById('sourceModal'),
             openSettingsBtn: document.getElementById('openSettingsBtn'),
             closeSettingsBtn: document.getElementById('closeSettingsBtn'),
             settingsModal: document.getElementById('settingsModal'),
-            // Font sliders
             rangeBaseFont: document.getElementById('rangeBaseFont'),
             rangeWordFont: document.getElementById('rangeWordFont'),
             rangeContentFont: document.getElementById('rangeContentFont'),
@@ -410,7 +425,6 @@
             loadSettings();
             initAlphaButtons();
             
-            // Events
             els.fileInput.addEventListener('change', handleFileUpload);
             
             [els.searchHeadword, els.searchMeaning, els.searchKeyword, els.filterPos, els.filterGrade, els.filterTags, els.filterSource, els.sortOrder].forEach(el => {
@@ -437,11 +451,18 @@
             els.openSettingsBtn.addEventListener('click', () => els.settingsModal.classList.remove('hidden'));
             els.closeSettingsBtn.addEventListener('click', () => els.settingsModal.classList.add('hidden'));
             
-            // Mobile specific events
+            els.phraseModeToggle.addEventListener('click', () => {
+                isPhraseMode = !isPhraseMode;
+                els.phraseModeToggle.classList.toggle('active', isPhraseMode);
+                renderList();
+            });
+
+            els.azLeft.addEventListener('click', () => els.azContainer.scrollBy({left: -100, behavior: 'smooth'}));
+            els.azRight.addEventListener('click', () => els.azContainer.scrollBy({left: 100, behavior: 'smooth'}));
+
             els.mobileBackBtn.addEventListener('click', closeMobileDetail);
             window.addEventListener('resize', handleResize);
 
-            // Swipe Detection
             els.contentArea.addEventListener('touchstart', e => {
                 touchStartX = e.changedTouches[0].screenX;
                 touchStartY = e.changedTouches[0].screenY;
@@ -450,7 +471,6 @@
             els.contentArea.addEventListener('touchend', e => {
                 const touchEndX = e.changedTouches[0].screenX;
                 const touchEndY = e.changedTouches[0].screenY;
-                // 右スワイプ (左から右へ) かつ 縦移動が少ない場合
                 if (isMobileDetailView && touchEndX - touchStartX > 80 && Math.abs(touchEndY - touchStartY) < 60) {
                     closeMobileDetail();
                 }
@@ -471,7 +491,6 @@
             loadInitialData();
         }
 
-        // Mobile Alpha Buttons
         function initAlphaButtons() {
             const chars = ['ALL', ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')];
             els.mobileAlphaFilter.innerHTML = chars.map(c => 
@@ -491,7 +510,208 @@
             renderList();
         }
 
-        // Mobile Layout Handlers
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        }
+
+        // Logic to separate Words and Phrases
+        function getDisplayItems() {
+            let items = [];
+            if (!dictionaryData) return [];
+            
+            if (isPhraseMode) {
+                // Phrase Mode: Only list phrases extracted from words
+                dictionaryData.forEach((item, i) => {
+                    if (item.senses) {
+                        item.senses.forEach(sense => {
+                            if (sense.phrases) {
+                                sense.phrases.forEach(phrase => {
+                                    items.push({
+                                        originalIndex: i, // Links back to parent
+                                        isPhrase: true,
+                                        displayWord: phrase.phrase,
+                                        displayMeaning: (phrase.definitions || []).map(d => d.meaning).join(', '),
+                                        // Include parent metadata for filtering
+                                        ...item
+                                    });
+                                });
+                            }
+                        });
+                    }
+                });
+            } else {
+                // Word Mode: Only list the top-level word entries
+                items = dictionaryData.map((item, i) => ({
+                    originalIndex: i,
+                    isPhrase: false,
+                    displayWord: item.word,
+                    displayMeaning: item.senses?.[0]?.definitions?.[0]?.meaning || '',
+                    ...item
+                }));
+            }
+            return items;
+        }
+
+        function renderList() {
+            const hQ = els.searchHeadword.value.trim(), mQ = els.searchMeaning.value.trim(), kQ = els.searchKeyword.value.trim();
+            const posF = els.filterPos.value, gradeF = els.filterGrade.value, tagF = els.filterTags.value, srcF = els.filterSource.value, sort = els.sortOrder.value;
+
+            let displayItems = getDisplayItems();
+
+            let filtered = displayItems.filter(item => {
+                const senses = item.senses || [], examples = item.examples || [];
+                
+                // Headword Filter
+                if (hQ && !wildcardMatch(item.displayWord, hQ, true)) return false;
+
+                // Meaning Filter (Strictly definitions only)
+                if (mQ) {
+                    if (item.isPhrase) {
+                        if (!wildcardMatch(item.displayMeaning, mQ)) return false;
+                    } else {
+                        const allMeanings = senses.map(s => (s.definitions || []).map(d => d.meaning)).flat().join(' ');
+                        if (!wildcardMatch(allMeanings, mQ)) return false;
+                    }
+                }
+
+                // Metadata Filters
+                const pM = posF === 'all' || senses.some(s => s.pos === posF);
+                const gM = gradeF === 'all' || senses.some(s => (s.definitions || []).some(d => (d.grade || "").toString() === gradeF));
+                const tM = tagF === 'all' || (item.tags || []).includes(tagF);
+                const sM = srcF === 'all' || item.dataSource === srcF;
+                if (!pM || !gM || !tM || !sM) return false;
+
+                // Keyword Filter (Targeted or Global)
+                if (kQ) {
+                    if (activeSearchTargets.size === 0) {
+                        // Global search
+                        const pool = [
+                            item.displayWord, item.pronunciation, item.dataSource, item.subID, ...(item.tags || []),
+                            item.classification ? [item.classification.category, item.classification.subcategory] : [],
+                            ...examples.map(ex => [ex.en, ex.ja]),
+                            ...senses.map(s => [s.pos, ...(Array.isArray(s.notes) ? s.notes.map(n => [n.semantic?.type, n.semantic?.content]) : []),
+                                ...(Array.isArray(s.usage) ? s.usage.map(u => [u.type, u.content]) : []),
+                                ...(s.related_words || []).map(rw => [rw.word, rw.meaning, rw.type]),
+                                ...(s.definitions || []).map(d => d.meaning),
+                                ...(s.phrases || []).map(p => [p.phrase, ...(p.definitions || []).map(pd => pd.meaning)])
+                            ].flat())
+                        ].flat().filter(t => t).join(' ');
+                        if (!wildcardMatch(pool, kQ)) return false;
+                    } else {
+                        // Targeted search
+                        let found = false;
+                        if (activeSearchTargets.has('related') && wildcardMatch(senses.map(s => (s.related_words || []).map(rw => [rw.word, rw.meaning, rw.type])).flat(2).join(' '), kQ)) found = true;
+                        if (!found && activeSearchTargets.has('usage') && wildcardMatch(senses.map(s => (s.usage || []).map(u => [u.type, u.content])).flat(2).join(' '), kQ)) found = true;
+                        if (!found && activeSearchTargets.has('notes') && wildcardMatch(senses.map(s => (Array.isArray(s.notes) ? s.notes.map(n => [n.semantic?.type, n.semantic?.content]) : [])).flat(2).join(' '), kQ)) found = true;
+                        if (!found && activeSearchTargets.has('examples') && wildcardMatch(examples.map(ex => [ex.en, ex.ja]).flat().join(' '), kQ)) found = true;
+                        if (!found) return false;
+                    }
+                }
+                return true;
+            });
+
+            filtered.sort((a, b) => {
+                if (sort === 'word_asc') return a.displayWord.localeCompare(b.displayWord);
+                if (sort === 'word_desc') return b.displayWord.localeCompare(a.displayWord);
+                if (sort === 'source_asc') return (a.dataSource || "").localeCompare(b.dataSource || "");
+                if (sort === 'id_asc') return (parseInt(a.subID) || 0) - (parseInt(b.subID) || 0);
+                return 0;
+            });
+
+            if (dictionaryData.length > 0) {
+                els.statsBox.classList.remove('hidden'); els.totalMatchCount.innerText = `${filtered.length} ITEMS`;
+                const stats = filtered.reduce((acc, item) => {
+                    (item.senses || []).forEach(s => { if(s.pos) acc.pos[s.pos] = (acc.pos[s.pos] || 0) + 1; });
+                    return acc;
+                }, { pos: {} });
+                els.posBreakdown.innerHTML = Object.entries(stats.pos).sort((a,b)=>b[1]-a[1]).map(([p,c])=>`<span>${p}:${c}</span>`).join(' · ');
+            }
+
+            els.resultsList.innerHTML = filtered.map(item => `
+                <div onclick="openEditor(${item.originalIndex})" class="p-3 bg-white rounded-xl border-2 cursor-pointer transition-all shadow-sm group ${item.originalIndex === editingIndex ? 'editing-active ring-2 ring-blue-500/10' : 'border-white hover:border-slate-200'}">
+                    <div class="flex items-start justify-between mb-1">
+                        <span class="font-black text-slate-900 group-hover:text-blue-600 transition-colors uppercase leading-tight">${item.displayWord}</span>
+                        <div class="flex gap-1 items-center opacity-70">
+                            ${item.isPhrase ? '<span class="tag-badge bg-emerald-50 text-emerald-600">PHRASE</span>' : ''}
+                            ${item.dataSource ? `<span class="id-badge">${item.dataSource}</span>` : ''}
+                            ${item.subID ? `<span class="id-badge bg-blue-50 border-blue-100 text-blue-500">${item.subID}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between gap-2">
+                        <p class="text-[10px] text-slate-500 truncate flex-1">${item.displayMeaning}</p>
+                        ${item.isPhrase ? '' : (item.senses?.[0]?.pos ? `<span class="list-pos-badge">${item.senses[0].pos}</span>` : '')}
+                    </div>
+                    ${item.isPhrase ? `<div class="text-[9px] text-slate-400 mt-1"><i data-lucide="corner-down-right" class="w-3 h-3 inline"></i> ${item.word}</div>` : ''}
+                </div>`).join('');
+            lucide.createIcons();
+        }
+        
+        function updateSenseProp(si, key, val) { dictionaryData[editingIndex].senses[si][key] = val; renderList(); if(key==='pos') updateDropdowns(); }
+        function updateDefinition(si, di, key, val) { dictionaryData[editingIndex].senses[si].definitions[di][key] = (key==='grade')?parseInt(val):val; renderList(); }
+        function addDefinition(si) { dictionaryData[editingIndex].senses[si].definitions.push({ meaning: "", grade: 1 }); renderSenses(); }
+        function removeDefinition(si, di) { dictionaryData[editingIndex].senses[si].definitions.splice(di, 1); renderSenses(); renderList(); }
+        function updateUsage(si, ui, key, val) { if(!dictionaryData[editingIndex].senses[si].usage) dictionaryData[editingIndex].senses[si].usage = []; dictionaryData[editingIndex].senses[si].usage[ui][key] = val; renderList(); }
+        function addUsage(si) { if(!dictionaryData[editingIndex].senses[si].usage) dictionaryData[editingIndex].senses[si].usage = []; dictionaryData[editingIndex].senses[si].usage.push({ type: "活用", content: "" }); renderSenses(); }
+        function removeUsage(si, ui) { dictionaryData[editingIndex].senses[si].usage.splice(ui, 1); renderSenses(); renderList(); }
+        function updateNote(si, ni, key, val) { let s = dictionaryData[editingIndex].senses[si]; if(!Array.isArray(s.notes)) s.notes = s.notes ? [{ semantic: { type: "備考", content: s.notes } }] : []; s.notes[ni].semantic[key] = val; renderList(); }
+        function addNote(si) { let s = dictionaryData[editingIndex].senses[si]; if(!Array.isArray(s.notes)) s.notes = s.notes ? [{ semantic: { type: "備考", content: s.notes } }] : []; s.notes.push({ semantic: { type: "備考", content: "" } }); renderSenses(); }
+        function removeNote(si, ni) { dictionaryData[editingIndex].senses[si].notes.splice(ni, 1); renderSenses(); renderList(); }
+        function updateRelatedWord(si, rwi, key, val) { if(!dictionaryData[editingIndex].senses[si].related_words) dictionaryData[editingIndex].senses[si].related_words = []; dictionaryData[editingIndex].senses[si].related_words[rwi][key] = val; renderList(); }
+        function addRelatedWord(si) { if(!dictionaryData[editingIndex].senses[si].related_words) dictionaryData[editingIndex].senses[si].related_words = []; dictionaryData[editingIndex].senses[si].related_words.push({ type: "関連", word: "", meaning: "" }); renderSenses(); }
+        function removeRelatedWord(si, rwi) { dictionaryData[editingIndex].senses[si].related_words.splice(rwi, 1); renderSenses(); renderList(); }
+        function updatePhraseProp(si, pi, key, val) { dictionaryData[editingIndex].senses[si].phrases[pi][key] = val; renderList(); }
+        function updatePhraseDef(si, pi, pdi, key, val) { dictionaryData[editingIndex].senses[si].phrases[pi].definitions[pdi][key] = val; renderList(); }
+        function addPhrase(si) { if(!dictionaryData[editingIndex].senses[si].phrases) dictionaryData[editingIndex].senses[si].phrases = []; dictionaryData[editingIndex].senses[si].phrases.push({ phrase: "", definitions: [{ meaning: "" }] }); renderSenses(); }
+        function removePhrase(si, pi) { dictionaryData[editingIndex].senses[si].phrases.splice(pi, 1); renderSenses(); renderList(); }
+        function updateExample(i, key, val) { dictionaryData[editingIndex].examples[i][key] = val; renderList(); }
+        function addExample() { dictionaryData[editingIndex].examples.push({ en: "", ja: "" }); renderExamples(); }
+        function removeExample(i) { dictionaryData[editingIndex].examples.splice(i, 1); renderExamples(); renderList(); }
+        function addSense() { dictionaryData[editingIndex].senses.push({ pos: "名", definitions: [{meaning: "", grade: 1}], usage: [], notes: [], phrases: [], related_words: [] }); renderSenses(); }
+        function removeSense(si) { if(confirm('このブロックを削除しますか？')) { dictionaryData[editingIndex].senses.splice(si, 1); renderSenses(); renderList(); } }
+
+        function updateDropdowns() {
+            const posSet = new Set(), tagSet = new Set(), srcSet = new Set();
+            dictionaryData.forEach(item => {
+                (item.senses || []).forEach(s => { if(s.pos) posSet.add(s.pos); });
+                (item.tags || []).forEach(t => tagSet.add(t));
+                if(item.dataSource) srcSet.add(item.dataSource);
+            });
+            els.filterPos.innerHTML = '<option value="all">品詞</option>' + Array.from(posSet).sort().map(p => `<option value="${p}">${p}</option>`).join('');
+            els.filterTags.innerHTML = '<option value="all">Tags</option>' + Array.from(tagSet).sort().map(t => `<option value="${t}">${t}</option>`).join('');
+            els.filterSource.innerHTML = '<option value="all">Source</option>' + Array.from(srcSet).sort().map(s => `<option value="${s}">${s}</option>`).join('');
+            updateFilterHighlighting();
+        }
+
+        function addNewWord() {
+            const newW = { word: "NEW ENTRY", pronunciation: "", dataSource: dictionaryData[0]?.dataSource || "MySource", subID: "", senses: [{pos: "名", definitions: [{meaning: "", grade: 1}], usage: [], notes: [], phrases: [], related_words: []}], examples: [], tags: [], classification: null };
+            dictionaryData.unshift(newW); updateDropdowns(); renderList(); openEditor(0);
+        }
+
+        function deleteCurrentWord() {
+            if (editingIndex !== -1 && confirm('削除しますか？')) {
+                dictionaryData.splice(editingIndex, 1); editingIndex = -1;
+                els.editorForm.classList.add('hidden'); els.editorPlaceholder.classList.remove('hidden');
+                els.activeWordCount.innerText = dictionaryData.length; updateDropdowns(); renderList();
+                if(isMobileDetailView) closeMobileDetail();
+            }
+        }
+
+        function bulkRenameDataSource() {
+            const oldId = els.bulkOldId.value.trim(), newId = els.bulkNewId.value.trim();
+            if (!oldId || !newId) return;
+            if (confirm(`ID「${oldId}」を「${newId}」に一括変更しますか？`)) {
+                dictionaryData.forEach(i => { if(i.dataSource === oldId) i.dataSource = newId; });
+                updateDropdowns(); renderList(); els.bulkOldId.value = ""; els.bulkNewId.value = ""; els.sourceModal.classList.add('hidden');
+            }
+        }
+
+        function exportJson() {
+            const blob = new Blob([JSON.stringify(dictionaryData, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+            a.download = `SensePro_Data_${new Date().toISOString().slice(0,10)}.json`; a.click();
+        }
+
         function openMobileDetail() {
             if (window.innerWidth < 768) {
                 isMobileDetailView = true;
@@ -524,11 +744,6 @@
                     els.mobileBackBtn.classList.add('hidden');
                 }
             }
-        }
-        
-        function autoResize(textarea) {
-            textarea.style.height = 'auto';
-            textarea.style.height = textarea.scrollHeight + 'px';
         }
 
         async function loadInitialData() {
@@ -593,7 +808,7 @@
         }
 
         function loadSettings() {
-            const s = JSON.parse(localStorage.getItem('sensepro_v23_settings') || '{"base":14,"word":1.8,"content":0.9,"relW":0.9,"type":0.7,"exEn":0.9,"exJa":0.8}');
+            const s = JSON.parse(localStorage.getItem('sensepro_v24_settings') || '{"base":14,"word":1.8,"content":0.9,"relW":0.9,"type":0.7,"exEn":0.9,"exJa":0.8}');
             els.rangeBaseFont.value = s.base; els.rangeWordFont.value = s.word; els.rangeContentFont.value = s.content;
             els.rangeRelWordFont.value = s.relW; els.rangeTypeFont.value = s.type; els.rangeExEnFont.value = s.exEn; els.rangeExJaFont.value = s.exJa;
             applySettings();
@@ -615,7 +830,7 @@
             els.valBaseFont.innerText = b + 'px'; els.valWordFont.innerText = w + 'rem'; els.valContentFont.innerText = c + 'rem';
             els.valRelWordFont.innerText = rw + 'rem'; els.valTypeFont.innerText = t + 'rem'; els.valExEnFont.innerText = ee + 'rem'; els.valExJaFont.innerText = ej + 'rem';
             
-            localStorage.setItem('sensepro_v23_settings', JSON.stringify({ base:b, word:w, content:c, relW:rw, type:t, exEn:ee, exJa:ej }));
+            localStorage.setItem('sensepro_v24_settings', JSON.stringify({ base:b, word:w, content:c, relW:rw, type:t, exEn:ee, exJa:ej }));
         }
 
         function resetSettings() {
@@ -799,7 +1014,6 @@
                 </div>`;
             }).join('');
             
-            // Adjust textarea heights after render
             document.querySelectorAll('textarea.note-text').forEach(ta => autoResize(ta));
             lucide.createIcons();
         }
@@ -816,150 +1030,6 @@
                     ${!isView ? `<button onclick="removeExample(${i})" class="absolute top-2 right-2 text-purple-300 hover:text-red-500 opacity-100 md:opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="x-circle" class="w-4.5 h-4.5"></i></button>` : ''}
                 </div>` : '').join('');
             lucide.createIcons();
-        }
-
-        // --- Data Update Functions ---
-        function updateSenseProp(si, key, val) { dictionaryData[editingIndex].senses[si][key] = val; renderList(); if(key==='pos') updateDropdowns(); }
-        function updateDefinition(si, di, key, val) { dictionaryData[editingIndex].senses[si].definitions[di][key] = (key==='grade')?parseInt(val):val; renderList(); }
-        function addDefinition(si) { dictionaryData[editingIndex].senses[si].definitions.push({ meaning: "", grade: 1 }); renderSenses(); }
-        function removeDefinition(si, di) { dictionaryData[editingIndex].senses[si].definitions.splice(di, 1); renderSenses(); renderList(); }
-        function updateUsage(si, ui, key, val) { if(!dictionaryData[editingIndex].senses[si].usage) dictionaryData[editingIndex].senses[si].usage = []; dictionaryData[editingIndex].senses[si].usage[ui][key] = val; renderList(); }
-        function addUsage(si) { if(!dictionaryData[editingIndex].senses[si].usage) dictionaryData[editingIndex].senses[si].usage = []; dictionaryData[editingIndex].senses[si].usage.push({ type: "活用", content: "" }); renderSenses(); }
-        function removeUsage(si, ui) { dictionaryData[editingIndex].senses[si].usage.splice(ui, 1); renderSenses(); renderList(); }
-        function updateNote(si, ni, key, val) { let s = dictionaryData[editingIndex].senses[si]; if(!Array.isArray(s.notes)) s.notes = s.notes ? [{ semantic: { type: "備考", content: s.notes } }] : []; s.notes[ni].semantic[key] = val; renderList(); }
-        function addNote(si) { let s = dictionaryData[editingIndex].senses[si]; if(!Array.isArray(s.notes)) s.notes = s.notes ? [{ semantic: { type: "備考", content: s.notes } }] : []; s.notes.push({ semantic: { type: "備考", content: "" } }); renderSenses(); }
-        function removeNote(si, ni) { dictionaryData[editingIndex].senses[si].notes.splice(ni, 1); renderSenses(); renderList(); }
-        function updateRelatedWord(si, rwi, key, val) { if(!dictionaryData[editingIndex].senses[si].related_words) dictionaryData[editingIndex].senses[si].related_words = []; dictionaryData[editingIndex].senses[si].related_words[rwi][key] = val; renderList(); }
-        function addRelatedWord(si) { if(!dictionaryData[editingIndex].senses[si].related_words) dictionaryData[editingIndex].senses[si].related_words = []; dictionaryData[editingIndex].senses[si].related_words.push({ type: "関連", word: "", meaning: "" }); renderSenses(); }
-        function removeRelatedWord(si, rwi) { dictionaryData[editingIndex].senses[si].related_words.splice(rwi, 1); renderSenses(); renderList(); }
-        function updatePhraseProp(si, pi, key, val) { dictionaryData[editingIndex].senses[si].phrases[pi][key] = val; renderList(); }
-        function updatePhraseDef(si, pi, pdi, key, val) { dictionaryData[editingIndex].senses[si].phrases[pi].definitions[pdi][key] = val; renderList(); }
-        function addPhrase(si) { if(!dictionaryData[editingIndex].senses[si].phrases) dictionaryData[editingIndex].senses[si].phrases = []; dictionaryData[editingIndex].senses[si].phrases.push({ phrase: "", definitions: [{ meaning: "" }] }); renderSenses(); }
-        function removePhrase(si, pi) { dictionaryData[editingIndex].senses[si].phrases.splice(pi, 1); renderSenses(); renderList(); }
-        function updateExample(i, key, val) { dictionaryData[editingIndex].examples[i][key] = val; renderList(); }
-        function addExample() { dictionaryData[editingIndex].examples.push({ en: "", ja: "" }); renderExamples(); }
-        function removeExample(i) { dictionaryData[editingIndex].examples.splice(i, 1); renderExamples(); renderList(); }
-        function addSense() { dictionaryData[editingIndex].senses.push({ pos: "名", definitions: [{meaning: "", grade: 1}], usage: [], notes: [], phrases: [], related_words: [] }); renderSenses(); }
-        function removeSense(si) { if(confirm('このブロックを削除しますか？')) { dictionaryData[editingIndex].senses.splice(si, 1); renderSenses(); renderList(); } }
-
-        function renderList() {
-            const hQ = els.searchHeadword.value.trim(), mQ = els.searchMeaning.value.trim(), kQ = els.searchKeyword.value.trim();
-            const posF = els.filterPos.value, gradeF = els.filterGrade.value, tagF = els.filterTags.value, srcF = els.filterSource.value, sort = els.sortOrder.value;
-
-            let filtered = dictionaryData.map((item, i) => ({ ...item, originalIndex: i }))
-                .filter(item => {
-                    const senses = item.senses || [], examples = item.examples || [];
-                    if (hQ && !wildcardMatch(item.word, hQ, true)) return false;
-                    if (mQ) {
-                        const allMeanings = senses.map(s => (s.definitions || []).map(d => d.meaning)).flat().join(' ');
-                        if (!wildcardMatch(allMeanings, mQ)) return false;
-                    }
-                    const pM = posF === 'all' || senses.some(s => s.pos === posF);
-                    const gM = gradeF === 'all' || senses.some(s => (s.definitions || []).some(d => (d.grade || "").toString() === gradeF));
-                    const tM = tagF === 'all' || (item.tags || []).includes(tagF);
-                    const sM = srcF === 'all' || item.dataSource === srcF;
-                    if (!pM || !gM || !tM || !sM) return false;
-
-                    if (kQ) {
-                        if (activeSearchTargets.size === 0) {
-                            const pool = [
-                                item.word, item.pronunciation, item.dataSource, item.subID, ...(item.tags || []),
-                                item.classification ? [item.classification.category, item.classification.subcategory] : [],
-                                ...examples.map(ex => [ex.en, ex.ja]),
-                                ...senses.map(s => [s.pos, ...(Array.isArray(s.notes) ? s.notes.map(n => [n.semantic?.type, n.semantic?.content]) : []),
-                                    ...(Array.isArray(s.usage) ? s.usage.map(u => [u.type, u.content]) : []),
-                                    ...(s.related_words || []).map(rw => [rw.word, rw.meaning, rw.type]),
-                                    ...(s.definitions || []).map(d => d.meaning),
-                                    ...(s.phrases || []).map(p => [p.phrase, ...(p.definitions || []).map(pd => pd.meaning)])
-                                ].flat())
-                            ].flat().filter(t => t).join(' ');
-                            if (!wildcardMatch(pool, kQ)) return false;
-                        } else {
-                            let found = false;
-                            if (activeSearchTargets.has('related') && wildcardMatch(senses.map(s => (s.related_words || []).map(rw => [rw.word, rw.meaning, rw.type])).flat(2).join(' '), kQ)) found = true;
-                            if (!found && activeSearchTargets.has('usage') && wildcardMatch(senses.map(s => (s.usage || []).map(u => [u.type, u.content])).flat(2).join(' '), kQ)) found = true;
-                            if (!found && activeSearchTargets.has('notes') && wildcardMatch(senses.map(s => (Array.isArray(s.notes) ? s.notes.map(n => [n.semantic?.type, n.semantic?.content]) : [])).flat(2).join(' '), kQ)) found = true;
-                            if (!found && activeSearchTargets.has('phrases') && wildcardMatch(senses.map(s => (s.phrases || []).map(p => [p.phrase, ...(p.definitions || []).map(pd => pd.meaning)])).flat(2).join(' '), kQ)) found = true;
-                            if (!found && activeSearchTargets.has('examples') && wildcardMatch(examples.map(ex => [ex.en, ex.ja]).flat().join(' '), kQ)) found = true;
-                            if (!found) return false;
-                        }
-                    }
-                    return true;
-                });
-
-            filtered.sort((a, b) => {
-                if (sort === 'word_asc') return a.word.localeCompare(b.word);
-                if (sort === 'word_desc') return b.word.localeCompare(a.word);
-                if (sort === 'source_asc') return (a.dataSource || "").localeCompare(b.dataSource || "");
-                if (sort === 'id_asc') return (parseInt(a.subID) || 0) - (parseInt(b.subID) || 0);
-                return 0;
-            });
-
-            if (dictionaryData.length > 0) {
-                els.statsBox.classList.remove('hidden'); els.totalMatchCount.innerText = `${filtered.length} ITEMS`;
-                const stats = filtered.reduce((acc, item) => {
-                    (item.senses || []).forEach(s => { if(s.pos) acc.pos[s.pos] = (acc.pos[s.pos] || 0) + 1; });
-                    return acc;
-                }, { pos: {} });
-                els.posBreakdown.innerHTML = Object.entries(stats.pos).sort((a,b)=>b[1]-a[1]).map(([p,c])=>`<span>${p}:${c}</span>`).join(' · ');
-            }
-
-            els.resultsList.innerHTML = filtered.map(item => `
-                <div onclick="openEditor(${item.originalIndex})" class="p-3 bg-white rounded-xl border-2 cursor-pointer transition-all shadow-sm group ${item.originalIndex === editingIndex ? 'editing-active ring-2 ring-blue-500/10' : 'border-white hover:border-slate-200'}">
-                    <div class="flex items-start justify-between mb-1">
-                        <span class="font-black text-slate-900 group-hover:text-blue-600 transition-colors uppercase leading-tight">${item.word}</span>
-                        <div class="flex gap-1 items-center opacity-70">
-                            ${item.dataSource ? `<span class="id-badge">${item.dataSource}</span>` : ''}
-                            ${item.subID ? `<span class="id-badge bg-blue-50 border-blue-100 text-blue-500">${item.subID}</span>` : ''}
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between gap-2">
-                        <p class="text-[10px] text-slate-500 truncate flex-1">${item.senses?.[0]?.definitions?.[0]?.meaning || ''}</p>
-                        ${item.senses?.[0]?.pos ? `<span class="list-pos-badge">${item.senses[0].pos}</span>` : ''}
-                    </div>
-                </div>`).join('');
-        }
-
-        function updateDropdowns() {
-            const posSet = new Set(), tagSet = new Set(), srcSet = new Set();
-            dictionaryData.forEach(item => {
-                (item.senses || []).forEach(s => { if(s.pos) posSet.add(s.pos); });
-                (item.tags || []).forEach(t => tagSet.add(t));
-                if(item.dataSource) srcSet.add(item.dataSource);
-            });
-            els.filterPos.innerHTML = '<option value="all">品詞</option>' + Array.from(posSet).sort().map(p => `<option value="${p}">${p}</option>`).join('');
-            els.filterTags.innerHTML = '<option value="all">Tags</option>' + Array.from(tagSet).sort().map(t => `<option value="${t}">${t}</option>`).join('');
-            els.filterSource.innerHTML = '<option value="all">Source</option>' + Array.from(srcSet).sort().map(s => `<option value="${s}">${s}</option>`).join('');
-            updateFilterHighlighting();
-        }
-
-        function addNewWord() {
-            const newW = { word: "NEW ENTRY", pronunciation: "", dataSource: dictionaryData[0]?.dataSource || "MySource", subID: "", senses: [{pos: "名", definitions: [{meaning: "", grade: 1}], usage: [], notes: [], phrases: [], related_words: []}], examples: [], tags: [], classification: null };
-            dictionaryData.unshift(newW); updateDropdowns(); renderList(); openEditor(0);
-        }
-
-        function deleteCurrentWord() {
-            if (editingIndex !== -1 && confirm('削除しますか？')) {
-                dictionaryData.splice(editingIndex, 1); editingIndex = -1;
-                els.editorForm.classList.add('hidden'); els.editorPlaceholder.classList.remove('hidden');
-                els.activeWordCount.innerText = dictionaryData.length; updateDropdowns(); renderList();
-                if(isMobileDetailView) closeMobileDetail();
-            }
-        }
-
-        function bulkRenameDataSource() {
-            const oldId = els.bulkOldId.value.trim(), newId = els.bulkNewId.value.trim();
-            if (!oldId || !newId) return;
-            if (confirm(`ID「${oldId}」を「${newId}」に一括変更しますか？`)) {
-                dictionaryData.forEach(i => { if(i.dataSource === oldId) i.dataSource = newId; });
-                updateDropdowns(); renderList(); els.bulkOldId.value = ""; els.bulkNewId.value = ""; els.sourceModal.classList.add('hidden');
-            }
-        }
-
-        function exportJson() {
-            const blob = new Blob([JSON.stringify(dictionaryData, null, 2)], { type: 'application/json' });
-            const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-            a.download = `SensePro_Data_${new Date().toISOString().slice(0,10)}.json`; a.click();
         }
 
         init();
