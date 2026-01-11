@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Smart Dictionary Pro V22</title>
+    <title>Smart Dictionary Pro V23</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -23,7 +23,7 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: #f8fafc;
             font-size: var(--base-font-size);
-            overscroll-behavior-y: none; /* スマホでの引っ張り更新無効化 */
+            overscroll-behavior-y: none;
         }
         
         #editWord { font-size: var(--word-font-size); }
@@ -33,10 +33,15 @@
         .ex-en-text { font-size: var(--ex-en-font-size); line-height: 1.4; }
         .ex-ja-text { font-size: var(--ex-ja-font-size); }
 
-        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .scrollbar-hide { -ms-overflow-style: none;  scrollbar-width: none; }
+
         .sense-card { border-left: 4px solid #3b82f6; }
         .phrase-card { border-left: 3px solid #10b981; }
         .example-card { border-left: 3px solid #8b5cf6; background-color: #f5f3ff; }
@@ -64,11 +69,11 @@
             text-align: center;
         }
         .search-type-btn.active { color: white; border-color: rgba(0,0,0,0.1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .search-type-btn[data-type="related"].active { background: #4f46e5; } /* Indigo */
-        .search-type-btn[data-type="usage"].active { background: #0891b2; }   /* Cyan */
-        .search-type-btn[data-type="notes"].active { background: #d97706; }   /* Amber */
-        .search-type-btn[data-type="phrases"].active { background: #059669; } /* Emerald */
-        .search-type-btn[data-type="examples"].active { background: #9333ea; } /* Purple */
+        .search-type-btn[data-type="related"].active { background: #4f46e5; }
+        .search-type-btn[data-type="usage"].active { background: #0891b2; }
+        .search-type-btn[data-type="notes"].active { background: #d97706; }
+        .search-type-btn[data-type="phrases"].active { background: #059669; }
+        .search-type-btn[data-type="examples"].active { background: #9333ea; }
 
         .search-type-placeholder {
             border: 1px dashed #f1f5f9;
@@ -76,18 +81,19 @@
             pointer-events: none;
         }
 
-        /* Highlight selected dropdowns */
         .filter-select.active-filter {
             border-color: #93c5fd !important;
             background-color: #eff6ff;
             ring: 1px;
             ring-color: #93c5fd;
         }
+        
+        /* A-Z Button Active State */
+        .az-btn.active { background-color: #2563eb; color: white; border-color: #2563eb; }
 
-        /* Mobile View Transitions */
         .mobile-hidden { display: none !important; }
         @media (min-width: 768px) {
-            .mobile-hidden { display: block !important; } /* Reset on desktop */
+            .mobile-hidden { display: block !important; }
             .desktop-hidden { display: none !important; }
         }
     </style>
@@ -98,13 +104,14 @@
     <div class="h-screen flex flex-col overflow-hidden">
         <!-- Header -->
         <header class="bg-white border-b border-slate-200 px-4 py-2 flex items-center justify-between shadow-sm z-50 shrink-0 h-14">
-            <div class="flex items-center gap-2 md:gap-4">
-                <button id="mobileBackBtn" class="desktop-hidden hidden mr-1 p-1 text-slate-500 hover:text-blue-600 font-black text-xs flex items-center gap-1 bg-slate-100 rounded-lg px-2">
+            <div class="flex items-center gap-2 md:gap-4 flex-1">
+                <!-- Back Button (Mobile) -->
+                <button id="mobileBackBtn" class="desktop-hidden hidden mr-1 px-3 py-1.5 bg-blue-600 text-white hover:bg-blue-700 rounded-lg text-xs font-black shadow-md flex items-center gap-1 transition-all active:scale-95">
                     <i data-lucide="chevron-left" class="w-4 h-4"></i> LIST
                 </button>
                 <h1 class="text-lg md:text-xl font-black text-slate-900 flex items-center gap-2 truncate">
                     <i data-lucide="database" class="text-blue-600 w-5 h-5"></i>
-                    <span class="hidden md:inline">Sense <span class="text-blue-600">Pro V22</span></span>
+                    <span class="hidden md:inline">Sense <span class="text-blue-600">Pro V23</span></span>
                     <span class="md:hidden">Sense<span class="text-blue-600">Pro</span></span>
                 </h1>
                 
@@ -134,11 +141,6 @@
                     <i data-lucide="file-up" class="w-4 h-4"></i>
                     <span>読み込み</span>
                     <input type="file" id="fileInput" class="hidden" accept=".json" multiple>
-                </label>
-                <!-- Mobile Menu Button (Future use) -->
-                <label class="md:hidden p-2 text-blue-600">
-                    <i data-lucide="file-up" class="w-5 h-5"></i>
-                    <input type="file" id="fileInputMobile" class="hidden" accept=".json" multiple>
                 </label>
             </div>
         </header>
@@ -180,8 +182,8 @@
                         <select id="filterTags" class="filter-select pl-1.5 pr-2 py-1.5 bg-white border border-slate-200 rounded-lg text-[10px] font-bold outline-none shadow-sm"><option value="all">Tags</option></select>
                     </div>
 
-                    <!-- 8-Grid Module Toggles -->
-                    <div class="grid grid-cols-4 gap-1.5 pt-1">
+                    <!-- PC Only: 8-Grid Module Toggles -->
+                    <div class="hidden md:grid grid-cols-4 gap-1.5 pt-1">
                         <button class="search-type-btn" data-type="related">関連語</button>
                         <button class="search-type-btn" data-type="usage">用法</button>
                         <button class="search-type-btn" data-type="notes">Notes</button>
@@ -190,6 +192,11 @@
                         <div class="search-type-btn search-type-placeholder"></div>
                         <div class="search-type-btn search-type-placeholder"></div>
                         <div class="search-type-btn search-type-placeholder"></div>
+                    </div>
+
+                    <!-- Mobile Only: A-Z Index Bar -->
+                    <div class="md:hidden mt-1 overflow-x-auto pb-1 scrollbar-hide">
+                        <div class="flex gap-1.5 px-0.5" id="mobileAlphaFilter"></div>
                     </div>
 
                     <div id="statsBox" class="bg-blue-50/50 rounded-lg p-2 border border-blue-100 hidden space-y-1">
@@ -219,7 +226,7 @@
                     <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm border border-slate-100">
                         <i data-lucide="book-open" class="w-8 h-8 text-slate-300"></i>
                     </div>
-                    <h3 class="font-bold text-slate-600">Smart Dictionary Pro V22</h3>
+                    <h3 class="font-bold text-slate-600">Smart Dictionary Pro V23</h3>
                     <p class="text-xs mt-2 text-slate-400 text-center">左側のリストから単語を選択してください。<br>スマホでは画面が切り替わります。</p>
                 </div>
 
@@ -321,8 +328,9 @@
         let currentMode = 'view';
         let editingIndex = -1;
         let activeSearchTargets = new Set();
-        // State to track if we are viewing details on mobile
         let isMobileDetailView = false;
+        let touchStartX = 0;
+        let touchStartY = 0;
 
         const defaultDataFiles = [
             'wordlist/Gr25_sp.json',
@@ -332,7 +340,6 @@
 
         const els = {
             fileInput: document.getElementById('fileInput'),
-            fileInputMobile: document.getElementById('fileInputMobile'),
             resultsList: document.getElementById('resultsList'),
             sidebarArea: document.getElementById('sidebarArea'),
             contentArea: document.getElementById('contentArea'),
@@ -362,6 +369,7 @@
             bulkOldId: document.getElementById('bulkOldId'),
             bulkNewId: document.getElementById('bulkNewId'),
             bulkRenameBtn: document.getElementById('bulkRenameBtn'),
+            mobileAlphaFilter: document.getElementById('mobileAlphaFilter'),
             // Search & Sort
             searchHeadword: document.getElementById('searchHeadword'),
             searchMeaning: document.getElementById('searchMeaning'),
@@ -400,10 +408,10 @@
         function init() {
             lucide.createIcons();
             loadSettings();
+            initAlphaButtons();
             
             // Events
             els.fileInput.addEventListener('change', handleFileUpload);
-            els.fileInputMobile.addEventListener('change', handleFileUpload);
             
             [els.searchHeadword, els.searchMeaning, els.searchKeyword, els.filterPos, els.filterGrade, els.filterTags, els.filterSource, els.sortOrder].forEach(el => {
                 el.addEventListener('input', () => { updateFilterHighlighting(); renderList(); });
@@ -429,9 +437,24 @@
             els.openSettingsBtn.addEventListener('click', () => els.settingsModal.classList.remove('hidden'));
             els.closeSettingsBtn.addEventListener('click', () => els.settingsModal.classList.add('hidden'));
             
-            // Mobile specific
+            // Mobile specific events
             els.mobileBackBtn.addEventListener('click', closeMobileDetail);
             window.addEventListener('resize', handleResize);
+
+            // Swipe Detection
+            els.contentArea.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+                touchStartY = e.changedTouches[0].screenY;
+            }, {passive: true});
+
+            els.contentArea.addEventListener('touchend', e => {
+                const touchEndX = e.changedTouches[0].screenX;
+                const touchEndY = e.changedTouches[0].screenY;
+                // 右スワイプ (左から右へ) かつ 縦移動が少ない場合
+                if (isMobileDetailView && touchEndX - touchStartX > 80 && Math.abs(touchEndY - touchStartY) < 60) {
+                    closeMobileDetail();
+                }
+            }, {passive: true});
 
             [els.rangeBaseFont, els.rangeWordFont, els.rangeContentFont, els.rangeRelWordFont, els.rangeTypeFont, els.rangeExEnFont, els.rangeExJaFont].forEach(el => el.addEventListener('input', applySettings));
             els.resetSettingsBtn.addEventListener('click', resetSettings);
@@ -446,6 +469,26 @@
             });
 
             loadInitialData();
+        }
+
+        // Mobile Alpha Buttons
+        function initAlphaButtons() {
+            const chars = ['ALL', ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')];
+            els.mobileAlphaFilter.innerHTML = chars.map(c => 
+                `<button onclick="filterByChar('${c}')" data-char="${c}" class="az-btn flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 text-slate-500 font-bold text-xs border border-slate-200 hover:bg-blue-50 transition-all ${c==='ALL'?'active':''}">${c}</button>`
+            ).join('');
+        }
+
+        window.filterByChar = (char) => {
+            document.querySelectorAll('.az-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector(`.az-btn[data-char="${char}"]`).classList.add('active');
+            
+            if(char === 'ALL') {
+                 els.searchHeadword.value = '';
+            } else {
+                 els.searchHeadword.value = char;
+            }
+            renderList();
         }
 
         // Mobile Layout Handlers
@@ -467,12 +510,10 @@
 
         function handleResize() {
             if (window.innerWidth >= 768) {
-                // Desktop view - reset to standard layout
                 els.sidebarArea.classList.remove('hidden');
                 els.contentArea.classList.remove('hidden');
                 els.mobileBackBtn.classList.add('hidden');
             } else {
-                // Mobile view - respect state
                 if (isMobileDetailView) {
                     els.sidebarArea.classList.add('hidden');
                     els.contentArea.classList.remove('hidden');
@@ -483,6 +524,11 @@
                     els.mobileBackBtn.classList.add('hidden');
                 }
             }
+        }
+        
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
         }
 
         async function loadInitialData() {
@@ -547,7 +593,7 @@
         }
 
         function loadSettings() {
-            const s = JSON.parse(localStorage.getItem('sensepro_v22_settings') || '{"base":14,"word":1.8,"content":0.9,"relW":0.9,"type":0.7,"exEn":0.9,"exJa":0.8}');
+            const s = JSON.parse(localStorage.getItem('sensepro_v23_settings') || '{"base":14,"word":1.8,"content":0.9,"relW":0.9,"type":0.7,"exEn":0.9,"exJa":0.8}');
             els.rangeBaseFont.value = s.base; els.rangeWordFont.value = s.word; els.rangeContentFont.value = s.content;
             els.rangeRelWordFont.value = s.relW; els.rangeTypeFont.value = s.type; els.rangeExEnFont.value = s.exEn; els.rangeExJaFont.value = s.exJa;
             applySettings();
@@ -569,7 +615,7 @@
             els.valBaseFont.innerText = b + 'px'; els.valWordFont.innerText = w + 'rem'; els.valContentFont.innerText = c + 'rem';
             els.valRelWordFont.innerText = rw + 'rem'; els.valTypeFont.innerText = t + 'rem'; els.valExEnFont.innerText = ee + 'rem'; els.valExJaFont.innerText = ej + 'rem';
             
-            localStorage.setItem('sensepro_v22_settings', JSON.stringify({ base:b, word:w, content:c, relW:rw, type:t, exEn:ee, exJa:ej }));
+            localStorage.setItem('sensepro_v23_settings', JSON.stringify({ base:b, word:w, content:c, relW:rw, type:t, exEn:ee, exJa:ej }));
         }
 
         function resetSettings() {
@@ -645,7 +691,6 @@
             const isView = currentMode === 'view';
             [els.editWord, els.editPron].forEach(input => { input.readOnly = isView; input.classList.toggle('disabled-input', isView); });
             
-            // Trigger mobile view switch
             openMobileDetail();
             
             renderSenses(); renderExamples(); renderList(); lucide.createIcons();
@@ -711,9 +756,9 @@
                         </div>
                         <div class="flex flex-col gap-2">
                             ${notes.map((n, ni) => (!isView || n.semantic?.content?.trim()) ? `
-                                <div class="flex flex-col md:flex-row md:items-center gap-1 bg-amber-50 px-3 py-2 rounded-xl border border-amber-100 text-[10px] group">
-                                    <input type="text" value="${n.semantic?.type || '備考'}" oninput="updateNote(${si}, ${ni}, 'type', this.value)" class="bg-white type-label-text border border-amber-50 px-2 py-1 rounded w-full md:w-32 outline-none text-amber-600 font-bold" ${disabledAttr}>
-                                    <input type="text" value="${n.semantic?.content || ''}" oninput="updateNote(${si}, ${ni}, 'content', this.value)" placeholder="内容" class="bg-white border border-amber-50 px-2 py-1 rounded w-full md:flex-1 outline-none text-amber-800 font-medium note-text" ${disabledAttr}>
+                                <div class="flex flex-col md:flex-row gap-1 bg-amber-50 px-3 py-2 rounded-xl border border-amber-100 text-[10px] group">
+                                    <input type="text" value="${n.semantic?.type || '備考'}" oninput="updateNote(${si}, ${ni}, 'type', this.value)" class="bg-white type-label-text border border-amber-50 px-2 py-1 rounded w-full md:w-32 outline-none text-amber-600 font-bold h-8" ${disabledAttr}>
+                                    <textarea oninput="autoResize(this); updateNote(${si}, ${ni}, 'content', this.value)" placeholder="内容" class="bg-white border border-amber-50 px-2 py-1.5 rounded w-full md:flex-1 outline-none text-amber-800 font-medium note-text min-h-[32px] resize-y" rows="1" ${disabledAttr}>${n.semantic?.content || ''}</textarea>
                                     ${!isView ? `<button onclick="removeNote(${si}, ${ni})" class="text-amber-200 hover:text-red-400 self-end md:self-auto"><i data-lucide="x" class="w-3.5 h-3.5"></i></button>` : ''}
                                 </div>` : '').join('')}
                         </div>
@@ -753,6 +798,9 @@
                     </div>` : ''}
                 </div>`;
             }).join('');
+            
+            // Adjust textarea heights after render
+            document.querySelectorAll('textarea.note-text').forEach(ta => autoResize(ta));
             lucide.createIcons();
         }
 
